@@ -3,9 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jam Adzan - Klaten</title>
+<title>Jam Adzan - Indonesia</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕌</text></svg>">
- 
+
 <style>
   * { box-sizing: border-box; }
   body {
@@ -28,11 +28,32 @@
     letter-spacing: 2px;
     margin: 0 0 10px;
   }
+
   .location {
     font-size: 0.9rem;
     color: #00ffcc;
     opacity: 0.9;
     margin-bottom: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+  }
+
+  #citySelect {
+    background: rgba(0, 255, 204, 0.15);
+    color: #00ffcc;
+    border: 1px solid rgba(0, 255, 204, 0.4);
+    border-radius: 8px;
+    padding: 6px 12px;
+    font-size: 0.95rem;
+    font-family: 'Segoe UI', sans-serif;
+    cursor: pointer;
+    outline: none;
+  }
+  #citySelect option {
+    background: #203a43;
+    color: #fff;
   }
 
   .clock {
@@ -118,7 +139,6 @@
     background: rgba(0, 255, 204, 0.35);
   }
 
-  /* Kolom Syuruq (Terbit) warna berbeda agar beda dari waktu sholat */
   .jadwal-table .syuruq {
     color: #ffd54f;
   }
@@ -131,6 +151,7 @@
     font-size: 0.8rem;
     color: #ff8a80;
     margin-top: 15px;
+    min-height: 18px;
   }
 
   @media (max-width: 560px) {
@@ -144,7 +165,32 @@
 <body>
 <div class="container">
   <h1>WAKTU SEKARANG</h1>
-  <div class="location" id="location">📍 Klaten, Indonesia</div>
+
+  <div class="location">
+    📍 <select id="citySelect">
+      <option value="Klaten">Klaten</option>
+      <option value="Jakarta">Jakarta</option>
+      <option value="Surabaya">Surabaya</option>
+      <option value="Medan">Medan</option>
+      <option value="Bandung">Bandung</option>
+      <option value="Semarang">Semarang</option>
+      <option value="Yogyakarta">Yogyakarta</option>
+      <option value="Makassar">Makassar</option>
+      <option value="Palembang">Palembang</option>
+      <option value="Denpasar">Denpasar</option>
+      <option value="Malang">Malang</option>
+      <option value="Padang">Padang</option>
+      <option value="Pekanbaru">Pekanbaru</option>
+      <option value="Banjarmasin">Banjarmasin</option>
+      <option value="Pontianak">Pontianak</option>
+      <option value="Manado">Manado</option>
+      <option value="Jayapura">Jayapura</option>
+      <option value="Ambon">Ambon</option>
+      <option value="Mataram">Mataram</option>
+      <option value="Kupang">Kupang</option>
+    </select>
+  </div>
+
   <div class="clock" id="clock">--:--:--</div>
   <div class="date" id="date">-</div>
 
@@ -154,7 +200,6 @@
     <div class="countdown" id="countdown">-</div>
   </div>
 
-  <!-- ===== Tabel Jadwal Sholat Horizontal (6 kolom) ===== -->
   <table class="jadwal-table">
     <thead>
       <tr>
@@ -181,14 +226,10 @@
 </div>
 
 <script>
-// ====== Konfigurasi Aladhan API ======
-// Klaten, Jawa Tengah, Indonesia
-// Method 20 = Kementerian Agama Republik Indonesia (Kemenag)
-const API_CONFIG = {
-  city: 'Klaten',
-  country: 'Indonesia',
-  method: 20
-};
+// ====== Konfigurasi ======
+const COUNTRY = 'Indonesia';
+const METHOD = 20; // Kemenag Republik Indonesia
+let currentCity = 'Klaten';
 
 // ====== State ======
 let jadwal = {};
@@ -216,10 +257,8 @@ async function fetchPrayerTimes() {
   const yyyy = now.getFullYear();
   const dateStr = `${dd}-${mm}-${yyyy}`;
 
-  if (lastFetchDate === dateStr && jadwal.Fajr) return;
-
   try {
-    const url = `https://api.aladhan.com/v1/timingsByCity/${dateStr}?city=${API_CONFIG.city}&country=${API_CONFIG.country}&method=${API_CONFIG.method}`;
+    const url = `https://api.aladhan.com/v1/timingsByCity/${dateStr}?city=${encodeURIComponent(currentCity)}&country=${COUNTRY}&method=${METHOD}`;
     const res = await fetch(url);
     const data = await res.json();
 
@@ -229,7 +268,7 @@ async function fetchPrayerTimes() {
       document.getElementById('errorMsg').textContent = '';
       renderJadwal();
     } else {
-      document.getElementById('errorMsg').textContent = 'Gagal memuat jadwal sholat.';
+      document.getElementById('errorMsg').textContent = `Kota "${currentCity}" tidak ditemukan.`;
     }
   } catch (e) {
     document.getElementById('errorMsg').textContent = 'Koneksi API gagal: ' + e.message;
@@ -246,8 +285,6 @@ function renderJadwal() {
 }
 
 // ====== Cari Waktu Berikutnya (termasuk Terbit) ======
-// Terbit ikut dihitung sebagai "waktu berikutnya" agar countdown juga
-// menunjuk ke matahari terbit saat sudah lewat Subuh.
 function getNextEvent(now) {
   const events = ['Fajr', 'Sunrise', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
   const nowMin = now.getHours() * 60 + now.getMinutes();
@@ -280,7 +317,7 @@ function updateClock() {
 
   // Cek pergantian hari → fetch ulang
   const todayStr = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()}`;
-  if (todayStr !== lastFetchDate) {
+  if (todayStr !== lastFetchDate && !document.hidden) {
     fetchPrayerTimes();
   }
 
@@ -300,6 +337,18 @@ function updateClock() {
     }
   }
 }
+
+// ====== Event saat kota diganti ======
+document.getElementById('citySelect').addEventListener('change', function() {
+  currentCity = this.value;
+  lastFetchDate = '';
+  jadwal = {};
+  document.getElementById('nextName').textContent = 'Memuat...';
+  document.querySelectorAll('.jadwal-table [data-key]').forEach(el => {
+    el.classList.remove('active');
+  });
+  fetchPrayerTimes();
+});
 
 // ====== Inisialisasi ======
 fetchPrayerTimes();
