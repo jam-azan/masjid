@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<title>Jam Adzan Abadi</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: linear-gradient(135deg, #0f2027, #203a43, #2c5364);
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+  }
+  .container { padding: 30px; }
+  h1 { font-size: 1.5rem; opacity: 0.8; letter-spacing: 2px; }
+  .clock {
+    font-size: 4rem;
+    font-weight: bold;
+    margin: 10px 0;
+    text-shadow: 0 0 20px #00ffcc;
+  }
+  .date { font-size: 1rem; opacity: 0.7; margin-bottom: 20px; }
+  .next {
+    background: rgba(255,255,255,0.1);
+    padding: 15px 25px;
+    border-radius: 15px;
+    display: inline-block;
+    backdrop-filter: blur(10px);
+  }
+  .next-label { font-size: 0.9rem; opacity: 0.7; }
+  .next-name { font-size: 1.8rem; color: #00ffcc; font-weight: bold; }
+  .countdown { font-size: 1.2rem; margin-top: 5px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>WAKTU SEKARANG</h1>
+  <div class="clock" id="clock">--:--:--</div>
+  <div class="date" id="date">-</div>
+
+  <div class="next">
+    <div class="next-label">Menuju Waktu Sholat</div>
+    <div class="next-name" id="nextName">-</div>
+    <div class="countdown" id="countdown">-</div>
+  </div>
+</div>
+
+<script>
+// ====== Atur jadwal sholat (bisa diubah sesuai lokasi) ======
+const jadwal = {
+  Subuh:   "04:30",
+  Dzuhur:  "12:00",
+  Ashar:   "15:15",
+  Maghrib: "18:00",
+  Isya:    "19:15"
+};
+
+const namaHari = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+const namaBulan = ["Januari","Februari","Maret","April","Mei","Juni",
+                   "Juli","Agustus","September","Oktober","November","Desember"];
+
+function pad(n){ return n.toString().padStart(2,'0'); }
+
+function updateClock() {
+  const now = new Date();
+
+  // Jam & tanggal
+  document.getElementById('clock').textContent =
+    `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+
+  document.getElementById('date').textContent =
+    `${namaHari[now.getDay()]}, ${now.getDate()} ${namaBulan[now.getMonth()]} ${now.getFullYear()}`;
+
+  // Cari waktu sholat berikutnya
+  const sekarangMenit = now.getHours()*60 + now.getMinutes();
+  let berikutnya = null, selisihTerkecil = Infinity;
+
+  for (const [nama, waktu] of Object.entries(jadwal)) {
+    const [h, m] = waktu.split(':').map(Number);
+    let targetMenit = h*60 + m;
+    let selisih = targetMenit - sekarangMenit;
+    if (selisih <= 0) selisih += 24*60; // besok
+    if (selisih < selisihTerkecil) {
+      selisihTerkecil = selisih;
+      berikutnya = { nama, menit: targetMenit };
+    }
+  }
+
+  // Hitung countdown
+  const totalDetik = selisihTerkecil * 60 - now.getSeconds();
+  const j = Math.floor(totalDetik/3600);
+  const m = Math.floor((totalDetik%3600)/60);
+  const d = totalDetik%60;
+
+  document.getElementById('nextName').textContent = berikutnya.nama;
+  document.getElementById('countdown').textContent =
+    `- ${pad(j)}:${pad(m)}:${pad(d)}`;
+}
+
+setInterval(updateClock, 1000);
+updateClock();
+</script>
+</body>
+</html>
