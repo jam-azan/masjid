@@ -2,8 +2,10 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<title>Jam Adzan Abadi</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jam Adzan - Klaten</title>
 <style>
+  * { box-sizing: border-box; }
   body {
     margin: 0;
     font-family: 'Segoe UI', sans-serif;
@@ -12,59 +14,243 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     text-align: center;
+    padding: 20px;
   }
-  .container { padding: 30px; }
-  h1 { font-size: 1.5rem; opacity: 0.8; letter-spacing: 2px; }
+  .container { padding: 20px; width: 100%; max-width: 640px; }
+
+  h1 {
+    font-size: 1.3rem;
+    opacity: 0.8;
+    letter-spacing: 2px;
+    margin: 0 0 10px;
+  }
+  .location {
+    font-size: 0.9rem;
+    color: #00ffcc;
+    opacity: 0.9;
+    margin-bottom: 5px;
+  }
+
   .clock {
-    font-size: 4rem;
+    font-size: 3.5rem;
     font-weight: bold;
     margin: 10px 0;
     text-shadow: 0 0 20px #00ffcc;
+    font-variant-numeric: tabular-nums;
   }
-  .date { font-size: 1rem; opacity: 0.7; margin-bottom: 20px; }
+
+  .date {
+    font-size: 0.95rem;
+    opacity: 0.7;
+    margin-bottom: 20px;
+  }
+
   .next {
     background: rgba(255,255,255,0.1);
     padding: 15px 25px;
     border-radius: 15px;
     display: inline-block;
     backdrop-filter: blur(10px);
+    margin-bottom: 25px;
   }
-  .next-label { font-size: 0.9rem; opacity: 0.7; }
-  .next-name { font-size: 1.8rem; color: #00ffcc; font-weight: bold; }
-  .countdown { font-size: 1.2rem; margin-top: 5px; }
+  .next-label { font-size: 0.85rem; opacity: 0.7; }
+  .next-name {
+    font-size: 1.6rem;
+    color: #00ffcc;
+    font-weight: bold;
+    margin: 4px 0;
+  }
+  .countdown {
+    font-size: 1.1rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ===== Tabel Jadwal Sholat Horizontal ===== */
+  .jadwal-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: rgba(255,255,255,0.06);
+    border-radius: 15px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    table-layout: fixed;
+  }
+
+  .jadwal-table th,
+  .jadwal-table td {
+    padding: 14px 6px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    border-left: 1px solid rgba(255,255,255,0.08);
+  }
+  .jadwal-table th:first-child,
+  .jadwal-table td:first-child { border-left: none; }
+
+  .jadwal-table thead th {
+    background: rgba(0, 255, 204, 0.15);
+    color: #00ffcc;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 12px 4px;
+  }
+
+  .jadwal-table tbody td {
+    font-size: 1.05rem;
+    font-weight: 600;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    transition: background 0.3s;
+  }
+
+  .jadwal-table .active {
+    background: linear-gradient(180deg, rgba(0,255,204,0.25), rgba(0,255,204,0.05));
+    color: #00ffcc;
+    text-shadow: 0 0 12px rgba(0,255,204,0.6);
+  }
+  .jadwal-table thead th.active {
+    background: rgba(0, 255, 204, 0.35);
+  }
+
+  .error-msg {
+    font-size: 0.8rem;
+    color: #ff8a80;
+    margin-top: 15px;
+  }
+
+  @media (max-width: 480px) {
+    .clock { font-size: 2.5rem; }
+    .next-name { font-size: 1.3rem; }
+    .jadwal-table thead th { font-size: 0.65rem; padding: 10px 2px; }
+    .jadwal-table tbody td { font-size: 0.9rem; padding: 12px 2px; }
+  }
 </style>
 </head>
 <body>
 <div class="container">
   <h1>WAKTU SEKARANG</h1>
+  <div class="location" id="location">📍 Klaten, Indonesia</div>
   <div class="clock" id="clock">--:--:--</div>
   <div class="date" id="date">-</div>
 
   <div class="next">
     <div class="next-label">Menuju Waktu Sholat</div>
-    <div class="next-name" id="nextName">-</div>
+    <div class="next-name" id="nextName">Memuat...</div>
     <div class="countdown" id="countdown">-</div>
   </div>
+
+  <!-- ===== Tabel Jadwal Sholat Horizontal ===== -->
+  <table class="jadwal-table">
+    <thead>
+      <tr>
+        <th data-key="Fajr">Subuh</th>
+        <th data-key="Dhuhr">Dzuhur</th>
+        <th data-key="Asr">Ashar</th>
+        <th data-key="Maghrib">Maghrib</th>
+        <th data-key="Isha">Isya</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td data-key="Fajr">-</td>
+        <td data-key="Dhuhr">-</td>
+        <td data-key="Asr">-</td>
+        <td data-key="Maghrib">-</td>
+        <td data-key="Isha">-</td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="error-msg" id="errorMsg"></div>
 </div>
 
 <script>
-// ====== Atur jadwal sholat (bisa diubah sesuai lokasi) ======
-const jadwal = {
-  Subuh:   "04:30",
-  Dzuhur:  "12:00",
-  Ashar:   "15:15",
-  Maghrib: "18:00",
-  Isya:    "19:15"
+// ====== Konfigurasi Aladhan API ======
+// Klaten, Jawa Tengah, Indonesia
+// Method 20 = Kementerian Agama Republik Indonesia (Kemenag) [citation:5][citation:10]
+const API_CONFIG = {
+  city: 'Klaten',
+  country: 'Indonesia',
+  method: 20  // Kemenag Indonesia
 };
 
-const namaHari = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
+// ====== State ======
+let jadwal = {};        // Waktu sholat dari API
+let lastFetchDate = ''; // Tanggal terakhir fetch (format: DD-MM-YYYY)
+let triggeredToday = {}; // Catatan sholat yang sudah dipicu
+
+const namaHari  = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
 const namaBulan = ["Januari","Februari","Maret","April","Mei","Juni",
                    "Juli","Agustus","September","Oktober","November","Desember"];
+const namaIndo = { Fajr: 'Subuh', Dhuhr: 'Dzuhur', Asr: 'Ashar', Maghrib: 'Maghrib', Isha: 'Isya' };
 
 function pad(n){ return n.toString().padStart(2,'0'); }
 
+// ====== Fetch Jadwal dari Aladhan API ======
+async function fetchPrayerTimes() {
+  const now = new Date();
+  const dd = pad(now.getDate());
+  const mm = pad(now.getMonth() + 1);
+  const yyyy = now.getFullYear();
+  const dateStr = `${dd}-${mm}-${yyyy}`;
+
+  // Jika sudah fetch hari ini, skip
+  if (lastFetchDate === dateStr && jadwal.Fajr) return;
+
+  try {
+    const url = `https://api.aladhan.com/v1/timingsByCity/${dateStr}?city=${API_CONFIG.city}&country=${API_CONFIG.country}&method=${API_CONFIG.method}`;
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data.code === 200 && data.data && data.data.timings) {
+      jadwal = data.data.timings;
+      lastFetchDate = dateStr;
+      triggeredToday = {};
+      document.getElementById('errorMsg').textContent = '';
+      renderJadwal();
+    } else {
+      document.getElementById('errorMsg').textContent = 'Gagal memuat jadwal sholat.';
+    }
+  } catch (e) {
+    document.getElementById('errorMsg').textContent = 'Koneksi API gagal: ' + e.message;
+  }
+}
+
+// ====== Isi Tabel Jadwal ======
+function renderJadwal() {
+  document.querySelectorAll('.jadwal-table tbody td').forEach(td => {
+    const key = td.dataset.key;
+    const val = jadwal[key];
+    // Format: HH:MM (buang detik jika ada)
+    td.textContent = val ? val.slice(0, 5) : '-';
+  });
+}
+
+// ====== Cari Sholat Berikutnya ======
+function getNextPrayer(now) {
+  const prayers = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+  const nowMin = now.getHours() * 60 + now.getMinutes();
+  let next = null;
+  let minDiff = Infinity;
+
+  for (const p of prayers) {
+    const timeStr = jadwal[p];
+    if (!timeStr) continue;
+    const [h, m] = timeStr.slice(0, 5).split(':').map(Number);
+    let diff = (h * 60 + m) - nowMin;
+    if (diff <= 0) diff += 24 * 60;
+    if (diff < minDiff) {
+      minDiff = diff;
+      next = { key: p, name: namaIndo[p], diff: diff };
+    }
+  }
+  return next;
+}
+
+// ====== Update Tampilan ======
 function updateClock() {
   const now = new Date();
 
@@ -75,32 +261,33 @@ function updateClock() {
   document.getElementById('date').textContent =
     `${namaHari[now.getDay()]}, ${now.getDate()} ${namaBulan[now.getMonth()]} ${now.getFullYear()}`;
 
-  // Cari waktu sholat berikutnya
-  const sekarangMenit = now.getHours()*60 + now.getMinutes();
-  let berikutnya = null, selisihTerkecil = Infinity;
-
-  for (const [nama, waktu] of Object.entries(jadwal)) {
-    const [h, m] = waktu.split(':').map(Number);
-    let targetMenit = h*60 + m;
-    let selisih = targetMenit - sekarangMenit;
-    if (selisih <= 0) selisih += 24*60; // besok
-    if (selisih < selisihTerkecil) {
-      selisihTerkecil = selisih;
-      berikutnya = { nama, menit: targetMenit };
-    }
+  // Cek pergantian hari → fetch ulang
+  const todayStr = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()}`;
+  if (todayStr !== lastFetchDate) {
+    fetchPrayerTimes();
   }
 
-  // Hitung countdown
-  const totalDetik = selisihTerkecil * 60 - now.getSeconds();
-  const j = Math.floor(totalDetik/3600);
-  const m = Math.floor((totalDetik%3600)/60);
-  const d = totalDetik%60;
+  // Tampilkan sholat berikutnya
+  if (jadwal.Fajr) {
+    const next = getNextPrayer(now);
+    if (next) {
+      document.getElementById('nextName').textContent = next.name;
+      const totalSec = next.diff * 60 - now.getSeconds();
+      const h = Math.floor(totalSec / 3600);
+      const m = Math.floor((totalSec % 3600) / 60);
+      const d = totalSec % 60;
+      document.getElementById('countdown').textContent = `- ${pad(h)}:${pad(m)}:${pad(d)}`;
 
-  document.getElementById('nextName').textContent = berikutnya.nama;
-  document.getElementById('countdown').textContent =
-    `- ${pad(j)}:${pad(m)}:${pad(d)}`;
+      // Highlight kolom aktif
+      document.querySelectorAll('.jadwal-table [data-key]').forEach(el => {
+        el.classList.toggle('active', el.dataset.key === next.key);
+      });
+    }
+  }
 }
 
+// ====== Inisialisasi ======
+fetchPrayerTimes();
 setInterval(updateClock, 1000);
 updateClock();
 </script>
