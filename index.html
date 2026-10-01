@@ -315,7 +315,7 @@
   .ac-table { table-layout: fixed; }
   .ac-table thead th:first-child,
   .ac-table tbody th {
-    width: 42px;              /* kolom ON/OFF sempit */
+    width: 38px;              /* kolom ON/OFF sempit */
     padding: 8px 4px;
     font-size: 0.7rem;
   }
@@ -425,10 +425,14 @@
   <!-- ===== TABEL 2: ON/OFF AC per Hari ===== -->
   <h2 class="ac-table-title">⏱ Kontrol AC</h2>
   <h3 class="ac-table-subtitle">(menit dari adzan)</h3>
-  <table class="ac-table">
+    <table class="ac-table">
+    <colgroup>
+      <col class="col-label">
+      <col><col><col><col><col><col><col>
+    </colgroup>
     <thead>
       <tr>
-        <th style="width:80px;"></th>
+        <th></th>
         <th>AHAD</th>
         <th>SENIN</th>
         <th>SELASA</th>
@@ -441,28 +445,27 @@
     <tbody>
       <tr class="row-on">
         <th>ON</th>
-        <td><input type="number" class="ac-input" data-day="0" data-mode="on" value="-5" title="Menit dari adzan (Ahad)"></td>
-        <td><input type="number" class="ac-input" data-day="1" data-mode="on" value="-5" title="Menit dari adzan (Senin)"></td>
-        <td><input type="number" class="ac-input" data-day="2" data-mode="on" value="-5" title="Menit dari adzan (Selasa)"></td>
-        <td><input type="number" class="ac-input" data-day="3" data-mode="on" value="-5" title="Menit dari adzan (Rabu)"></td>
-        <td><input type="number" class="ac-input" data-day="4" data-mode="on" value="-5" title="Menit dari adzan (Kamis)"></td>
-        <td><input type="number" class="ac-input" data-day="5" data-mode="on" value="-5" title="Menit dari adzan (Jumat)"></td>
-        <td><input type="number" class="ac-input" data-day="6" data-mode="on" value="-5" title="Menit dari adzan (Sabtu)"></td>
+        <td><input type="number" class="ac-input" data-day="0" data-mode="on" value="-5"></td>
+        <td><input type="number" class="ac-input" data-day="1" data-mode="on" value="-5"></td>
+        <td><input type="number" class="ac-input" data-day="2" data-mode="on" value="-5"></td>
+        <td><input type="number" class="ac-input" data-day="3" data-mode="on" value="-5"></td>
+        <td><input type="number" class="ac-input" data-day="4" data-mode="on" value="-5"></td>
+        <td><input type="number" class="ac-input" data-day="5" data-mode="on" value="-5"></td>
+        <td><input type="number" class="ac-input" data-day="6" data-mode="on" value="-5"></td>
       </tr>
       <tr class="row-off">
         <th>OFF</th>
-        <td><input type="number" class="ac-input" data-day="0" data-mode="off" value="30" title="Menit dari adzan (Ahad)"></td>
-        <td><input type="number" class="ac-input" data-day="1" data-mode="off" value="30" title="Menit dari adzan (Senin)"></td>
-        <td><input type="number" class="ac-input" data-day="2" data-mode="off" value="30" title="Menit dari adzan (Selasa)"></td>
-        <td><input type="number" class="ac-input" data-day="3" data-mode="off" value="30" title="Menit dari adzan (Rabu)"></td>
-        <td><input type="number" class="ac-input" data-day="4" data-mode="off" value="30" title="Menit dari adzan (Kamis)"></td>
-        <td><input type="number" class="ac-input" data-day="5" data-mode="off" value="30" title="Menit dari adzan (Jumat)"></td>
-        <td><input type="number" class="ac-input" data-day="6" data-mode="off" value="30" title="Menit dari adzan (Sabtu)"></td>
+        <td><input type="number" class="ac-input" data-day="0" data-mode="off" value="30"></td>
+        <td><input type="number" class="ac-input" data-day="1" data-mode="off" value="30"></td>
+        <td><input type="number" class="ac-input" data-day="2" data-mode="off" value="30"></td>
+        <td><input type="number" class="ac-input" data-day="3" data-mode="off" value="30"></td>
+        <td><input type="number" class="ac-input" data-day="4" data-mode="off" value="30"></td>
+        <td><input type="number" class="ac-input" data-day="5" data-mode="off" value="30"></td>
+        <td><input type="number" class="ac-input" data-day="6" data-mode="off" value="30"></td>
       </tr>
     </tbody>
   </table>
   <div class="ac-hint">
-    Isi angka <b>negatif</b> = menit <b>sebelum</b> adzan, <b>positif</b> = menit <b>setelah</b> adzan.<br>
     Contoh: <b>-5</b> artinya 5 menit sebelum adzan, <b>30</b> artinya 30 menit setelah adzan.
   </div>
 
