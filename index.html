@@ -187,13 +187,21 @@
   }
 
   /* ===== Tabel ON/OFF AC ===== */
-  .ac-table-title {
+    .ac-table-title {
     font-size: 0.85rem;
     color: #00ffcc;
     letter-spacing: 2px;
     text-transform: uppercase;
-    margin: 0 0 8px;
+    margin: 0 0 4px;
     opacity: 0.9;
+  }
+  .ac-table-subtitle {
+    font-size: 0.72rem;
+    color: #00ffcc;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin: 0 0 10px;
+    opacity: 0.65;
   }
 
   .ac-table {
@@ -302,6 +310,46 @@
     .ac-table tbody th { font-size: 0.65rem; padding-left: 6px; }
     .ac-table input { max-width: 36px; padding: 4px 2px; font-size: 0.7rem; }
   }
+
+  /* Kolom ON/OFF dipersempit, kolom hari dilebarkan */
+  .ac-table { table-layout: fixed; }
+  .ac-table thead th:first-child,
+  .ac-table tbody th {
+    width: 42px;              /* kolom ON/OFF sempit */
+    padding: 8px 4px;
+    font-size: 0.7rem;
+  }
+  .ac-table tbody th {
+    text-align: center;
+    padding-left: 4px;
+  }
+
+  /* Input lebih kompak */
+  .ac-table input {
+    max-width: 100%;
+    width: 100%;
+    padding: 4px 2px;
+    font-size: 0.8rem;
+  }
+
+  /* Mobile: makin kompak lagi */
+  @media (max-width: 560px) {
+    .ac-table thead th:first-child,
+    .ac-table tbody th {
+      width: 32px;
+      font-size: 0.6rem;
+      padding: 6px 2px;
+    }
+    .ac-table input {
+      padding: 3px 1px;
+      font-size: 0.7rem;
+    }
+    .ac-table-subtitle {
+      font-size: 0.62rem;
+    }
+  }
+
+ 
 </style>
 </head>
 <body>
@@ -375,7 +423,8 @@
   </table>
 
   <!-- ===== TABEL 2: ON/OFF AC per Hari ===== -->
-  <h2 class="ac-table-title">⏱ Kontrol AC (menit dari adzan)</h2>
+  <h2 class="ac-table-title">⏱ Kontrol AC</h2>
+  <h3 class="ac-table-subtitle">(menit dari adzan)</h3>
   <table class="ac-table">
     <thead>
       <tr>
