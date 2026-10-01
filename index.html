@@ -22,13 +22,8 @@
     transition: background 0.5s;
   }
 
-  /* Layar hitam saat iqomah */
-  body.blackout {
-    background: #000;
-  }
-  body.blackout .container {
-    visibility: hidden;
-  }
+  body.blackout { background: #000; }
+  body.blackout .container { visibility: hidden; }
   body.blackout::after {
     content: '';
     position: fixed;
@@ -37,7 +32,7 @@
     z-index: 9999;
   }
 
-  .container { padding: 20px; width: 100%; max-width: 720px; }
+  .container { padding: 20px; width: 100%; max-width: 780px; }
 
   h1 {
     font-size: 1.3rem;
@@ -68,10 +63,7 @@
     cursor: pointer;
     outline: none;
   }
-  #citySelect option {
-    background: #203a43;
-    color: #fff;
-  }
+  #citySelect option { background: #203a43; color: #fff; }
 
   .clock {
     font-size: 3.5rem;
@@ -109,12 +101,11 @@
     font-variant-numeric: tabular-nums;
   }
 
-  /* Warna khusus saat masuk mode qobla (menjelang iqomah) */
   .next.qobla .next-label { color: #ffd54f; }
   .next.qobla .next-name { color: #ffd54f; font-size: 1.3rem; }
   .next.qobla .countdown { color: #ffd54f; }
 
-  /* Tabel */
+  /* ===== Tabel Umum ===== */
   .jadwal-table {
     width: 100%;
     border-collapse: separate;
@@ -125,6 +116,7 @@
     backdrop-filter: blur(10px);
     box-shadow: 0 8px 24px rgba(0,0,0,0.25);
     table-layout: fixed;
+    margin-bottom: 20px;
   }
 
   .jadwal-table th,
@@ -154,13 +146,13 @@
     transition: background 0.3s;
   }
 
-  /* Baris kedua: isian menit iqomah */
   .jadwal-table tbody tr.iqomah-row td {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     font-weight: normal;
     color: #ffd54f;
     padding: 6px 2px;
     background: rgba(255, 213, 79, 0.06);
+    white-space: nowrap;
   }
   .jadwal-table tbody tr.iqomah-row input {
     width: 42px;
@@ -188,12 +180,95 @@
     background: rgba(0, 255, 204, 0.35);
   }
 
-  .jadwal-table .syuruq {
-    color: #ffd54f;
-  }
+  .jadwal-table .syuruq { color: #ffd54f; }
   .jadwal-table thead th[data-key="Sunrise"] {
     background: rgba(255, 213, 79, 0.15);
     color: #ffd54f;
+  }
+
+  /* ===== Tabel ON/OFF AC ===== */
+  .ac-table-title {
+    font-size: 0.85rem;
+    color: #00ffcc;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin: 0 0 8px;
+    opacity: 0.9;
+  }
+
+  .ac-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: rgba(255,255,255,0.06);
+    border-radius: 15px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    table-layout: fixed;
+    margin-bottom: 10px;
+  }
+
+  .ac-table th,
+  .ac-table td {
+    padding: 10px 2px;
+    text-align: center;
+    border-left: 1px solid rgba(255,255,255,0.08);
+    font-variant-numeric: tabular-nums;
+  }
+  .ac-table th:first-child,
+  .ac-table td:first-child { border-left: none; }
+
+  .ac-table thead th {
+    background: rgba(0, 255, 204, 0.15);
+    color: #00ffcc;
+    font-size: 0.7rem;
+    letter-spacing: 0.6px;
+    font-weight: 600;
+    padding: 10px 2px;
+  }
+
+  .ac-table tbody th {
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 10px 4px;
+    text-align: left;
+    padding-left: 10px;
+  }
+
+  .ac-table tbody tr + tr th,
+  .ac-table tbody tr + tr td {
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .ac-table tbody tr.row-on th { color: #69f0ae; }
+  .ac-table tbody tr.row-off th { color: #ff8a80; }
+
+  .ac-table input {
+    width: 100%;
+    max-width: 48px;
+    background: rgba(255,255,255,0.1);
+    color: #fff;
+    border: 1px solid rgba(255,255,255,0.25);
+    border-radius: 6px;
+    padding: 5px 3px;
+    text-align: center;
+    font-size: 0.85rem;
+    font-weight: 600;
+    font-family: inherit;
+    outline: none;
+  }
+  .ac-table input:focus { border-color: #00ffcc; background: rgba(0,255,204,0.12); }
+  .ac-table tr.row-on input { color: #69f0ae; border-color: rgba(105,240,174,0.4); }
+  .ac-table tr.row-off input { color: #ff8a80; border-color: rgba(255,138,128,0.4); }
+
+  .ac-hint {
+    font-size: 0.7rem;
+    opacity: 0.6;
+    margin-bottom: 15px;
+    line-height: 1.5;
   }
 
   .error-msg {
@@ -203,7 +278,6 @@
     min-height: 18px;
   }
 
-  /* Tombol test beep */
   .test-btn {
     margin-top: 15px;
     background: rgba(0, 255, 204, 0.15);
@@ -222,14 +296,17 @@
     .next-name { font-size: 1.3rem; }
     .jadwal-table thead th { font-size: 0.55rem; padding: 8px 1px; letter-spacing: 0; }
     .jadwal-table tbody td { font-size: 0.82rem; padding: 10px 1px; }
-    .jadwal-table tbody tr.iqomah-row td { font-size: 0.65rem; padding: 5px 1px; }
-    .jadwal-table tbody tr.iqomah-row input { width: 34px; font-size: 0.65rem; }
+    .jadwal-table tbody tr.iqomah-row td { font-size: 0.6rem; padding: 5px 1px; }
+    .jadwal-table tbody tr.iqomah-row input { width: 32px; font-size: 0.6rem; }
+    .ac-table thead th { font-size: 0.55rem; padding: 8px 1px; letter-spacing: 0; }
+    .ac-table tbody th { font-size: 0.65rem; padding-left: 6px; }
+    .ac-table input { max-width: 36px; padding: 4px 2px; font-size: 0.7rem; }
   }
 </style>
 </head>
 <body>
 <div class="container">
-  <h1>MASJID JAMI' AL-HIMMAH</h1>
+  <h1>WAKTU SEKARANG</h1>
 
   <div class="location">
     📍 <select id="citySelect">
@@ -265,6 +342,7 @@
     <div class="countdown" id="countdown">-</div>
   </div>
 
+  <!-- ===== TABEL 1: Waktu Sholat ===== -->
   <table class="jadwal-table">
     <thead>
       <tr>
@@ -295,6 +373,50 @@
       </tr>
     </tbody>
   </table>
+
+  <!-- ===== TABEL 2: ON/OFF AC per Hari ===== -->
+  <h2 class="ac-table-title">⏱ Kontrol AC (menit dari adzan)</h2>
+  <table class="ac-table">
+    <thead>
+      <tr>
+        <th style="width:80px;"></th>
+        <th>AHAD</th>
+        <th>SENIN</th>
+        <th>SELASA</th>
+        <th>RABU</th>
+        <th>KAMIS</th>
+        <th>JUMAT</th>
+        <th>SABTU</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="row-on">
+        <th>ON</th>
+        <td><input type="number" class="ac-input" data-day="0" data-mode="on" value="-5" title="Menit dari adzan (Ahad)"></td>
+        <td><input type="number" class="ac-input" data-day="1" data-mode="on" value="-5" title="Menit dari adzan (Senin)"></td>
+        <td><input type="number" class="ac-input" data-day="2" data-mode="on" value="-5" title="Menit dari adzan (Selasa)"></td>
+        <td><input type="number" class="ac-input" data-day="3" data-mode="on" value="-5" title="Menit dari adzan (Rabu)"></td>
+        <td><input type="number" class="ac-input" data-day="4" data-mode="on" value="-5" title="Menit dari adzan (Kamis)"></td>
+        <td><input type="number" class="ac-input" data-day="5" data-mode="on" value="-5" title="Menit dari adzan (Jumat)"></td>
+        <td><input type="number" class="ac-input" data-day="6" data-mode="on" value="-5" title="Menit dari adzan (Sabtu)"></td>
+      </tr>
+      <tr class="row-off">
+        <th>OFF</th>
+        <td><input type="number" class="ac-input" data-day="0" data-mode="off" value="30" title="Menit dari adzan (Ahad)"></td>
+        <td><input type="number" class="ac-input" data-day="1" data-mode="off" value="30" title="Menit dari adzan (Senin)"></td>
+        <td><input type="number" class="ac-input" data-day="2" data-mode="off" value="30" title="Menit dari adzan (Selasa)"></td>
+        <td><input type="number" class="ac-input" data-day="3" data-mode="off" value="30" title="Menit dari adzan (Rabu)"></td>
+        <td><input type="number" class="ac-input" data-day="4" data-mode="off" value="30" title="Menit dari adzan (Kamis)"></td>
+        <td><input type="number" class="ac-input" data-day="5" data-mode="off" value="30" title="Menit dari adzan (Jumat)"></td>
+        <td><input type="number" class="ac-input" data-day="6" data-mode="off" value="30" title="Menit dari adzan (Sabtu)"></td>
+      </tr>
+    </tbody>
+  </table>
+  <div class="ac-hint">
+    Isi angka <b>negatif</b> = menit <b>sebelum</b> adzan, <b>positif</b> = menit <b>setelah</b> adzan.<br>
+    Contoh: <b>-5</b> artinya 5 menit sebelum adzan, <b>30</b> artinya 30 menit setelah adzan.
+  </div>
+
   <div class="error-msg" id="errorMsg"></div>
 
   <button class="test-btn" id="testBtn">🔊 Test Suara Beep</button>
@@ -309,9 +431,9 @@ let currentCity = 'Klaten';
 // ====== State ======
 let jadwal = {};
 let lastFetchDate = '';
-let triggeredAdzan = {};    // {key_date: true} — sudah beep adzan
-let triggeredIqomahWarn = {}; // sudah beep 1 menit sebelum iqomah
-let triggeredIqomahStart = {}; // sudah beep iqomah
+let triggeredAdzan = {};
+let triggeredIqomahWarn = {};
+let triggeredIqomahStart = {};
 let blackoutTimer = null;
 
 const namaHari  = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
@@ -327,7 +449,6 @@ const namaIndo = {
 };
 const urutanSholat = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 
-// Pemetaan input iqomah
 const iqomahInput = {
   Fajr: 'iqomahFajr',
   Dhuhr: 'iqomahDhuhr',
@@ -352,24 +473,35 @@ function saveIqomahSettings() {
     localStorage.setItem('iqomah_' + key, document.getElementById(iqomahInput[key]).value);
   }
 }
-// Simpan saat ada perubahan
 for (const key in iqomahInput) {
   document.getElementById(iqomahInput[key]).addEventListener('change', saveIqomahSettings);
 }
 loadIqomahSettings();
 
-// ====== Fungsi Suara Beep (Web Audio API) ======
+// ====== Simpan & muat pengaturan ON/OFF AC ======
+function loadAcSettings() {
+  document.querySelectorAll('.ac-input').forEach(input => {
+    const key = `ac_${input.dataset.day}_${input.dataset.mode}`;
+    const saved = localStorage.getItem(key);
+    if (saved !== null) input.value = saved;
+  });
+}
+function saveAcSetting(input) {
+  const key = `ac_${input.dataset.day}_${input.dataset.mode}`;
+  localStorage.setItem(key, input.value);
+}
+document.querySelectorAll('.ac-input').forEach(input => {
+  input.addEventListener('change', () => saveAcSetting(input));
+});
+loadAcSettings();
+
+// ====== Suara Beep ======
 let audioCtx = null;
 function getAudioCtx() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  }
-  if (audioCtx.state === 'suspended') {
-    audioCtx.resume();
-  }
+  if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  if (audioCtx.state === 'suspended') audioCtx.resume();
   return audioCtx;
 }
-
 function beep(freq = 800, duration = 200, volume = 0.4) {
   const ctx = getAudioCtx();
   const osc = ctx.createOscillator();
@@ -381,37 +513,27 @@ function beep(freq = 800, duration = 200, volume = 0.4) {
   gain.connect(ctx.destination);
   const now = ctx.currentTime;
   osc.start(now);
-  // Fade out halus supaya tidak "klik"
   gain.gain.setValueAtTime(volume, now);
   gain.gain.exponentialRampToValueAtTime(0.0001, now + duration / 1000);
   osc.stop(now + duration / 1000);
 }
-
-// 3 kali beep untuk adzan
 function beepAdzan() {
   beep(880, 200);
   setTimeout(() => beep(880, 200), 350);
   setTimeout(() => beep(880, 200), 700);
 }
-
-// 2 kali beep untuk 1 menit sebelum iqomah
 function beepPreIqomah() {
   beep(660, 200);
   setTimeout(() => beep(660, 200), 350);
 }
-
-// 1 beep panjang untuk iqomah
 function beepIqomah() {
   beep(440, 1500, 0.5);
 }
 
-// ====== Test button ======
 document.getElementById('testBtn').addEventListener('click', () => {
-  getAudioCtx(); // aktifkan audio context dari interaksi user
+  getAudioCtx();
   beepAdzan();
 });
-
-// Aktifkan audio context saat interaksi pertama
 document.addEventListener('click', () => getAudioCtx(), { once: true });
 
 // ====== Fetch Jadwal dari Aladhan API ======
@@ -443,7 +565,6 @@ async function fetchPrayerTimes() {
   }
 }
 
-// ====== Isi Tabel ======
 function renderJadwal() {
   document.querySelectorAll('.jadwal-table tbody td[data-key]').forEach(td => {
     const key = td.dataset.key;
@@ -452,20 +573,19 @@ function renderJadwal() {
   });
 }
 
-// ====== Dapatkan waktu iqomah untuk suatu sholat ======
+// ====== Dapatkan waktu iqomah ======
 function getIqomahTime(prayerKey) {
   const timeStr = jadwal[prayerKey];
   if (!timeStr) return null;
   const [h, m] = timeStr.slice(0, 5).split(':').map(Number);
   const menit = parseInt(document.getElementById(iqomahInput[prayerKey]).value) || 0;
-
   const iqomah = new Date();
   iqomah.setHours(h, m, 0, 0);
   iqomah.setMinutes(iqomah.getMinutes() + menit);
   return iqomah;
 }
 
-// ====== Cari event berikutnya (adzan atau iqomah) ======
+// ====== Cari event berikutnya ======
 function getNextEvent(now) {
   let next = null;
   let minDiff = Infinity;
@@ -475,22 +595,18 @@ function getNextEvent(now) {
     if (!adzanStr) continue;
     const [h, m] = adzanStr.slice(0, 5).split(':').map(Number);
 
-    // Adzan hari ini
     const adzanDate = new Date(now);
     adzanDate.setHours(h, m, 0, 0);
 
-    // Iqomah hari ini
     const iqomahDate = getIqomahTime(p);
     if (!iqomahDate) continue;
 
-    // Hitung selisih adzan (jika belum lewat)
     const diffAdzan = adzanDate - now;
     if (diffAdzan > 0 && diffAdzan < minDiff) {
       minDiff = diffAdzan;
       next = { type: 'adzan', key: p, date: adzanDate };
     }
 
-    // Hitung selisih iqomah (jika sudah adzan tapi belum iqomah)
     const diffIqomah = iqomahDate - now;
     if (diffIqomah > 0 && diffIqomah < minDiff) {
       minDiff = diffIqomah;
@@ -498,7 +614,6 @@ function getNextEvent(now) {
     }
   }
 
-  // Kalau semua sudah lewat hari ini, ambil adzan Subuh besok
   if (!next) {
     const besok = new Date(now);
     besok.setDate(besok.getDate() + 1);
@@ -512,7 +627,7 @@ function getNextEvent(now) {
   return next;
 }
 
-// ====== Cek trigger (adzan, pre-iqomah, iqomah) ======
+// ====== Trigger Beep & Blackout ======
 function checkTriggers(now) {
   const todayKey = `${pad(now.getDate())}-${pad(now.getMonth()+1)}-${now.getFullYear()}`;
 
@@ -521,7 +636,7 @@ function checkTriggers(now) {
     if (!adzanStr) continue;
     const [h, m] = adzanStr.slice(0, 5).split(':').map(Number);
 
-    // ===== Trigger Adzan: tepat di menit adzan (dalam 1 menit pertama) =====
+    // Adzan
     const adzanTime = new Date(now);
     adzanTime.setHours(h, m, 0, 0);
     const diffAdzan = now - adzanTime;
@@ -529,40 +644,56 @@ function checkTriggers(now) {
     if (diffAdzan >= 0 && diffAdzan < 60000 && !triggeredAdzan[keyAdzan]) {
       triggeredAdzan[keyAdzan] = true;
       beepAdzan();
-      console.log(`[BEep] Adzan ${namaIndo[p]}`);
     }
 
-    // ===== Trigger 1 menit sebelum iqomah (beep 2x) =====
+    // 1 menit sebelum iqomah
     const iqomahDate = getIqomahTime(p);
     if (!iqomahDate) continue;
-    const warnTime = new Date(iqomahDate.getTime() - 60000); // 1 menit sebelum
+    const warnTime = new Date(iqomahDate.getTime() - 60000);
     const diffWarn = now - warnTime;
     const keyWarn = `warn_${p}_${todayKey}`;
     if (diffWarn >= 0 && diffWarn < 60000 && !triggeredIqomahWarn[keyWarn]) {
       triggeredIqomahWarn[keyWarn] = true;
       beepPreIqomah();
-      console.log(`[Beep] 1 menit menuju iqomah ${namaIndo[p]}`);
     }
 
-    // ===== Trigger Iqomah: beep panjang + layar hitam =====
+    // Iqomah
     const diffIqomah = now - iqomahDate;
     const keyIqomah = `iqomah_${p}_${todayKey}`;
     if (diffIqomah >= 0 && diffIqomah < 60000 && !triggeredIqomahStart[keyIqomah]) {
       triggeredIqomahStart[keyIqomah] = true;
       beepIqomah();
-      console.log(`[Beep] Iqomah ${namaIndo[p]}`);
       startBlackout();
     }
+
+    // ===== Trigger ON/OFF AC =====
+    const hariIni = now.getDay(); // 0=Ahad, 1=Senin, ... 6=Sabtu
+    ['on', 'off'].forEach(mode => {
+      const input = document.querySelector(`.ac-input[data-day="${hariIni}"][data-mode="${mode}"]`);
+      if (!input) return;
+      const offsetMenit = parseInt(input.value) || 0;
+      const targetTime = new Date(adzanTime.getTime() + offsetMenit * 60000);
+      const diff = now - targetTime;
+      const key = `ac_${mode}_${p}_${todayKey}`;
+      if (!window['triggeredAC']) window['triggeredAC'] = {};
+      if (diff >= 0 && diff < 60000 && !window.triggeredAC[key]) {
+        window.triggeredAC[key] = true;
+        console.log(`[AC] ${mode.toUpperCase()} — ${namaIndo[p]} (${offsetMenit} menit dari adzan) — hari ${namaHari[hariIni]}`);
+        // Di sini nanti bisa ditambahkan panggilan fetch ke backend Tuya
+        // Contoh:
+        // fetch(`${PROXY_URL}?action=ac_${mode}`);
+      }
+    });
   }
 }
 
-// ====== Layar hitam selama 5 menit ======
+// ====== Layar hitam 5 menit ======
 function startBlackout() {
   document.body.classList.add('blackout');
   if (blackoutTimer) clearTimeout(blackoutTimer);
   blackoutTimer = setTimeout(() => {
     document.body.classList.remove('blackout');
-  }, 5 * 60 * 1000); // 5 menit
+  }, 5 * 60 * 1000);
 }
 
 // ====== Update Tampilan ======
@@ -575,7 +706,6 @@ function updateClock() {
   document.getElementById('date').textContent =
     `${namaHari[now.getDay()]}, ${now.getDate()} ${namaBulan[now.getMonth()]} ${now.getFullYear()}`;
 
-  // Cek pergantian hari
   const todayStr = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()}`;
   if (todayStr !== lastFetchDate && !document.hidden) {
     fetchPrayerTimes();
@@ -591,7 +721,6 @@ function updateClock() {
     const countdown = document.getElementById('countdown');
 
     if (next) {
-      // Hitung countdown
       const totalSec = Math.max(0, Math.floor((next.date - now) / 1000));
       const h = Math.floor(totalSec / 3600);
       const m = Math.floor((totalSec % 3600) / 60);
@@ -599,36 +728,28 @@ function updateClock() {
       countdown.textContent = `- ${pad(h)}:${pad(m)}:${pad(d)}`;
 
       if (next.type === 'adzan') {
-        // Menuju adzan — mode normal
         nextBox.classList.remove('qobla');
         nextLabel.textContent = 'Menuju Waktu Sholat';
         nextName.textContent = namaIndo[next.key];
-        // Highlight kolom
-        document.querySelectorAll('.jadwal-table [data-key]').forEach(el => {
-          el.classList.toggle('active', el.dataset.key === next.key);
-        });
       } else {
-        // Menuju iqomah — kalau sudah <= 1 menit, tampilkan mode qobla
         nextBox.classList.remove('qobla');
         nextLabel.textContent = 'Menuju Iqomah';
         nextName.textContent = namaIndo[next.key];
-
-        // Kalau sisa waktu <= 60 detik, ganti label ke mode qobla
         if (totalSec <= 60) {
           nextBox.classList.add('qobla');
           nextLabel.textContent = 'Menuju Iqomah';
           nextName.textContent = `STOP SHOLAT SUNAT QOBLA ${namaIndo[next.key].toUpperCase()}`;
         }
-
-        document.querySelectorAll('.jadwal-table [data-key]').forEach(el => {
-          el.classList.toggle('active', el.dataset.key === next.key);
-        });
       }
+
+      document.querySelectorAll('.jadwal-table [data-key]').forEach(el => {
+        el.classList.toggle('active', el.dataset.key === next.key);
+      });
     }
   }
 }
 
-// ====== Event saat kota diganti ======
+// ====== Ganti kota ======
 document.getElementById('citySelect').addEventListener('change', function() {
   currentCity = this.value;
   lastFetchDate = '';
@@ -636,6 +757,7 @@ document.getElementById('citySelect').addEventListener('change', function() {
   triggeredAdzan = {};
   triggeredIqomahWarn = {};
   triggeredIqomahStart = {};
+  window.triggeredAC = {};
   document.getElementById('nextName').textContent = 'Memuat...';
   document.querySelectorAll('.jadwal-table [data-key]').forEach(el => {
     el.classList.remove('active');
