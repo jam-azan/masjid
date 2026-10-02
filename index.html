@@ -592,8 +592,8 @@ const iqomahInput = {
 
 function pad(n){ return n.toString().padStart(2,'0'); }
 
-const AC_NAMES_DEFAULT = ['AC Imam','AC Makmum 1','AC Makmum 2','AC Makmum 3',
-                          'AC Serambi','AC TPQ','AC Kantor','AC Aula'];
+const AC_NAMES_DEFAULT = ['AC Imam', 'AC Depan Atas','AC Depan Kanan','AC Depan Kiri','AC Belakang Kanan',
+                          'AC Belakang Kiri','AC Putri Kanan','AC Putri Kiri'];
 function renderAcList() {
   const list = document.getElementById('acList');
   list.innerHTML = '';
