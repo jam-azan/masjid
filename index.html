@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Jam Adzan - Indonesia</title>
+<title>Jam Adzan - Masjid Al Himmah</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕌</text></svg>">
 
 <style>
@@ -21,7 +21,6 @@
     padding: 20px;
     transition: background 0.5s;
   }
-
   body.blackout { background: #000; }
   body.blackout .container { visibility: hidden; }
   body.blackout::after {
@@ -31,15 +30,8 @@
     background: #000;
     z-index: 9999;
   }
-
   .container { padding: 20px; width: 100%; max-width: 780px; }
-
-  h1 {
-    font-size: 1.3rem;
-    opacity: 0.8;
-    letter-spacing: 2px;
-    margin: 0 0 10px;
-  }
+  h1 { font-size: 1.3rem; opacity: 0.8; letter-spacing: 2px; margin: 0 0 10px; }
 
   .location {
     font-size: 0.9rem;
@@ -50,8 +42,8 @@
     justify-content: center;
     align-items: center;
     gap: 8px;
+    flex-wrap: wrap;
   }
-
   #citySelect {
     background: rgba(0, 255, 204, 0.15);
     color: #00ffcc;
@@ -72,12 +64,7 @@
     text-shadow: 0 0 20px #00ffcc;
     font-variant-numeric: tabular-nums;
   }
-
-  .date {
-    font-size: 0.95rem;
-    opacity: 0.7;
-    margin-bottom: 20px;
-  }
+  .date { font-size: 0.95rem; opacity: 0.7; margin-bottom: 20px; }
 
   .next {
     background: rgba(255,255,255,0.1);
@@ -96,17 +83,14 @@
     margin: 4px 0;
     min-height: 1.6rem;
   }
-  .countdown {
-    font-size: 1.1rem;
-    font-variant-numeric: tabular-nums;
-  }
+  .countdown { font-size: 1.1rem; font-variant-numeric: tabular-nums; }
 
   .next.qobla .next-label { color: #ffd54f; }
   .next.qobla .next-name { color: #ffd54f; font-size: 1.3rem; }
   .next.qobla .countdown { color: #ffd54f; }
 
-  /* ===== Tabel Umum ===== */
-  .jadwal-table {
+  /* ===== Tabel ===== */
+  .jadwal-table, .ac-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
@@ -118,18 +102,19 @@
     table-layout: fixed;
     margin-bottom: 20px;
   }
+  .ac-table { margin-bottom: 10px; }
 
-  .jadwal-table th,
-  .jadwal-table td {
+  .jadwal-table th, .jadwal-table td,
+  .ac-table th, .ac-table td {
     padding: 12px 3px;
     text-align: center;
     font-variant-numeric: tabular-nums;
     border-left: 1px solid rgba(255,255,255,0.08);
   }
-  .jadwal-table th:first-child,
-  .jadwal-table td:first-child { border-left: none; }
+  .jadwal-table th:first-child, .jadwal-table td:first-child,
+  .ac-table th:first-child, .ac-table td:first-child { border-left: none; }
 
-  .jadwal-table thead th {
+  .jadwal-table thead th, .ac-table thead th {
     background: rgba(0, 255, 204, 0.15);
     color: #00ffcc;
     font-size: 0.7rem;
@@ -139,7 +124,7 @@
     padding: 10px 2px;
   }
 
-  .jadwal-table tbody td {
+  .jadwal-table tbody td, .ac-table tbody td {
     font-size: 1rem;
     font-weight: 600;
     border-top: 1px solid rgba(255,255,255,0.08);
@@ -176,9 +161,7 @@
     color: #00ffcc;
     text-shadow: 0 0 12px rgba(0,255,204,0.6);
   }
-  .jadwal-table thead th.active {
-    background: rgba(0, 255, 204, 0.35);
-  }
+  .jadwal-table thead th.active { background: rgba(0, 255, 204, 0.35); }
 
   .jadwal-table .syuruq { color: #ffd54f; }
   .jadwal-table thead th[data-key="Sunrise"] {
@@ -186,8 +169,8 @@
     color: #ffd54f;
   }
 
-  /* ===== Tabel ON/OFF AC ===== */
-    .ac-table-title {
+  /* ===== Tabel AC ===== */
+  .ac-table-title {
     font-size: 0.85rem;
     color: #00ffcc;
     letter-spacing: 2px;
@@ -203,67 +186,31 @@
     margin: 0 0 10px;
     opacity: 0.65;
   }
-
-  .ac-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    background: rgba(255,255,255,0.06);
-    border-radius: 15px;
-    overflow: hidden;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
-    table-layout: fixed;
-    margin-bottom: 10px;
-  }
-
-  .ac-table th,
-  .ac-table td {
-    padding: 10px 2px;
-    text-align: center;
-    border-left: 1px solid rgba(255,255,255,0.08);
-    font-variant-numeric: tabular-nums;
-  }
-  .ac-table th:first-child,
-  .ac-table td:first-child { border-left: none; }
-
-  .ac-table thead th {
-    background: rgba(0, 255, 204, 0.15);
-    color: #00ffcc;
+  .ac-table thead th:first-child, .ac-table tbody th {
+    width: 42px;
+    padding: 8px 4px;
     font-size: 0.7rem;
-    letter-spacing: 0.6px;
-    font-weight: 600;
-    padding: 10px 2px;
-  }
-
-  .ac-table tbody th {
     background: rgba(255,255,255,0.05);
     color: #fff;
-    font-size: 0.75rem;
     font-weight: 600;
-    padding: 10px 4px;
-    text-align: left;
-    padding-left: 10px;
+    text-align: center;
+    padding-left: 4px;
   }
-
-  .ac-table tbody tr + tr th,
-  .ac-table tbody tr + tr td {
+  .ac-table tbody tr + tr th, .ac-table tbody tr + tr td {
     border-top: 1px solid rgba(255,255,255,0.08);
   }
-
   .ac-table tbody tr.row-on th { color: #69f0ae; }
   .ac-table tbody tr.row-off th { color: #ff8a80; }
-
   .ac-table input {
     width: 100%;
-    max-width: 48px;
+    max-width: 100%;
     background: rgba(255,255,255,0.1);
     color: #fff;
     border: 1px solid rgba(255,255,255,0.25);
     border-radius: 6px;
-    padding: 5px 3px;
+    padding: 4px 2px;
     text-align: center;
-    font-size: 0.85rem;
+    font-size: 0.8rem;
     font-weight: 600;
     font-family: inherit;
     outline: none;
@@ -278,6 +225,126 @@
     margin-bottom: 15px;
     line-height: 1.5;
   }
+
+  /* ===== Sync Panel ===== */
+  .sync-panel {
+    background: rgba(255,255,255,0.06);
+    border-radius: 15px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+    text-align: left;
+    border: 1px solid rgba(0,255,204,0.15);
+  }
+  .sync-panel h3 {
+    margin: 0 0 12px;
+    font-size: 0.85rem;
+    color: #00ffcc;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-align: center;
+  }
+  .sync-panel .field {
+    margin-bottom: 10px;
+  }
+  .sync-panel label {
+    display: block;
+    font-size: 0.72rem;
+    opacity: 0.75;
+    margin-bottom: 4px;
+    letter-spacing: 0.5px;
+  }
+  .sync-panel input[type="text"] {
+    width: 100%;
+    padding: 8px 12px;
+    background: rgba(0,0,0,0.3);
+    color: #00ffcc;
+    border: 1px solid rgba(0,255,204,0.3);
+    border-radius: 8px;
+    font-size: 0.8rem;
+    font-family: 'Courier New', monospace;
+    outline: none;
+  }
+  .sync-panel input[type="text"]:focus {
+    border-color: #00ffcc;
+    background: rgba(0,0,0,0.5);
+  }
+
+  .sync-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .sync-btn {
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: none;
+    font-size: 0.82rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+  }
+  .sync-btn-primary {
+    background: linear-gradient(135deg, #00c853, #00897b);
+    color: white;
+    box-shadow: 0 4px 12px rgba(0,200,83,0.3);
+  }
+  .sync-btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(0,200,83,0.45);
+  }
+  .sync-btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+  .sync-btn-secondary {
+    background: rgba(0,255,204,0.12);
+    color: #00ffcc;
+    border: 1px solid rgba(0,255,204,0.35);
+  }
+  .sync-btn-secondary:hover:not(:disabled) {
+    background: rgba(0,255,204,0.22);
+  }
+
+  .sync-status {
+    margin-top: 12px;
+    padding: 8px 12px;
+    border-radius: 8px;
+    font-size: 0.75rem;
+    line-height: 1.5;
+    text-align: center;
+    display: none;
+  }
+  .sync-status.show { display: block; }
+  .sync-status.info { background: rgba(0,255,204,0.1); color: #00ffcc; border: 1px solid rgba(0,255,204,0.3); }
+  .sync-status.success { background: rgba(0,200,83,0.15); color: #69f0ae; border: 1px solid rgba(0,200,83,0.4); }
+  .sync-status.error { background: rgba(244,67,54,0.15); color: #ff8a80; border: 1px solid rgba(244,67,54,0.4); }
+  .sync-status.loading { background: rgba(255,193,7,0.15); color: #ffd54f; border: 1px solid rgba(255,193,7,0.4); }
+
+  .sync-log {
+    margin-top: 10px;
+    font-size: 0.68rem;
+    font-family: 'Courier New', monospace;
+    color: rgba(255,255,255,0.5);
+    max-height: 90px;
+    overflow-y: auto;
+    padding: 8px 10px;
+    background: rgba(0,0,0,0.3);
+    border-radius: 8px;
+    text-align: left;
+    line-height: 1.5;
+    display: none;
+  }
+  .sync-log.show { display: block; }
+  .sync-log .log-line { padding: 1px 0; }
+  .sync-log .log-time { color: rgba(0,255,204,0.6); }
 
   .error-msg {
     font-size: 0.8rem;
@@ -302,54 +369,15 @@
   @media (max-width: 560px) {
     .clock { font-size: 2.3rem; }
     .next-name { font-size: 1.3rem; }
-    .jadwal-table thead th { font-size: 0.55rem; padding: 8px 1px; letter-spacing: 0; }
+    .jadwal-table thead th, .ac-table thead th { font-size: 0.55rem; padding: 8px 1px; letter-spacing: 0; }
     .jadwal-table tbody td { font-size: 0.82rem; padding: 10px 1px; }
     .jadwal-table tbody tr.iqomah-row td { font-size: 0.6rem; padding: 5px 1px; }
     .jadwal-table tbody tr.iqomah-row input { width: 32px; font-size: 0.6rem; }
-    .ac-table thead th { font-size: 0.55rem; padding: 8px 1px; letter-spacing: 0; }
-    .ac-table tbody th { font-size: 0.65rem; padding-left: 6px; }
-    .ac-table input { max-width: 36px; padding: 4px 2px; font-size: 0.7rem; }
+    .ac-table thead th:first-child, .ac-table tbody th { width: 32px; font-size: 0.6rem; padding: 6px 2px; }
+    .ac-table input { padding: 3px 1px; font-size: 0.7rem; }
+    .ac-table-subtitle { font-size: 0.62rem; }
+    .sync-actions { grid-template-columns: 1fr; }
   }
-
-  /* Kolom ON/OFF dipersempit, kolom hari dilebarkan */
-  .ac-table { table-layout: fixed; }
-  .ac-table thead th:first-child,
-  .ac-table tbody th {
-    width: 38px;              /* kolom ON/OFF sempit */
-    padding: 8px 4px;
-    font-size: 0.7rem;
-  }
-  .ac-table tbody th {
-    text-align: center;
-    padding-left: 4px;
-  }
-
-  /* Input lebih kompak */
-  .ac-table input {
-    max-width: 100%;
-    width: 100%;
-    padding: 4px 2px;
-    font-size: 0.8rem;
-  }
-
-  /* Mobile: makin kompak lagi */
-  @media (max-width: 560px) {
-    .ac-table thead th:first-child,
-    .ac-table tbody th {
-      width: 32px;
-      font-size: 0.6rem;
-      padding: 6px 2px;
-    }
-    .ac-table input {
-      padding: 3px 1px;
-      font-size: 0.7rem;
-    }
-    .ac-table-subtitle {
-      font-size: 0.62rem;
-    }
-  }
-
- 
 </style>
 </head>
 <body>
@@ -390,7 +418,7 @@
     <div class="countdown" id="countdown">-</div>
   </div>
 
-  <!-- ===== TABEL 1: Waktu Sholat ===== -->
+  <!-- ===== TABEL WAKTU SHOLAT ===== -->
   <table class="jadwal-table">
     <thead>
       <tr>
@@ -412,20 +440,20 @@
         <td data-key="Isha">-</td>
       </tr>
       <tr class="iqomah-row">
-        <td><input type="number" id="iqomahFajr" value="10" min="0" max="60" title="Menit iqomah Subuh"></td>
+        <td><input type="number" id="iqomahFajr" value="10" min="0" max="60"></td>
         <td>&lt; IQOMAH &gt;</td>
-        <td><input type="number" id="iqomahDhuhr" value="10" min="0" max="60" title="Menit iqomah Dzuhur"></td>
-        <td><input type="number" id="iqomahAsr" value="10" min="0" max="60" title="Menit iqomah Ashar"></td>
-        <td><input type="number" id="iqomahMaghrib" value="7" min="0" max="60" title="Menit iqomah Maghrib"></td>
-        <td><input type="number" id="iqomahIsha" value="10" min="0" max="60" title="Menit iqomah Isya"></td>
+        <td><input type="number" id="iqomahDhuhr" value="10" min="0" max="60"></td>
+        <td><input type="number" id="iqomahAsr" value="10" min="0" max="60"></td>
+        <td><input type="number" id="iqomahMaghrib" value="7" min="0" max="60"></td>
+        <td><input type="number" id="iqomahIsha" value="10" min="0" max="60"></td>
       </tr>
     </tbody>
   </table>
 
-  <!-- ===== TABEL 2: ON/OFF AC per Hari ===== -->
+  <!-- ===== TABEL ON/OFF AC ===== -->
   <h2 class="ac-table-title">⏱ Kontrol AC</h2>
   <h3 class="ac-table-subtitle">(menit dari adzan)</h3>
-    <table class="ac-table">
+  <table class="ac-table">
     <colgroup>
       <col class="col-label">
       <col><col><col><col><col><col><col>
@@ -469,18 +497,44 @@
     Contoh: <b>-5</b> artinya 5 menit sebelum adzan, <b>30</b> artinya 30 menit setelah adzan.
   </div>
 
+  <!-- ===== SYNC PANEL ===== -->
+  <div class="sync-panel">
+    <h3>⚙️ Sinkronisasi Timer ke AC (Tuya)</h3>
+
+    <div class="field">
+      <label>🔗 URL Google Apps Script (GAS)</label>
+      <input type="text" id="gasUrl" placeholder="https://script.google.com/macros/s/AKfyc.../exec">
+    </div>
+
+    <div class="sync-actions">
+      <button class="sync-btn sync-btn-primary" id="btnSyncNow" onclick="syncKeBackend()">
+        🔄 Sync Sekarang
+      </button>
+      <button class="sync-btn sync-btn-secondary" id="btnCekStatus" onclick="cekStatusSync()">
+        📅 Cek Status Sync Otomatis
+      </button>
+    </div>
+
+    <div class="sync-status" id="syncStatus"></div>
+    <div class="sync-log" id="syncLog"></div>
+  </div>
+
   <div class="error-msg" id="errorMsg"></div>
 
   <button class="test-btn" id="testBtn">🔊 Test Suara Beep</button>
 </div>
 
 <script>
-// ====== Konfigurasi ======
+// ============================================================
+// KONFIGURASI
+// ============================================================
 const COUNTRY = 'Indonesia';
 const METHOD = 20;
 let currentCity = 'Klaten';
 
-// ====== State ======
+// ============================================================
+// STATE
+// ============================================================
 let jadwal = {};
 let lastFetchDate = '';
 let triggeredAdzan = {};
@@ -492,32 +546,25 @@ const namaHari  = ["Minggu","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"];
 const namaBulan = ["Januari","Februari","Maret","April","Mei","Juni",
                    "Juli","Agustus","September","Oktober","November","Desember"];
 const namaIndo = {
-  Fajr: 'Subuh',
-  Sunrise: 'Terbit',
-  Dhuhr: 'Dzuhur',
-  Asr: 'Ashar',
-  Maghrib: 'Maghrib',
-  Isha: 'Isya'
+  Fajr: 'Subuh', Sunrise: 'Terbit', Dhuhr: 'Dzuhur',
+  Asr: 'Ashar', Maghrib: 'Maghrib', Isha: 'Isya'
 };
 const urutanSholat = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
 
 const iqomahInput = {
-  Fajr: 'iqomahFajr',
-  Dhuhr: 'iqomahDhuhr',
-  Asr: 'iqomahAsr',
-  Maghrib: 'iqomahMaghrib',
-  Isha: 'iqomahIsha'
+  Fajr: 'iqomahFajr', Dhuhr: 'iqomahDhuhr', Asr: 'iqomahAsr',
+  Maghrib: 'iqomahMaghrib', Isha: 'iqomahIsha'
 };
 
 function pad(n){ return n.toString().padStart(2,'0'); }
 
-// ====== Simpan & muat pengaturan iqomah dari localStorage ======
+// ============================================================
+// LOAD & SAVE SETTING (localStorage)
+// ============================================================
 function loadIqomahSettings() {
   for (const key in iqomahInput) {
     const saved = localStorage.getItem('iqomah_' + key);
-    if (saved !== null) {
-      document.getElementById(iqomahInput[key]).value = saved;
-    }
+    if (saved !== null) document.getElementById(iqomahInput[key]).value = saved;
   }
 }
 function saveIqomahSettings() {
@@ -530,7 +577,6 @@ for (const key in iqomahInput) {
 }
 loadIqomahSettings();
 
-// ====== Simpan & muat pengaturan ON/OFF AC ======
 function loadAcSettings() {
   document.querySelectorAll('.ac-input').forEach(input => {
     const key = `ac_${input.dataset.day}_${input.dataset.mode}`;
@@ -547,7 +593,24 @@ document.querySelectorAll('.ac-input').forEach(input => {
 });
 loadAcSettings();
 
-// ====== Suara Beep ======
+// Load GAS URL & city
+document.getElementById('gasUrl').value = localStorage.getItem('gas_url') || '';
+document.getElementById('gasUrl').addEventListener('change', function() {
+  localStorage.setItem('gas_url', this.value.trim());
+});
+
+const savedCity = localStorage.getItem('city');
+if (savedCity) {
+  currentCity = savedCity;
+  const sel = document.getElementById('citySelect');
+  for (let i = 0; i < sel.options.length; i++) {
+    if (sel.options[i].value === savedCity) { sel.selectedIndex = i; break; }
+  }
+}
+
+// ============================================================
+// SUARA BEEP
+// ============================================================
 let audioCtx = null;
 function getAudioCtx() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -574,13 +637,8 @@ function beepAdzan() {
   setTimeout(() => beep(880, 200), 350);
   setTimeout(() => beep(880, 200), 700);
 }
-function beepPreIqomah() {
-  beep(660, 200);
-  setTimeout(() => beep(660, 200), 350);
-}
-function beepIqomah() {
-  beep(440, 1500, 0.5);
-}
+function beepPreIqomah() { beep(660, 200); setTimeout(() => beep(660, 200), 350); }
+function beepIqomah() { beep(440, 1500, 0.5); }
 
 document.getElementById('testBtn').addEventListener('click', () => {
   getAudioCtx();
@@ -588,13 +646,12 @@ document.getElementById('testBtn').addEventListener('click', () => {
 });
 document.addEventListener('click', () => getAudioCtx(), { once: true });
 
-// ====== Fetch Jadwal dari Aladhan API ======
+// ============================================================
+// FETCH JADWAL DARI ALADHAN API
+// ============================================================
 async function fetchPrayerTimes() {
   const now = new Date();
-  const dd = pad(now.getDate());
-  const mm = pad(now.getMonth() + 1);
-  const yyyy = now.getFullYear();
-  const dateStr = `${dd}-${mm}-${yyyy}`;
+  const dateStr = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()}`;
 
   try {
     const url = `https://api.aladhan.com/v1/timingsByCity/${dateStr}?city=${encodeURIComponent(currentCity)}&country=${COUNTRY}&method=${METHOD}`;
@@ -607,6 +664,7 @@ async function fetchPrayerTimes() {
       triggeredAdzan = {};
       triggeredIqomahWarn = {};
       triggeredIqomahStart = {};
+      window.triggeredAC = {};
       document.getElementById('errorMsg').textContent = '';
       renderJadwal();
     } else {
@@ -625,7 +683,9 @@ function renderJadwal() {
   });
 }
 
-// ====== Dapatkan waktu iqomah ======
+// ============================================================
+// HITUNG WAKTU IQOMAH
+// ============================================================
 function getIqomahTime(prayerKey) {
   const timeStr = jadwal[prayerKey];
   if (!timeStr) return null;
@@ -637,10 +697,11 @@ function getIqomahTime(prayerKey) {
   return iqomah;
 }
 
-// ====== Cari event berikutnya ======
+// ============================================================
+// CARI EVENT BERIKUTNYA
+// ============================================================
 function getNextEvent(now) {
-  let next = null;
-  let minDiff = Infinity;
+  let next = null, minDiff = Infinity;
 
   for (const p of urutanSholat) {
     const adzanStr = jadwal[p];
@@ -658,7 +719,6 @@ function getNextEvent(now) {
       minDiff = diffAdzan;
       next = { type: 'adzan', key: p, date: adzanDate };
     }
-
     const diffIqomah = iqomahDate - now;
     if (diffIqomah > 0 && diffIqomah < minDiff) {
       minDiff = diffIqomah;
@@ -679,7 +739,9 @@ function getNextEvent(now) {
   return next;
 }
 
-// ====== Trigger Beep & Blackout ======
+// ============================================================
+// TRIGGER BEEP, BLACKOUT, DAN AC
+// ============================================================
 function checkTriggers(now) {
   const todayKey = `${pad(now.getDate())}-${pad(now.getMonth()+1)}-${now.getFullYear()}`;
 
@@ -688,7 +750,6 @@ function checkTriggers(now) {
     if (!adzanStr) continue;
     const [h, m] = adzanStr.slice(0, 5).split(':').map(Number);
 
-    // Adzan
     const adzanTime = new Date(now);
     adzanTime.setHours(h, m, 0, 0);
     const diffAdzan = now - adzanTime;
@@ -698,9 +759,9 @@ function checkTriggers(now) {
       beepAdzan();
     }
 
-    // 1 menit sebelum iqomah
     const iqomahDate = getIqomahTime(p);
     if (!iqomahDate) continue;
+
     const warnTime = new Date(iqomahDate.getTime() - 60000);
     const diffWarn = now - warnTime;
     const keyWarn = `warn_${p}_${todayKey}`;
@@ -709,7 +770,6 @@ function checkTriggers(now) {
       beepPreIqomah();
     }
 
-    // Iqomah
     const diffIqomah = now - iqomahDate;
     const keyIqomah = `iqomah_${p}_${todayKey}`;
     if (diffIqomah >= 0 && diffIqomah < 60000 && !triggeredIqomahStart[keyIqomah]) {
@@ -718,8 +778,8 @@ function checkTriggers(now) {
       startBlackout();
     }
 
-    // ===== Trigger ON/OFF AC =====
-    const hariIni = now.getDay(); // 0=Ahad, 1=Senin, ... 6=Sabtu
+    // Local AC trigger (log saja, tugas asli ada di backend Tuya)
+    const hariIni = now.getDay();
     ['on', 'off'].forEach(mode => {
       const input = document.querySelector(`.ac-input[data-day="${hariIni}"][data-mode="${mode}"]`);
       if (!input) return;
@@ -727,19 +787,14 @@ function checkTriggers(now) {
       const targetTime = new Date(adzanTime.getTime() + offsetMenit * 60000);
       const diff = now - targetTime;
       const key = `ac_${mode}_${p}_${todayKey}`;
-      if (!window['triggeredAC']) window['triggeredAC'] = {};
       if (diff >= 0 && diff < 60000 && !window.triggeredAC[key]) {
         window.triggeredAC[key] = true;
-        console.log(`[AC] ${mode.toUpperCase()} — ${namaIndo[p]} (${offsetMenit} menit dari adzan) — hari ${namaHari[hariIni]}`);
-        // Di sini nanti bisa ditambahkan panggilan fetch ke backend Tuya
-        // Contoh:
-        // fetch(`${PROXY_URL}?action=ac_${mode}`);
+        addLog(`[AC-LOCAL] ${mode.toUpperCase()} — ${namaIndo[p]} (${offsetMenit} mnt dari adzan)`);
       }
     });
   }
 }
 
-// ====== Layar hitam 5 menit ======
 function startBlackout() {
   document.body.classList.add('blackout');
   if (blackoutTimer) clearTimeout(blackoutTimer);
@@ -748,7 +803,9 @@ function startBlackout() {
   }, 5 * 60 * 1000);
 }
 
-// ====== Update Tampilan ======
+// ============================================================
+// UPDATE TAMPILAN
+// ============================================================
 function updateClock() {
   const now = new Date();
 
@@ -759,13 +816,10 @@ function updateClock() {
     `${namaHari[now.getDay()]}, ${now.getDate()} ${namaBulan[now.getMonth()]} ${now.getFullYear()}`;
 
   const todayStr = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()}`;
-  if (todayStr !== lastFetchDate && !document.hidden) {
-    fetchPrayerTimes();
-  }
+  if (todayStr !== lastFetchDate && !document.hidden) fetchPrayerTimes();
 
   if (jadwal.Fajr) {
     checkTriggers(now);
-
     const next = getNextEvent(now);
     const nextBox = document.getElementById('nextBox');
     const nextLabel = document.getElementById('nextLabel');
@@ -801,9 +855,137 @@ function updateClock() {
   }
 }
 
-// ====== Ganti kota ======
+// ============================================================
+// SYNC KE BACKEND (OPSI 2 & 3)
+// ============================================================
+function addLog(msg) {
+  const logEl = document.getElementById('syncLog');
+  logEl.classList.add('show');
+  const t = new Date();
+  const timeStr = `${pad(t.getHours())}:${pad(t.getMinutes())}:${pad(t.getSeconds())}`;
+  const line = document.createElement('div');
+  line.className = 'log-line';
+  line.innerHTML = `<span class="log-time">[${timeStr}]</span> ${msg}`;
+  logEl.appendChild(line);
+  logEl.scrollTop = logEl.scrollHeight;
+}
+
+function setStatus(type, msg) {
+  const el = document.getElementById('syncStatus');
+  el.className = 'sync-status show ' + type;
+  el.innerHTML = msg;
+}
+
+async function syncKeBackend() {
+  const gasUrl = document.getElementById('gasUrl').value.trim();
+  if (!gasUrl || !gasUrl.startsWith('https://script.google.com/')) {
+    setStatus('error', '❌ Isi URL GAS dulu di atas (dari file GAS yang sudah di-deploy)');
+    return;
+  }
+
+  if (!jadwal.Fajr) {
+    setStatus('error', '❌ Jadwal sholat belum dimuat. Tunggu sebentar lalu coba lagi.');
+    return;
+  }
+
+  // Kumpulkan payload
+  const payload = {
+    action: 'syncTimer',
+    city: currentCity,
+    method: METHOD,
+    country: COUNTRY,
+    iqomah: {},
+    acOn: {},
+    acOff: {},
+    clientTime: new Date().toISOString()
+  };
+
+  for (const key in iqomahInput) {
+    payload.iqomah[key] = parseInt(document.getElementById(iqomahInput[key]).value) || 0;
+  }
+  for (let d = 0; d < 7; d++) {
+    const onInput = document.querySelector(`.ac-input[data-day="${d}"][data-mode="on"]`);
+    const offInput = document.querySelector(`.ac-input[data-day="${d}"][data-mode="off"]`);
+    payload.acOn[d] = parseInt(onInput.value) || 0;
+    payload.acOff[d] = parseInt(offInput.value) || 0;
+  }
+
+  const btn = document.getElementById('btnSyncNow');
+  btn.disabled = true;
+  btn.textContent = '⏳ Mengirim...';
+  setStatus('loading', '⏳ Mengirim data ke server...');
+  addLog('Mulai sync untuk kota: ' + currentCity);
+
+  try {
+    const res = await fetch(gasUrl, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+
+    // mode no-cors: kita tidak bisa baca response, tapi request terkirim
+    // Konfirmasi dengan cek status berikutnya
+    setStatus('success',
+      '✅ Perintah sync terkirim!<br>' +
+      '📅 Server akan memproses dalam beberapa detik.<br>' +
+      'Klik <b>Cek Status Sync Otomatis</b> untuk verifikasi.'
+    );
+    addLog('Sync terkirim. Menunggu konfirmasi server...');
+
+    setTimeout(() => cekStatusSync(true), 4000);
+
+  } catch (e) {
+    setStatus('error', '❌ Gagal kirim: ' + e.message);
+    addLog('ERROR: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '🔄 Sync Sekarang';
+  }
+}
+
+async function cekStatusSync(silent) {
+  const gasUrl = document.getElementById('gasUrl').value.trim();
+  if (!gasUrl) {
+    if (!silent) setStatus('error', '❌ Isi URL GAS dulu');
+    return;
+  }
+
+  if (!silent) setStatus('loading', '⏳ Mengambil status...');
+  addLog('Cek status sync...');
+
+  try {
+    const url = gasUrl + '?action=getStatus&city=' + encodeURIComponent(currentCity);
+    const res = await fetch(url);
+    const data = await res.json();
+
+    if (data.success) {
+      const info = data.data || {};
+      let msg = '📅 <b>Status Sync</b><br>';
+      msg += 'Kota: <b>' + (info.city || '-') + '</b><br>';
+      msg += 'Terakhir sync: <b>' + (info.lastSync || 'Belum pernah') + '</b><br>';
+      msg += 'Sync otomatis: <b>' + (info.cronStatus || 'Belum aktif') + '</b><br>';
+      if (info.lastResult) {
+        msg += 'Hasil terakhir: ' + info.lastResult;
+      }
+      setStatus('info', msg);
+      addLog('Status OK. Terakhir: ' + (info.lastSync || 'Belum ada'));
+    } else {
+      setStatus('error', '❌ ' + (data.error || 'Gagal ambil status'));
+      addLog('ERROR: ' + (data.error || 'unknown'));
+    }
+  } catch (e) {
+    setStatus('error', '❌ Gagal cek status: ' + e.message);
+    addLog('ERROR: ' + e.message);
+  }
+}
+
+// ============================================================
+// GANTI KOTA
+// ============================================================
 document.getElementById('citySelect').addEventListener('change', function() {
   currentCity = this.value;
+  localStorage.setItem('city', currentCity);
   lastFetchDate = '';
   jadwal = {};
   triggeredAdzan = {};
@@ -817,7 +999,9 @@ document.getElementById('citySelect').addEventListener('change', function() {
   fetchPrayerTimes();
 });
 
-// ====== Inisialisasi ======
+// ============================================================
+// INISIALISASI
+// ============================================================
 fetchPrayerTimes();
 setInterval(updateClock, 1000);
 updateClock();
