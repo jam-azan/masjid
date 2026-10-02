@@ -15,7 +15,7 @@
     color: #fff;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
     min-height: 100vh;
     text-align: center;
     padding: 20px;
@@ -30,7 +30,7 @@
     background: #000;
     z-index: 9999;
   }
-  .container { padding: 20px; width: 100%; max-width: 780px; }
+  .container { padding: 20px; width: 100%; max-width: 820px; }
   h1 { font-size: 1.3rem; opacity: 0.8; letter-spacing: 2px; margin: 0 0 10px; }
 
   .location {
@@ -84,55 +84,109 @@
     min-height: 1.6rem;
   }
   .countdown { font-size: 1.1rem; font-variant-numeric: tabular-nums; }
-
   .next.qobla .next-label { color: #ffd54f; }
   .next.qobla .next-name { color: #ffd54f; font-size: 1.3rem; }
   .next.qobla .countdown { color: #ffd54f; }
 
-  /* ===== Tabel ===== */
-  .jadwal-table, .ac-table {
+  /* ===== Section ===== */
+  .section {
+    background: rgba(255,255,255,0.06);
+    border-radius: 15px;
+    padding: 15px 20px;
+    margin-bottom: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+    border: 1px solid rgba(255,255,255,0.08);
+    text-align: left;
+  }
+  .section-title {
+    font-size: 0.85rem;
+    color: #00ffcc;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 0 0 12px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title .sub {
+    font-size: 0.65rem;
+    opacity: 0.6;
+    font-weight: normal;
+    letter-spacing: 0.5px;
+    text-transform: none;
+  }
+
+  .field {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .field label {
+    font-size: 0.78rem;
+    opacity: 0.85;
+    min-width: 110px;
+  }
+  .field input[type="number"],
+  .field input[type="text"],
+  .field input[type="time"] {
+    background: rgba(0,0,0,0.3);
+    color: #00ffcc;
+    border: 1px solid rgba(0,255,204,0.3);
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    outline: none;
+    width: 100px;
+  }
+  .field input[type="text"] { width: 100%; max-width: 380px; font-family: 'Courier New', monospace; font-size: 0.78rem; }
+  .field input:focus { border-color: #00ffcc; background: rgba(0,0,0,0.5); }
+  .field .hint {
+    font-size: 0.7rem;
+    opacity: 0.55;
+    font-style: italic;
+  }
+
+  /* ===== Tabel Jadwal Sholat ===== */
+  .jadwal-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    background: rgba(255,255,255,0.06);
-    border-radius: 15px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 12px;
     overflow: hidden;
-    backdrop-filter: blur(10px);
-    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
     table-layout: fixed;
-    margin-bottom: 20px;
+    margin-top: 5px;
   }
-  .ac-table { margin-bottom: 10px; }
-
-  .jadwal-table th, .jadwal-table td,
-  .ac-table th, .ac-table td {
-    padding: 12px 3px;
+  .jadwal-table th, .jadwal-table td {
+    padding: 10px 3px;
     text-align: center;
     font-variant-numeric: tabular-nums;
     border-left: 1px solid rgba(255,255,255,0.08);
   }
-  .jadwal-table th:first-child, .jadwal-table td:first-child,
-  .ac-table th:first-child, .ac-table td:first-child { border-left: none; }
+  .jadwal-table th:first-child, .jadwal-table td:first-child { border-left: none; }
 
-  .jadwal-table thead th, .ac-table thead th {
+  .jadwal-table thead th {
     background: rgba(0, 255, 204, 0.15);
     color: #00ffcc;
     font-size: 0.7rem;
     letter-spacing: 0.6px;
     text-transform: uppercase;
     font-weight: 600;
-    padding: 10px 2px;
+    padding: 9px 2px;
   }
-
-  .jadwal-table tbody td, .ac-table tbody td {
+  .jadwal-table tbody td {
     font-size: 1rem;
     font-weight: 600;
     border-top: 1px solid rgba(255,255,255,0.08);
     transition: background 0.3s;
   }
-
   .jadwal-table tbody tr.iqomah-row td {
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     font-weight: normal;
     color: #ffd54f;
     padding: 6px 2px;
@@ -155,129 +209,56 @@
     border-color: #ffd54f;
     background: rgba(255, 213, 79, 0.15);
   }
-
   .jadwal-table .active {
     background: linear-gradient(180deg, rgba(0,255,204,0.25), rgba(0,255,204,0.05));
     color: #00ffcc;
     text-shadow: 0 0 12px rgba(0,255,204,0.6);
   }
   .jadwal-table thead th.active { background: rgba(0, 255, 204, 0.35); }
-
   .jadwal-table .syuruq { color: #ffd54f; }
-  .jadwal-table thead th[data-key="Sunrise"] {
-    background: rgba(255, 213, 79, 0.15);
-    color: #ffd54f;
-  }
+  .jadwal-table thead th[data-key="Sunrise"] { background: rgba(255, 213, 79, 0.15); color: #ffd54f; }
 
-  /* ===== Tabel AC ===== */
-  .ac-table-title {
-    font-size: 0.85rem;
-    color: #00ffcc;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    margin: 0 0 4px;
-    opacity: 0.9;
+  /* ===== Daftar AC ===== */
+  .ac-list { display: grid; grid-template-columns: 1fr; gap: 8px; }
+  .ac-item {
+    display: grid;
+    grid-template-columns: 25px 1fr 2fr;
+    gap: 10px;
+    align-items: center;
   }
-  .ac-table-subtitle {
-    font-size: 0.72rem;
-    color: #00ffcc;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    margin: 0 0 10px;
-    opacity: 0.65;
-  }
-  .ac-table thead th:first-child, .ac-table tbody th {
-    width: 42px;
-    padding: 8px 4px;
-    font-size: 0.7rem;
-    background: rgba(255,255,255,0.05);
-    color: #fff;
+  .ac-num {
+    font-size: 0.78rem;
+    opacity: 0.7;
+    text-align: right;
     font-weight: 600;
-    text-align: center;
-    padding-left: 4px;
   }
-  .ac-table tbody tr + tr th, .ac-table tbody tr + tr td {
-    border-top: 1px solid rgba(255,255,255,0.08);
-  }
-  .ac-table tbody tr.row-on th { color: #69f0ae; }
-  .ac-table tbody tr.row-off th { color: #ff8a80; }
-  .ac-table input {
-    width: 100%;
-    max-width: 100%;
-    background: rgba(255,255,255,0.1);
-    color: #fff;
-    border: 1px solid rgba(255,255,255,0.25);
-    border-radius: 6px;
-    padding: 4px 2px;
-    text-align: center;
-    font-size: 0.8rem;
-    font-weight: 600;
-    font-family: inherit;
-    outline: none;
-  }
-  .ac-table input:focus { border-color: #00ffcc; background: rgba(0,255,204,0.12); }
-  .ac-table tr.row-on input { color: #69f0ae; border-color: rgba(105,240,174,0.4); }
-  .ac-table tr.row-off input { color: #ff8a80; border-color: rgba(255,138,128,0.4); }
-
-  .ac-hint {
-    font-size: 0.7rem;
-    opacity: 0.6;
-    margin-bottom: 15px;
-    line-height: 1.5;
-  }
-
-  /* ===== Sync Panel ===== */
-  .sync-panel {
-    background: rgba(255,255,255,0.06);
-    border-radius: 15px;
-    padding: 15px 20px;
-    margin-bottom: 20px;
-    backdrop-filter: blur(10px);
-    text-align: left;
-    border: 1px solid rgba(0,255,204,0.15);
-  }
-  .sync-panel h3 {
-    margin: 0 0 12px;
-    font-size: 0.85rem;
-    color: #00ffcc;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    text-align: center;
-  }
-  .sync-panel .field {
-    margin-bottom: 10px;
-  }
-  .sync-panel label {
-    display: block;
-    font-size: 0.72rem;
-    opacity: 0.75;
-    margin-bottom: 4px;
-    letter-spacing: 0.5px;
-  }
-  .sync-panel input[type="text"] {
-    width: 100%;
-    padding: 8px 12px;
+  .ac-name, .ac-id {
     background: rgba(0,0,0,0.3);
     color: #00ffcc;
-    border: 1px solid rgba(0,255,204,0.3);
+    border: 1px solid rgba(0,255,204,0.25);
     border-radius: 8px;
-    font-size: 0.8rem;
-    font-family: 'Courier New', monospace;
+    padding: 7px 10px;
+    font-size: 0.78rem;
+    font-family: inherit;
     outline: none;
+    width: 100%;
   }
-  .sync-panel input[type="text"]:focus {
-    border-color: #00ffcc;
-    background: rgba(0,0,0,0.5);
+  .ac-id {
+    font-family: 'Courier New', monospace;
+    color: #aaa;
+    font-size: 0.72rem;
   }
+  .ac-name:focus, .ac-id:focus { border-color: #00ffcc; background: rgba(0,0,0,0.5); }
 
-  .sync-actions {
+  /* ===== Buttons ===== */
+  .btn-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 10px;
     margin-top: 12px;
   }
-  .sync-btn {
-    padding: 10px 14px;
+  .btn {
+    padding: 11px 14px;
     border-radius: 10px;
     border: none;
     font-size: 0.82rem;
@@ -290,61 +271,47 @@
     justify-content: center;
     gap: 6px;
   }
-  .sync-btn-primary {
+  .btn-primary {
     background: linear-gradient(135deg, #00c853, #00897b);
     color: white;
     box-shadow: 0 4px 12px rgba(0,200,83,0.3);
   }
-  .sync-btn-primary:hover:not(:disabled) {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 18px rgba(0,200,83,0.45);
-  }
-  .sync-btn-primary:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-    transform: none !important;
-  }
-  .sync-btn-secondary {
+  .btn-primary:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,200,83,0.45); }
+  .btn-primary:disabled { opacity: 0.5; cursor: not-allowed; transform: none !important; }
+  .btn-secondary {
     background: rgba(0,255,204,0.12);
     color: #00ffcc;
     border: 1px solid rgba(0,255,204,0.35);
   }
-  .sync-btn-secondary:hover:not(:disabled) {
-    background: rgba(0,255,204,0.22);
+  .btn-secondary:hover:not(:disabled) { background: rgba(0,255,204,0.22); }
+  .btn-warn {
+    background: rgba(255,152,0,0.12);
+    color: #ffb74d;
+    border: 1px solid rgba(255,152,0,0.35);
   }
+  .btn-warn:hover:not(:disabled) { background: rgba(255,152,0,0.22); }
+  .btn-danger {
+    background: rgba(244,67,54,0.12);
+    color: #ff8a80;
+    border: 1px solid rgba(244,67,54,0.4);
+  }
+  .btn-danger:hover:not(:disabled) { background: rgba(244,67,54,0.22); }
 
-  .sync-status {
+  .status-box {
     margin-top: 12px;
-    padding: 8px 12px;
+    padding: 10px 14px;
     border-radius: 8px;
     font-size: 0.75rem;
     line-height: 1.5;
     text-align: center;
     display: none;
+    white-space: pre-line;
   }
-  .sync-status.show { display: block; }
-  .sync-status.info { background: rgba(0,255,204,0.1); color: #00ffcc; border: 1px solid rgba(0,255,204,0.3); }
-  .sync-status.success { background: rgba(0,200,83,0.15); color: #69f0ae; border: 1px solid rgba(0,200,83,0.4); }
-  .sync-status.error { background: rgba(244,67,54,0.15); color: #ff8a80; border: 1px solid rgba(244,67,54,0.4); }
-  .sync-status.loading { background: rgba(255,193,7,0.15); color: #ffd54f; border: 1px solid rgba(255,193,7,0.4); }
-
-  .sync-log {
-    margin-top: 10px;
-    font-size: 0.68rem;
-    font-family: 'Courier New', monospace;
-    color: rgba(255,255,255,0.5);
-    max-height: 90px;
-    overflow-y: auto;
-    padding: 8px 10px;
-    background: rgba(0,0,0,0.3);
-    border-radius: 8px;
-    text-align: left;
-    line-height: 1.5;
-    display: none;
-  }
-  .sync-log.show { display: block; }
-  .sync-log .log-line { padding: 1px 0; }
-  .sync-log .log-time { color: rgba(0,255,204,0.6); }
+  .status-box.show { display: block; }
+  .status-box.info    { background: rgba(0,255,204,0.1);  color: #00ffcc; border: 1px solid rgba(0,255,204,0.3); }
+  .status-box.success { background: rgba(0,200,83,0.15);  color: #69f0ae; border: 1px solid rgba(0,200,83,0.4); }
+  .status-box.error   { background: rgba(244,67,54,0.15); color: #ff8a80; border: 1px solid rgba(244,67,54,0.4); }
+  .status-box.loading { background: rgba(255,193,7,0.15); color: #ffd54f; border: 1px solid rgba(255,193,7,0.4); }
 
   .error-msg {
     font-size: 0.8rem;
@@ -353,30 +320,34 @@
     min-height: 18px;
   }
 
-  .test-btn {
-    margin-top: 15px;
-    background: rgba(0, 255, 204, 0.15);
-    color: #00ffcc;
-    border: 1px solid rgba(0, 255, 204, 0.4);
-    border-radius: 8px;
-    padding: 6px 14px;
-    font-size: 0.8rem;
-    cursor: pointer;
-    font-family: inherit;
+  .checkbox-field {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.85rem;
+    margin-bottom: 12px;
   }
-  .test-btn:hover { background: rgba(0, 255, 204, 0.25); }
+  .checkbox-field input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #00ffcc;
+    cursor: pointer;
+  }
+  .checkbox-field label { cursor: pointer; }
 
   @media (max-width: 560px) {
     .clock { font-size: 2.3rem; }
     .next-name { font-size: 1.3rem; }
-    .jadwal-table thead th, .ac-table thead th { font-size: 0.55rem; padding: 8px 1px; letter-spacing: 0; }
-    .jadwal-table tbody td { font-size: 0.82rem; padding: 10px 1px; }
+    .jadwal-table thead th { font-size: 0.55rem; padding: 7px 1px; letter-spacing: 0; }
+    .jadwal-table tbody td { font-size: 0.85rem; padding: 9px 1px; }
     .jadwal-table tbody tr.iqomah-row td { font-size: 0.6rem; padding: 5px 1px; }
-    .jadwal-table tbody tr.iqomah-row input { width: 32px; font-size: 0.6rem; }
-    .ac-table thead th:first-child, .ac-table tbody th { width: 32px; font-size: 0.6rem; padding: 6px 2px; }
-    .ac-table input { padding: 3px 1px; font-size: 0.7rem; }
-    .ac-table-subtitle { font-size: 0.62rem; }
-    .sync-actions { grid-template-columns: 1fr; }
+    .jadwal-table tbody tr.iqomah-row input { width: 32px; font-size: 0.65rem; }
+    .btn-row { grid-template-columns: 1fr; }
+    .field { flex-direction: column; align-items: stretch; }
+    .field label { min-width: auto; }
+    .field input[type="number"], .field input[type="time"] { width: 100%; }
+    .ac-item { grid-template-columns: 25px 1fr; }
+    .ac-item .ac-id { grid-column: 2; margin-top: -4px; }
   }
 </style>
 </head>
@@ -418,110 +389,108 @@
     <div class="countdown" id="countdown">-</div>
   </div>
 
-  <!-- ===== TABEL WAKTU SHOLAT ===== -->
-  <table class="jadwal-table">
-    <thead>
-      <tr>
-        <th data-key="Fajr">Subuh</th>
-        <th data-key="Sunrise">Terbit</th>
-        <th data-key="Dhuhr">Dzuhur</th>
-        <th data-key="Asr">Ashar</th>
-        <th data-key="Maghrib">Maghrib</th>
-        <th data-key="Isha">Isya</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td data-key="Fajr">-</td>
-        <td data-key="Sunrise" class="syuruq">-</td>
-        <td data-key="Dhuhr">-</td>
-        <td data-key="Asr">-</td>
-        <td data-key="Maghrib">-</td>
-        <td data-key="Isha">-</td>
-      </tr>
-      <tr class="iqomah-row">
-        <td><input type="number" id="iqomahFajr" value="10" min="0" max="60"></td>
-        <td>&lt; IQOMAH &gt;</td>
-        <td><input type="number" id="iqomahDhuhr" value="10" min="0" max="60"></td>
-        <td><input type="number" id="iqomahAsr" value="10" min="0" max="60"></td>
-        <td><input type="number" id="iqomahMaghrib" value="7" min="0" max="60"></td>
-        <td><input type="number" id="iqomahIsha" value="10" min="0" max="60"></td>
-      </tr>
-    </tbody>
-  </table>
-
-  <!-- ===== TABEL ON/OFF AC ===== -->
-  <h2 class="ac-table-title">⏱ Kontrol AC</h2>
-  <h3 class="ac-table-subtitle">(menit dari adzan)</h3>
-  <table class="ac-table">
-    <colgroup>
-      <col class="col-label">
-      <col><col><col><col><col><col><col>
-    </colgroup>
-    <thead>
-      <tr>
-        <th></th>
-        <th>AHAD</th>
-        <th>SENIN</th>
-        <th>SELASA</th>
-        <th>RABU</th>
-        <th>KAMIS</th>
-        <th>JUMAT</th>
-        <th>SABTU</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr class="row-on">
-        <th>ON</th>
-        <td><input type="number" class="ac-input" data-day="0" data-mode="on" value="-5"></td>
-        <td><input type="number" class="ac-input" data-day="1" data-mode="on" value="-5"></td>
-        <td><input type="number" class="ac-input" data-day="2" data-mode="on" value="-5"></td>
-        <td><input type="number" class="ac-input" data-day="3" data-mode="on" value="-5"></td>
-        <td><input type="number" class="ac-input" data-day="4" data-mode="on" value="-5"></td>
-        <td><input type="number" class="ac-input" data-day="5" data-mode="on" value="-5"></td>
-        <td><input type="number" class="ac-input" data-day="6" data-mode="on" value="-5"></td>
-      </tr>
-      <tr class="row-off">
-        <th>OFF</th>
-        <td><input type="number" class="ac-input" data-day="0" data-mode="off" value="30"></td>
-        <td><input type="number" class="ac-input" data-day="1" data-mode="off" value="30"></td>
-        <td><input type="number" class="ac-input" data-day="2" data-mode="off" value="30"></td>
-        <td><input type="number" class="ac-input" data-day="3" data-mode="off" value="30"></td>
-        <td><input type="number" class="ac-input" data-day="4" data-mode="off" value="30"></td>
-        <td><input type="number" class="ac-input" data-day="5" data-mode="off" value="30"></td>
-        <td><input type="number" class="ac-input" data-day="6" data-mode="off" value="30"></td>
-      </tr>
-    </tbody>
-  </table>
-  <div class="ac-hint">
-    Contoh: <b>-5</b> artinya 5 menit sebelum adzan, <b>30</b> artinya 30 menit setelah adzan.
+  <!-- ===== JADWAL SHOLAT ===== -->
+  <div class="section">
+    <div class="section-title">🕌 Jadwal Sholat Hari Ini</div>
+    <table class="jadwal-table">
+      <thead>
+        <tr>
+          <th data-key="Fajr">Subuh</th>
+          <th data-key="Sunrise">Terbit</th>
+          <th data-key="Dhuhr">Dzuhur</th>
+          <th data-key="Asr">Ashar</th>
+          <th data-key="Maghrib">Maghrib</th>
+          <th data-key="Isha">Isya</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td data-key="Fajr">-</td>
+          <td data-key="Sunrise" class="syuruq">-</td>
+          <td data-key="Dhuhr">-</td>
+          <td data-key="Asr">-</td>
+          <td data-key="Maghrib">-</td>
+          <td data-key="Isha">-</td>
+        </tr>
+        <tr class="iqomah-row">
+          <td><input type="number" id="iqomahFajr" value="10" min="0" max="60"> mnt</td>
+          <td>&lt; IQOMAH &gt;</td>
+          <td><input type="number" id="iqomahDhuhr" value="8" min="0" max="60"> mnt</td>
+          <td><input type="number" id="iqomahAsr" value="8" min="0" max="60"> mnt</td>
+          <td><input type="number" id="iqomahMaghrib" value="10" min="0" max="60"> mnt</td>
+          <td><input type="number" id="iqomahIsha" value="10" min="0" max="60"> mnt</td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
-  <!-- ===== SYNC PANEL ===== -->
-  <div class="sync-panel">
-    <h3>⚙️ Sinkronisasi Timer ke AC (Tuya)</h3>
-
+  <!-- ===== OFFSET HARI BIASA ===== -->
+  <div class="section">
+    <div class="section-title">⏱️ Offset AC — Hari Biasa <span class="sub">(Senin-Kamis, Sabtu, Ahad)</span></div>
     <div class="field">
-      <label>🔗 URL Google Apps Script (GAS)</label>
+      <label>ON (menit dari adzan)</label>
+      <input type="number" id="offsetOnWeekday" value="-15" min="-60" max="60">
+      <span class="hint">-15 = 15 menit sebelum adzan</span>
+    </div>
+    <div class="field">
+      <label>OFF (menit dari adzan)</label>
+      <input type="number" id="offsetOffWeekday" value="40" min="-60" max="120">
+      <span class="hint">+40 = 40 menit setelah adzan</span>
+    </div>
+    <div class="field">
+      <label>Jeda antar AC (detik)</label>
+      <input type="number" id="jedaAC" value="15" min="5" max="120">
+      <span class="hint">Jeda saat 8 AC nyala berurutan</span>
+    </div>
+  </div>
+
+  <!-- ===== JUMAT ===== -->
+  <div class="section">
+    <div class="section-title">⏱️ Hari Jumat <span class="sub">(Jam manual)</span></div>
+    <div class="checkbox-field">
+      <input type="checkbox" id="jumatEnabled" checked>
+      <label for="jumatEnabled">Aktifkan setting khusus Jumat</label>
+    </div>
+    <div class="field">
+      <label>Jam ON</label>
+      <input type="time" id="jumatOn" value="11:00">
+    </div>
+    <div class="field">
+      <label>Jam OFF</label>
+      <input type="time" id="jumatOff" value="13:00">
+    </div>
+  </div>
+
+  <!-- ===== DAFTAR AC ===== -->
+  <div class="section">
+    <div class="section-title">📋 Daftar 8 AC <span class="sub">(nama & remote ID)</span></div>
+    <div class="ac-list" id="acList">
+      <!-- diisi oleh JS -->
+    </div>
+  </div>
+
+  <!-- ===== SINKRONISASI ===== -->
+  <div class="section">
+    <div class="section-title">⚙️ Sinkronisasi ke Backend GAS</div>
+    <div class="field">
+      <label>URL Google Apps Script</label>
       <input type="text" id="gasUrl" placeholder="https://script.google.com/macros/s/AKfyc.../exec">
     </div>
-
-    <div class="sync-actions">
-      <button class="sync-btn sync-btn-primary" id="btnSyncNow" onclick="syncKeBackend()">
-        🔄 Sync Sekarang
-      </button>
-      <button class="sync-btn sync-btn-secondary" id="btnCekStatus" onclick="cekStatusSync()">
-        📅 Cek Status Sync Otomatis
-      </button>
+    <div class="btn-row">
+      <button class="btn btn-primary" id="btnSync" onclick="syncKeBackend()">🔄 Sync Sekarang</button>
+      <button class="btn btn-secondary" id="btnStatus" onclick="cekStatusSync()">📅 Cek Status</button>
     </div>
-
-    <div class="sync-status" id="syncStatus"></div>
-    <div class="sync-log" id="syncLog"></div>
+    <div class="btn-row">
+      <button class="btn btn-warn" id="btnTrigger" onclick="lihatTrigger()">📋 Lihat Trigger Aktif</button>
+      <button class="btn btn-danger" id="btnHapus" onclick="hapusTrigger()">🧹 Hapus Trigger</button>
+    </div>
+    <div class="btn-row" style="grid-template-columns:1fr;">
+      <button class="btn btn-secondary" id="btnTestBeep" onclick="testBeep()">🔊 Test Beep (Adzan 3×)</button>
+    </div>
+    <div class="status-box" id="statusBox"></div>
   </div>
 
   <div class="error-msg" id="errorMsg"></div>
-
-  <button class="test-btn" id="testBtn">🔊 Test Suara Beep</button>
 </div>
 
 <script>
@@ -559,7 +528,39 @@ const iqomahInput = {
 function pad(n){ return n.toString().padStart(2,'0'); }
 
 // ============================================================
-// LOAD & SAVE SETTING (localStorage)
+// DAFTAR 8 AC — generate otomatis
+// ============================================================
+const AC_NAMES_DEFAULT = ['AC Imam','AC Makmum 1','AC Makmum 2','AC Makmum 3',
+                          'AC Serambi','AC TPQ','AC Kantor','AC Aula'];
+function renderAcList() {
+  const list = document.getElementById('acList');
+  list.innerHTML = '';
+  for (let i = 0; i < 8; i++) {
+    const nama = localStorage.getItem('ac_name_' + i) || AC_NAMES_DEFAULT[i];
+    const rid  = localStorage.getItem('ac_remote_' + i) || '';
+    const div = document.createElement('div');
+    div.className = 'ac-item';
+    div.innerHTML = `
+      <div class="ac-num">${i + 1}.</div>
+      <input type="text" class="ac-name" data-idx="${i}" value="${nama}" placeholder="Nama AC">
+      <input type="text" class="ac-id" data-idx="${i}" value="${rid}" placeholder="Remote ID (dari Tuya)">
+    `;
+    list.appendChild(div);
+  }
+  list.querySelectorAll('.ac-name').forEach(inp => {
+    inp.addEventListener('change', e => {
+      localStorage.setItem('ac_name_' + e.target.dataset.idx, e.target.value);
+    });
+  });
+  list.querySelectorAll('.ac-id').forEach(inp => {
+    inp.addEventListener('change', e => {
+      localStorage.setItem('ac_remote_' + e.target.dataset.idx, e.target.value.trim());
+    });
+  });
+}
+
+// ============================================================
+// LOAD & SAVE SETTING
 // ============================================================
 function loadIqomahSettings() {
   for (const key in iqomahInput) {
@@ -577,28 +578,38 @@ for (const key in iqomahInput) {
 }
 loadIqomahSettings();
 
-function loadAcSettings() {
-  document.querySelectorAll('.ac-input').forEach(input => {
-    const key = `ac_${input.dataset.day}_${input.dataset.mode}`;
-    const saved = localStorage.getItem(key);
-    if (saved !== null) input.value = saved;
+// Offset hari biasa + jeda
+['offsetOnWeekday','offsetOffWeekday','jedaAC'].forEach(id => {
+  const saved = localStorage.getItem(id);
+  if (saved !== null) document.getElementById(id).value = saved;
+  document.getElementById(id).addEventListener('change', e => {
+    localStorage.setItem(id, e.target.value);
   });
-}
-function saveAcSetting(input) {
-  const key = `ac_${input.dataset.day}_${input.dataset.mode}`;
-  localStorage.setItem(key, input.value);
-}
-document.querySelectorAll('.ac-input').forEach(input => {
-  input.addEventListener('change', () => saveAcSetting(input));
 });
-loadAcSettings();
 
-// Load GAS URL & city
+// Jumat
+['jumatOn','jumatOff'].forEach(id => {
+  const saved = localStorage.getItem(id);
+  if (saved !== null) document.getElementById(id).value = saved;
+  document.getElementById(id).addEventListener('change', e => {
+    localStorage.setItem(id, e.target.value);
+  });
+});
+const savedJumatEnabled = localStorage.getItem('jumatEnabled');
+if (savedJumatEnabled !== null) {
+  document.getElementById('jumatEnabled').checked = savedJumatEnabled === 'true';
+}
+document.getElementById('jumatEnabled').addEventListener('change', e => {
+  localStorage.setItem('jumatEnabled', e.target.checked);
+});
+
+// GAS URL
 document.getElementById('gasUrl').value = localStorage.getItem('gas_url') || '';
 document.getElementById('gasUrl').addEventListener('change', function() {
   localStorage.setItem('gas_url', this.value.trim());
 });
 
+// City
 const savedCity = localStorage.getItem('city');
 if (savedCity) {
   currentCity = savedCity;
@@ -608,8 +619,11 @@ if (savedCity) {
   }
 }
 
+// Render daftar AC
+renderAcList();
+
 // ============================================================
-// SUARA BEEP
+// SUARA BEEP (pola JWS)
 // ============================================================
 let audioCtx = null;
 function getAudioCtx() {
@@ -617,7 +631,7 @@ function getAudioCtx() {
   if (audioCtx.state === 'suspended') audioCtx.resume();
   return audioCtx;
 }
-function beep(freq = 800, duration = 200, volume = 0.4) {
+function beep(freq, duration, volume) {
   const ctx = getAudioCtx();
   const osc = ctx.createOscillator();
   const gain = ctx.createGain();
@@ -632,15 +646,23 @@ function beep(freq = 800, duration = 200, volume = 0.4) {
   gain.gain.exponentialRampToValueAtTime(0.0001, now + duration / 1000);
   osc.stop(now + duration / 1000);
 }
-function beepAdzan() {
-  beep(880, 200);
-  setTimeout(() => beep(880, 200), 350);
-  setTimeout(() => beep(880, 200), 700);
-}
-function beepPreIqomah() { beep(660, 200); setTimeout(() => beep(660, 200), 350); }
-function beepIqomah() { beep(440, 1500, 0.5); }
 
-document.getElementById('testBtn').addEventListener('click', () => {
+// Adzan: 3× agak panjang
+function beepAdzan() {
+  beep(880, 400, 0.5);
+  setTimeout(() => beep(880, 400, 0.5), 500);
+  setTimeout(() => beep(880, 400, 0.5), 1000);
+}
+// Stop sunat (iqomah - 1 menit): 1× agak panjang
+function beepStopSunat() {
+  beep(660, 500, 0.5);
+}
+// Iqomah: 1× PANJANG, lebih keras
+function beepIqomah() {
+  beep(440, 1500, 0.75);
+}
+
+document.getElementById('btnTestBeep').addEventListener('click', () => {
   getAudioCtx();
   beepAdzan();
 });
@@ -664,7 +686,6 @@ async function fetchPrayerTimes() {
       triggeredAdzan = {};
       triggeredIqomahWarn = {};
       triggeredIqomahStart = {};
-      window.triggeredAC = {};
       document.getElementById('errorMsg').textContent = '';
       renderJadwal();
     } else {
@@ -740,7 +761,7 @@ function getNextEvent(now) {
 }
 
 // ============================================================
-// TRIGGER BEEP, BLACKOUT, DAN AC
+// TRIGGER BEEP
 // ============================================================
 function checkTriggers(now) {
   const todayKey = `${pad(now.getDate())}-${pad(now.getMonth()+1)}-${now.getFullYear()}`;
@@ -767,7 +788,7 @@ function checkTriggers(now) {
     const keyWarn = `warn_${p}_${todayKey}`;
     if (diffWarn >= 0 && diffWarn < 60000 && !triggeredIqomahWarn[keyWarn]) {
       triggeredIqomahWarn[keyWarn] = true;
-      beepPreIqomah();
+      beepStopSunat();
     }
 
     const diffIqomah = now - iqomahDate;
@@ -777,21 +798,6 @@ function checkTriggers(now) {
       beepIqomah();
       startBlackout();
     }
-
-    // Local AC trigger (log saja, tugas asli ada di backend Tuya)
-    const hariIni = now.getDay();
-    ['on', 'off'].forEach(mode => {
-      const input = document.querySelector(`.ac-input[data-day="${hariIni}"][data-mode="${mode}"]`);
-      if (!input) return;
-      const offsetMenit = parseInt(input.value) || 0;
-      const targetTime = new Date(adzanTime.getTime() + offsetMenit * 60000);
-      const diff = now - targetTime;
-      const key = `ac_${mode}_${p}_${todayKey}`;
-      if (diff >= 0 && diff < 60000 && !window.triggeredAC[key]) {
-        window.triggeredAC[key] = true;
-        addLog(`[AC-LOCAL] ${mode.toUpperCase()} — ${namaIndo[p]} (${offsetMenit} mnt dari adzan)`);
-      }
-    });
   }
 }
 
@@ -844,7 +850,7 @@ function updateClock() {
         if (totalSec <= 60) {
           nextBox.classList.add('qobla');
           nextLabel.textContent = 'Menuju Iqomah';
-          nextName.textContent = `STOP SHOLAT SUNAT QOBLA ${namaIndo[next.key].toUpperCase()}`;
+          nextName.textContent = `STOP SHOLAT SUNAT ${namaIndo[next.key].toUpperCase()}`;
         }
       }
 
@@ -856,127 +862,143 @@ function updateClock() {
 }
 
 // ============================================================
-// SYNC KE BACKEND (OPSI 2 & 3)
+// SYNC KE BACKEND
 // ============================================================
-function addLog(msg) {
-  const logEl = document.getElementById('syncLog');
-  logEl.classList.add('show');
-  const t = new Date();
-  const timeStr = `${pad(t.getHours())}:${pad(t.getMinutes())}:${pad(t.getSeconds())}`;
-  const line = document.createElement('div');
-  line.className = 'log-line';
-  line.innerHTML = `<span class="log-time">[${timeStr}]</span> ${msg}`;
-  logEl.appendChild(line);
-  logEl.scrollTop = logEl.scrollHeight;
+function setStatus(type, msg) {
+  const el = document.getElementById('statusBox');
+  el.className = 'status-box show ' + type;
+  el.innerHTML = msg;
 }
 
-function setStatus(type, msg) {
-  const el = document.getElementById('syncStatus');
-  el.className = 'sync-status show ' + type;
-  el.innerHTML = msg;
+function kumpulkanSetting() {
+  const iqomah = {};
+  for (const key in iqomahInput) {
+    iqomah[key] = parseInt(document.getElementById(iqomahInput[key]).value) || 0;
+  }
+  const acNames = [];
+  const acRemotes = [];
+  for (let i = 0; i < 8; i++) {
+    acNames.push(localStorage.getItem('ac_name_' + i) || AC_NAMES_DEFAULT[i]);
+    acRemotes.push(localStorage.getItem('ac_remote_' + i) || '');
+  }
+  return {
+    city: currentCity,
+    method: METHOD,
+    country: COUNTRY,
+    offsetOnWeekday:  parseInt(document.getElementById('offsetOnWeekday').value) || -15,
+    offsetOffWeekday: parseInt(document.getElementById('offsetOffWeekday').value) || 40,
+    jedaAC:           parseInt(document.getElementById('jedaAC').value) || 15,
+    jumatEnabled:     document.getElementById('jumatEnabled').checked,
+    jumatOn:          document.getElementById('jumatOn').value || '11:00',
+    jumatOff:         document.getElementById('jumatOff').value || '13:00',
+    iqomah: iqomah,
+    acNames: acNames,
+    acRemotes: acRemotes
+  };
 }
 
 async function syncKeBackend() {
   const gasUrl = document.getElementById('gasUrl').value.trim();
   if (!gasUrl || !gasUrl.startsWith('https://script.google.com/')) {
-    setStatus('error', '❌ Isi URL GAS dulu di atas (dari file GAS yang sudah di-deploy)');
+    setStatus('error', '❌ Isi URL GAS dulu di atas');
     return;
   }
 
-  if (!jadwal.Fajr) {
-    setStatus('error', '❌ Jadwal sholat belum dimuat. Tunggu sebentar lalu coba lagi.');
-    return;
-  }
-
-  // Kumpulkan payload
-  const payload = {
-    action: 'syncTimer',
-    city: currentCity,
-    method: METHOD,
-    country: COUNTRY,
-    iqomah: {},
-    acOn: {},
-    acOff: {},
-    clientTime: new Date().toISOString()
-  };
-
-  for (const key in iqomahInput) {
-    payload.iqomah[key] = parseInt(document.getElementById(iqomahInput[key]).value) || 0;
-  }
-  for (let d = 0; d < 7; d++) {
-    const onInput = document.querySelector(`.ac-input[data-day="${d}"][data-mode="on"]`);
-    const offInput = document.querySelector(`.ac-input[data-day="${d}"][data-mode="off"]`);
-    payload.acOn[d] = parseInt(onInput.value) || 0;
-    payload.acOff[d] = parseInt(offInput.value) || 0;
-  }
-
-  const btn = document.getElementById('btnSyncNow');
+  const payload = kumpulkanSetting();
+  const btn = document.getElementById('btnSync');
   btn.disabled = true;
   btn.textContent = '⏳ Mengirim...';
-  setStatus('loading', '⏳ Mengirim data ke server...');
-  addLog('Mulai sync untuk kota: ' + currentCity);
+  setStatus('loading', '⏳ Mengirim setting ke server...');
 
   try {
     const res = await fetch(gasUrl, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload)
+      body: JSON.stringify({ action: 'syncTimer', ...payload })
     });
-
-    // mode no-cors: kita tidak bisa baca response, tapi request terkirim
-    // Konfirmasi dengan cek status berikutnya
     setStatus('success',
-      '✅ Perintah sync terkirim!<br>' +
-      '📅 Server akan memproses dalam beberapa detik.<br>' +
-      'Klik <b>Cek Status Sync Otomatis</b> untuk verifikasi.'
+      '✅ Setting terkirim!\n' +
+      '📅 Server akan sync dalam beberapa detik.\n' +
+      'Klik "Cek Status" untuk verifikasi.'
     );
-    addLog('Sync terkirim. Menunggu konfirmasi server...');
-
-    setTimeout(() => cekStatusSync(true), 4000);
-
+    setTimeout(() => cekStatusSync(), 4000);
   } catch (e) {
     setStatus('error', '❌ Gagal kirim: ' + e.message);
-    addLog('ERROR: ' + e.message);
   } finally {
     btn.disabled = false;
     btn.textContent = '🔄 Sync Sekarang';
   }
 }
 
-async function cekStatusSync(silent) {
+async function cekStatusSync() {
   const gasUrl = document.getElementById('gasUrl').value.trim();
-  if (!gasUrl) {
-    if (!silent) setStatus('error', '❌ Isi URL GAS dulu');
-    return;
-  }
+  if (!gasUrl) { setStatus('error', '❌ Isi URL GAS dulu'); return; }
 
-  if (!silent) setStatus('loading', '⏳ Mengambil status...');
-  addLog('Cek status sync...');
-
+  setStatus('loading', '⏳ Mengambil status...');
   try {
-    const url = gasUrl + '?action=getStatus&city=' + encodeURIComponent(currentCity);
-    const res = await fetch(url);
+    const res = await fetch(gasUrl + '?action=getStatus&city=' + encodeURIComponent(currentCity));
     const data = await res.json();
-
     if (data.success) {
       const info = data.data || {};
-      let msg = '📅 <b>Status Sync</b><br>';
-      msg += 'Kota: <b>' + (info.city || '-') + '</b><br>';
-      msg += 'Terakhir sync: <b>' + (info.lastSync || 'Belum pernah') + '</b><br>';
-      msg += 'Sync otomatis: <b>' + (info.cronStatus || 'Belum aktif') + '</b><br>';
-      if (info.lastResult) {
-        msg += 'Hasil terakhir: ' + info.lastResult;
+      let msg = '📅 Status Backend\n';
+      msg += 'Kota: ' + (info.city || '-') + '\n';
+      msg += 'Terakhir sync: ' + (info.lastSync || 'Belum pernah') + '\n';
+      msg += 'Cron harian: ' + (info.cronStatus || 'Belum aktif') + '\n';
+      if (info.activeTriggers !== undefined) {
+        msg += 'Trigger aktif: ' + info.activeTriggers + ' / 20';
       }
       setStatus('info', msg);
-      addLog('Status OK. Terakhir: ' + (info.lastSync || 'Belum ada'));
     } else {
       setStatus('error', '❌ ' + (data.error || 'Gagal ambil status'));
-      addLog('ERROR: ' + (data.error || 'unknown'));
     }
   } catch (e) {
     setStatus('error', '❌ Gagal cek status: ' + e.message);
-    addLog('ERROR: ' + e.message);
+  }
+}
+
+async function lihatTrigger() {
+  const gasUrl = document.getElementById('gasUrl').value.trim();
+  if (!gasUrl) { setStatus('error', '❌ Isi URL GAS dulu'); return; }
+
+  setStatus('loading', '⏳ Mengambil daftar trigger...');
+  try {
+    const res = await fetch(gasUrl + '?action=listTriggers');
+    const data = await res.json();
+    if (data.success) {
+      const list = data.data || [];
+      let msg = '📋 Trigger Aktif: ' + list.length + ' / 20\n';
+      if (list.length === 0) {
+        msg += '(Tidak ada trigger)';
+      } else {
+        list.slice(0, 15).forEach(t => { msg += '• ' + t.fungsi + '\n'; });
+        if (list.length > 15) msg += '... dan ' + (list.length - 15) + ' lainnya';
+      }
+      setStatus('info', msg);
+    } else {
+      setStatus('error', '❌ ' + (data.error || 'Gagal'));
+    }
+  } catch (e) {
+    setStatus('error', '❌ ' + e.message);
+  }
+}
+
+async function hapusTrigger() {
+  if (!confirm('Yakin hapus semua trigger AC? Sistem tidak akan jalan sampai di-sync ulang.')) return;
+  const gasUrl = document.getElementById('gasUrl').value.trim();
+  if (!gasUrl) { setStatus('error', '❌ Isi URL GAS dulu'); return; }
+
+  setStatus('loading', '⏳ Menghapus trigger...');
+  try {
+    const res = await fetch(gasUrl + '?action=clearTriggers');
+    const data = await res.json();
+    if (data.success) {
+      setStatus('success', '✅ ' + (data.message || 'Trigger dihapus'));
+    } else {
+      setStatus('error', '❌ ' + (data.error || 'Gagal'));
+    }
+  } catch (e) {
+    setStatus('error', '❌ ' + e.message);
   }
 }
 
@@ -991,7 +1013,6 @@ document.getElementById('citySelect').addEventListener('change', function() {
   triggeredAdzan = {};
   triggeredIqomahWarn = {};
   triggeredIqomahStart = {};
-  window.triggeredAC = {};
   document.getElementById('nextName').textContent = 'Memuat...';
   document.querySelectorAll('.jadwal-table [data-key]').forEach(el => {
     el.classList.remove('active');
