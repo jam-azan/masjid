@@ -88,7 +88,6 @@
   .next.qobla .next-name { color: #ffd54f; font-size: 1.3rem; }
   .next.qobla .countdown { color: #ffd54f; }
 
-  /* ===== Section ===== */
   .section {
     background: rgba(255,255,255,0.06);
     border-radius: 15px;
@@ -163,7 +162,7 @@
   }
   .field input:focus { border-color: #00ffcc; background: rgba(0,0,0,0.5); }
 
-  /* ===== Tabel Jadwal Sholat & AC (persis versi lama) ===== */
+  /* ===== Tabel Jadwal Sholat & AC ===== */
   .jadwal-table, .ac-table {
     width: 100%;
     border-collapse: separate;
@@ -280,19 +279,39 @@
 
   .ac-table input[type="time"],
   .ac-table input[type="number"] {
-    width: 70px;
+    width: 95px;
     background: rgba(0,0,0,0.3);
     color: #00ffcc;
     border: 1px solid rgba(0,255,204,0.3);
     border-radius: 6px;
-    padding: 5px 4px;
+    padding: 5px 6px;
     font-size: 0.85rem;
     font-family: inherit;
     outline: none;
     text-align: center;
     font-weight: 600;
   }
+  .ac-table input[type="number"] { width: 75px; }
   .ac-table input:focus { border-color: #00ffcc; background: rgba(0,0,0,0.5); }
+
+  /* Icon jam lebih terang */
+  .ac-table input[type="time"]::-webkit-calendar-picker-indicator {
+    filter: invert(1) opacity(0.7);
+    cursor: pointer;
+  }
+  .ac-table input[type="time"]::-webkit-calendar-picker-indicator:hover {
+    filter: invert(1) opacity(1);
+  }
+
+  /* Warna font input OFF (Jumat & Selain Jumat) */
+  .ac-table tr.row-off input {
+    color: #ff8a80;
+    border-color: rgba(255,138,128,0.4);
+  }
+  .ac-table tr.row-off input:focus {
+    border-color: #ff8a80;
+    background: rgba(255,138,128,0.1);
+  }
 
   /* ===== Daftar AC ===== */
   .ac-list { display: grid; grid-template-columns: 1fr; gap: 8px; }
@@ -405,7 +424,8 @@
     .jadwal-table tbody tr.iqomah-row input { width: 32px; font-size: 0.6rem; }
     .ac-table thead th:first-child, .ac-table tbody th { width: 50px; font-size: 0.6rem; padding: 6px 2px; }
     .ac-table tbody td { padding: 5px 2px; }
-    .ac-table input[type="time"], .ac-table input[type="number"] { padding: 4px 2px; font-size: 0.72rem; width: 60px; }
+    .ac-table input[type="time"] { padding: 4px 2px; font-size: 0.72rem; width: 82px; }
+    .ac-table input[type="number"] { padding: 4px 2px; font-size: 0.72rem; width: 65px; }
     .btn-row { grid-template-columns: 1fr; }
     .ac-item { grid-template-columns: 25px 1fr; }
     .ac-item .ac-id { grid-column: 2; margin-top: -4px; }
@@ -545,9 +565,6 @@
 </div>
 
 <script>
-// ============================================================
-// KONFIGURASI
-// ============================================================
 const COUNTRY = 'Indonesia';
 const METHOD = 20;
 let currentCity = 'Klaten';
@@ -575,9 +592,6 @@ const iqomahInput = {
 
 function pad(n){ return n.toString().padStart(2,'0'); }
 
-// ============================================================
-// DAFTAR 8 AC
-// ============================================================
 const AC_NAMES_DEFAULT = ['AC Imam','AC Makmum 1','AC Makmum 2','AC Makmum 3',
                           'AC Serambi','AC TPQ','AC Kantor','AC Aula'];
 function renderAcList() {
@@ -607,9 +621,6 @@ function renderAcList() {
   });
 }
 
-// ============================================================
-// LOAD & SAVE SETTING
-// ============================================================
 function loadIqomahSettings() {
   for (const key in iqomahInput) {
     const saved = localStorage.getItem('iqomah_' + key);
@@ -658,9 +669,7 @@ if (savedCity) {
 
 renderAcList();
 
-// ============================================================
-// SUARA BEEP (pola JWS)
-// ============================================================
+// ===== BEEP =====
 let audioCtx = null;
 function getAudioCtx() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -682,37 +691,23 @@ function beep(freq, duration, volume) {
   gain.gain.exponentialRampToValueAtTime(0.0001, now + duration / 1000);
   osc.stop(now + duration / 1000);
 }
-
 function beepAdzan() {
   beep(880, 400, 0.5);
   setTimeout(() => beep(880, 400, 0.5), 500);
   setTimeout(() => beep(880, 400, 0.5), 1000);
 }
-function beepStopSunat() {
-  beep(660, 500, 0.5);
-}
-function beepIqomah() {
-  beep(440, 1500, 0.75);
-}
-
-function testBeep() {
-  getAudioCtx();
-  beepAdzan();
-}
+function beepStopSunat() { beep(660, 500, 0.5); }
+function beepIqomah() { beep(440, 1500, 0.75); }
+function testBeep() { getAudioCtx(); beepAdzan(); }
 document.addEventListener('click', () => getAudioCtx(), { once: true });
 
-// ============================================================
-// FETCH JADWAL DARI ALADHAN API
-// ============================================================
 async function fetchPrayerTimes() {
   const now = new Date();
   const dateStr = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()}`;
-
   try {
     const url = `https://api.aladhan.com/v1/timingsByCity/${dateStr}?city=${encodeURIComponent(currentCity)}&country=${COUNTRY}&method=${METHOD}`;
     const res = await fetch(url);
     const data = await res.json();
-
     if (data.code === 200 && data.data && data.data.timings) {
       jadwal = data.data.timings;
       lastFetchDate = dateStr;
@@ -728,7 +723,6 @@ async function fetchPrayerTimes() {
     document.getElementById('errorMsg').textContent = 'Koneksi API gagal: ' + e.message;
   }
 }
-
 function renderJadwal() {
   document.querySelectorAll('.jadwal-table tbody td[data-key]').forEach(td => {
     const key = td.dataset.key;
@@ -736,7 +730,6 @@ function renderJadwal() {
     td.textContent = val ? val.slice(0, 5) : '-';
   });
 }
-
 function getIqomahTime(prayerKey) {
   const timeStr = jadwal[prayerKey];
   if (!timeStr) return null;
@@ -747,21 +740,16 @@ function getIqomahTime(prayerKey) {
   iqomah.setMinutes(iqomah.getMinutes() + menit);
   return iqomah;
 }
-
 function getNextEvent(now) {
   let next = null, minDiff = Infinity;
-
   for (const p of urutanSholat) {
     const adzanStr = jadwal[p];
     if (!adzanStr) continue;
     const [h, m] = adzanStr.slice(0, 5).split(':').map(Number);
-
     const adzanDate = new Date(now);
     adzanDate.setHours(h, m, 0, 0);
-
     const iqomahDate = getIqomahTime(p);
     if (!iqomahDate) continue;
-
     const diffAdzan = adzanDate - now;
     if (diffAdzan > 0 && diffAdzan < minDiff) {
       minDiff = diffAdzan;
@@ -773,7 +761,6 @@ function getNextEvent(now) {
       next = { type: 'iqomah', key: p, date: iqomahDate };
     }
   }
-
   if (!next) {
     const besok = new Date(now);
     besok.setDate(besok.getDate() + 1);
@@ -786,15 +773,12 @@ function getNextEvent(now) {
   }
   return next;
 }
-
 function checkTriggers(now) {
   const todayKey = `${pad(now.getDate())}-${pad(now.getMonth()+1)}-${now.getFullYear()}`;
-
   for (const p of urutanSholat) {
     const adzanStr = jadwal[p];
     if (!adzanStr) continue;
     const [h, m] = adzanStr.slice(0, 5).split(':').map(Number);
-
     const adzanTime = new Date(now);
     adzanTime.setHours(h, m, 0, 0);
     const diffAdzan = now - adzanTime;
@@ -803,10 +787,8 @@ function checkTriggers(now) {
       triggeredAdzan[keyAdzan] = true;
       beepAdzan();
     }
-
     const iqomahDate = getIqomahTime(p);
     if (!iqomahDate) continue;
-
     const warnTime = new Date(iqomahDate.getTime() - 60000);
     const diffWarn = now - warnTime;
     const keyWarn = `warn_${p}_${todayKey}`;
@@ -814,7 +796,6 @@ function checkTriggers(now) {
       triggeredIqomahWarn[keyWarn] = true;
       beepStopSunat();
     }
-
     const diffIqomah = now - iqomahDate;
     const keyIqomah = `iqomah_${p}_${todayKey}`;
     if (diffIqomah >= 0 && diffIqomah < 60000 && !triggeredIqomahStart[keyIqomah]) {
@@ -824,7 +805,6 @@ function checkTriggers(now) {
     }
   }
 }
-
 function startBlackout() {
   document.body.classList.add('blackout');
   if (blackoutTimer) clearTimeout(blackoutTimer);
@@ -832,19 +812,14 @@ function startBlackout() {
     document.body.classList.remove('blackout');
   }, 5 * 60 * 1000);
 }
-
 function updateClock() {
   const now = new Date();
-
   document.getElementById('clock').textContent =
     `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
-
   document.getElementById('date').textContent =
     `${namaHari[now.getDay()]}, ${now.getDate()} ${namaBulan[now.getMonth()]} ${now.getFullYear()}`;
-
   const todayStr = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()}`;
   if (todayStr !== lastFetchDate && !document.hidden) fetchPrayerTimes();
-
   if (jadwal.Fajr) {
     checkTriggers(now);
     const next = getNextEvent(now);
@@ -852,14 +827,12 @@ function updateClock() {
     const nextLabel = document.getElementById('nextLabel');
     const nextName = document.getElementById('nextName');
     const countdown = document.getElementById('countdown');
-
     if (next) {
       const totalSec = Math.max(0, Math.floor((next.date - now) / 1000));
       const h = Math.floor(totalSec / 3600);
       const m = Math.floor((totalSec % 3600) / 60);
       const d = totalSec % 60;
       countdown.textContent = `- ${pad(h)}:${pad(m)}:${pad(d)}`;
-
       if (next.type === 'adzan') {
         nextBox.classList.remove('qobla');
         nextLabel.textContent = 'Menuju Waktu Sholat';
@@ -874,23 +847,17 @@ function updateClock() {
           nextName.textContent = `STOP SHOLAT SUNAT ${namaIndo[next.key].toUpperCase()}`;
         }
       }
-
       document.querySelectorAll('.jadwal-table [data-key]').forEach(el => {
         el.classList.toggle('active', el.dataset.key === next.key);
       });
     }
   }
 }
-
-// ============================================================
-// SYNC
-// ============================================================
 function setStatus(type, msg) {
   const el = document.getElementById('statusBox');
   el.className = 'status-box show ' + type;
   el.innerHTML = msg;
 }
-
 function kumpulkanSetting() {
   const iqomah = {};
   for (const key in iqomahInput) {
@@ -903,44 +870,32 @@ function kumpulkanSetting() {
     acRemotes.push(localStorage.getItem('ac_remote_' + i) || '');
   }
   return {
-    city: currentCity,
-    method: METHOD,
-    country: COUNTRY,
+    city: currentCity, method: METHOD, country: COUNTRY,
     offsetOnWeekday:  parseInt(document.getElementById('offsetOnWeekday').value) || -15,
     offsetOffWeekday: parseInt(document.getElementById('offsetOffWeekday').value) || 40,
     jedaAC:           parseInt(document.getElementById('jedaAC').value) || 15,
     jumatOn:          document.getElementById('jumatOn').value || '11:00',
     jumatOff:         document.getElementById('jumatOff').value || '13:00',
-    iqomah: iqomah,
-    acNames: acNames,
-    acRemotes: acRemotes
+    iqomah: iqomah, acNames: acNames, acRemotes: acRemotes
   };
 }
-
 async function syncKeBackend() {
   const gasUrl = document.getElementById('gasUrl').value.trim();
   if (!gasUrl || !gasUrl.startsWith('https://script.google.com/')) {
-    setStatus('error', '❌ Isi URL GAS dulu di atas');
-    return;
+    setStatus('error', '❌ Isi URL GAS dulu di atas'); return;
   }
   const payload = kumpulkanSetting();
   const btn = document.getElementById('btnSync');
   btn.disabled = true;
   btn.textContent = '⏳ Mengirim...';
   setStatus('loading', '⏳ Mengirim setting ke server...');
-
   try {
     await fetch(gasUrl, {
-      method: 'POST',
-      mode: 'no-cors',
+      method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ action: 'syncTimer', ...payload })
     });
-    setStatus('success',
-      '✅ Setting terkirim!\n' +
-      '📅 Server akan sync dalam beberapa detik.\n' +
-      'Klik "Cek Status" untuk verifikasi.'
-    );
+    setStatus('success', '✅ Setting terkirim!\n📅 Server akan sync dalam beberapa detik.\nKlik "Cek Status" untuk verifikasi.');
     setTimeout(() => cekStatusSync(), 4000);
   } catch (e) {
     setStatus('error', '❌ Gagal kirim: ' + e.message);
@@ -949,7 +904,6 @@ async function syncKeBackend() {
     btn.textContent = '🔄 Sync Sekarang';
   }
 }
-
 async function cekStatusSync() {
   const gasUrl = document.getElementById('gasUrl').value.trim();
   if (!gasUrl) { setStatus('error', '❌ Isi URL GAS dulu'); return; }
@@ -965,14 +919,9 @@ async function cekStatusSync() {
       msg += 'Cron harian: ' + (info.cronStatus || 'Belum aktif') + '\n';
       if (info.activeTriggers !== undefined) msg += 'Trigger aktif: ' + info.activeTriggers + ' / 20';
       setStatus('info', msg);
-    } else {
-      setStatus('error', '❌ ' + (data.error || 'Gagal ambil status'));
-    }
-  } catch (e) {
-    setStatus('error', '❌ Gagal cek status: ' + e.message);
-  }
+    } else setStatus('error', '❌ ' + (data.error || 'Gagal ambil status'));
+  } catch (e) { setStatus('error', '❌ Gagal cek status: ' + e.message); }
 }
-
 async function lihatTrigger() {
   const gasUrl = document.getElementById('gasUrl').value.trim();
   if (!gasUrl) { setStatus('error', '❌ Isi URL GAS dulu'); return; }
@@ -992,7 +941,6 @@ async function lihatTrigger() {
     } else setStatus('error', '❌ ' + (data.error || 'Gagal'));
   } catch (e) { setStatus('error', '❌ ' + e.message); }
 }
-
 async function hapusTrigger() {
   if (!confirm('Yakin hapus semua trigger AC? Sistem tidak akan jalan sampai di-sync ulang.')) return;
   const gasUrl = document.getElementById('gasUrl').value.trim();
@@ -1005,7 +953,6 @@ async function hapusTrigger() {
     else setStatus('error', '❌ ' + (data.error || 'Gagal'));
   } catch (e) { setStatus('error', '❌ ' + e.message); }
 }
-
 document.getElementById('citySelect').addEventListener('change', function() {
   currentCity = this.value;
   localStorage.setItem('city', currentCity);
@@ -1020,7 +967,6 @@ document.getElementById('citySelect').addEventListener('change', function() {
   });
   fetchPrayerTimes();
 });
-
 fetchPrayerTimes();
 setInterval(updateClock, 1000);
 updateClock();
