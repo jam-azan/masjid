@@ -112,13 +112,6 @@
     gap: 8px;
     flex-wrap: wrap;
   }
-  .section-title .sub {
-    font-size: 0.65rem;
-    opacity: 0.6;
-    font-weight: normal;
-    letter-spacing: 0.5px;
-    text-transform: none;
-  }
   .section-title .right {
     display: flex;
     align-items: center;
@@ -156,63 +149,64 @@
     opacity: 0.85;
     min-width: 110px;
   }
-  .field input[type="number"],
-  .field input[type="text"],
-  .field input[type="time"] {
+  .field input[type="text"] {
     background: rgba(0,0,0,0.3);
     color: #00ffcc;
     border: 1px solid rgba(0,255,204,0.3);
     border-radius: 8px;
     padding: 7px 10px;
-    font-size: 0.85rem;
-    font-family: inherit;
+    font-size: 0.78rem;
+    font-family: 'Courier New', monospace;
     outline: none;
-    width: 100px;
+    width: 100%;
+    max-width: 380px;
   }
-  .field input[type="text"] { width: 100%; max-width: 380px; font-family: 'Courier New', monospace; font-size: 0.78rem; }
   .field input:focus { border-color: #00ffcc; background: rgba(0,0,0,0.5); }
-  .field .hint {
-    font-size: 0.7rem;
-    opacity: 0.55;
-    font-style: italic;
-  }
 
-  /* ===== Tabel Jadwal Sholat ===== */
-  .jadwal-table {
+  /* ===== Tabel Jadwal Sholat (persis versi lama) ===== */
+  .jadwal-table, .ac-table {
     width: 100%;
     border-collapse: separate;
     border-spacing: 0;
-    background: rgba(255,255,255,0.04);
-    border-radius: 12px;
+    background: rgba(255,255,255,0.06);
+    border-radius: 15px;
     overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 24px rgba(0,0,0,0.25);
     table-layout: fixed;
-    margin-top: 5px;
+    margin-bottom: 20px;
   }
-  .jadwal-table th, .jadwal-table td {
-    padding: 10px 3px;
+  .ac-table { margin-bottom: 0; }
+
+  .jadwal-table th, .jadwal-table td,
+  .ac-table th, .ac-table td {
+    padding: 12px 3px;
     text-align: center;
     font-variant-numeric: tabular-nums;
     border-left: 1px solid rgba(255,255,255,0.08);
   }
-  .jadwal-table th:first-child, .jadwal-table td:first-child { border-left: none; }
+  .jadwal-table th:first-child, .jadwal-table td:first-child,
+  .ac-table th:first-child, .ac-table td:first-child { border-left: none; }
 
-  .jadwal-table thead th {
+  .jadwal-table thead th, .ac-table thead th {
     background: rgba(0, 255, 204, 0.15);
     color: #00ffcc;
     font-size: 0.7rem;
     letter-spacing: 0.6px;
     text-transform: uppercase;
     font-weight: 600;
-    padding: 9px 2px;
+    padding: 10px 2px;
   }
-  .jadwal-table tbody td {
+
+  .jadwal-table tbody td, .ac-table tbody td {
     font-size: 1rem;
     font-weight: 600;
     border-top: 1px solid rgba(255,255,255,0.08);
     transition: background 0.3s;
   }
+
   .jadwal-table tbody tr.iqomah-row td {
-    font-size: 0.68rem;
+    font-size: 0.7rem;
     font-weight: normal;
     color: #ffd54f;
     padding: 6px 2px;
@@ -235,6 +229,7 @@
     border-color: #ffd54f;
     background: rgba(255, 213, 79, 0.15);
   }
+
   .jadwal-table .active {
     background: linear-gradient(180deg, rgba(0,255,204,0.25), rgba(0,255,204,0.05));
     color: #00ffcc;
@@ -242,75 +237,44 @@
   }
   .jadwal-table thead th.active { background: rgba(0, 255, 204, 0.35); }
   .jadwal-table .syuruq { color: #ffd54f; }
-  .jadwal-table thead th[data-key="Sunrise"] { background: rgba(255, 213, 79, 0.15); color: #ffd54f; }
+  .jadwal-table thead th[data-key="Sunrise"] {
+    background: rgba(255, 213, 79, 0.15);
+    color: #ffd54f;
+  }
 
   /* ===== Tabel Kontrol AC ===== */
-  .ac-table {
-    width: 100%;
-    border-collapse: separate;
-    border-spacing: 0;
-    background: rgba(255,255,255,0.04);
-    border-radius: 12px;
-    overflow: hidden;
-    table-layout: fixed;
-  }
-  .ac-table th, .ac-table td {
-    padding: 10px 8px;
-    text-align: center;
-    border-left: 1px solid rgba(255,255,255,0.08);
-    vertical-align: middle;
-  }
-  .ac-table th:first-child, .ac-table td:first-child { border-left: none; }
-  .ac-table thead th {
-    background: rgba(0, 255, 204, 0.15);
-    color: #00ffcc;
-    font-size: 0.72rem;
-    letter-spacing: 0.6px;
-    text-transform: uppercase;
-    font-weight: 600;
-  }
+  .ac-table thead th:first-child,
   .ac-table tbody th {
-    background: rgba(255,255,255,0.04);
-    font-size: 0.8rem;
-    font-weight: 700;
-    width: 70px;
+    width: 42px;
+    padding: 8px 4px;
+    font-size: 0.7rem;
+    background: rgba(255,255,255,0.05);
+    color: #fff;
+    font-weight: 600;
+    text-align: center;
+  }
+  .ac-table tbody tr + tr th,
+  .ac-table tbody tr + tr td {
+    border-top: 1px solid rgba(255,255,255,0.08);
   }
   .ac-table tbody tr.row-on th { color: #69f0ae; }
   .ac-table tbody tr.row-off th { color: #ff8a80; }
-  .ac-table tbody tr + tr th, .ac-table tbody tr + tr td {
-    border-top: 1px solid rgba(255,255,255,0.08);
-  }
-  .ac-table input[type="time"] {
-    width: 90px;
-    background: rgba(0,0,0,0.3);
-    color: #00ffcc;
-    border: 1px solid rgba(0,255,204,0.3);
-    border-radius: 8px;
-    padding: 6px 8px;
-    font-size: 0.85rem;
-    font-family: inherit;
-    outline: none;
-    text-align: center;
-  }
+
+  .ac-table input[type="time"],
   .ac-table input[type="number"] {
-    width: 60px;
+    width: 65px;
     background: rgba(0,0,0,0.3);
     color: #00ffcc;
     border: 1px solid rgba(0,255,204,0.3);
-    border-radius: 8px;
-    padding: 6px 8px;
+    border-radius: 6px;
+    padding: 5px 4px;
     font-size: 0.85rem;
     font-family: inherit;
     outline: none;
     text-align: center;
+    font-weight: 600;
   }
   .ac-table input:focus { border-color: #00ffcc; background: rgba(0,0,0,0.5); }
-  .ac-table .unit {
-    font-size: 0.72rem;
-    opacity: 0.7;
-    margin-left: 4px;
-    font-weight: normal;
-  }
 
   /* ===== Daftar AC ===== */
   .ac-list { display: grid; grid-template-columns: 1fr; gap: 8px; }
@@ -417,13 +381,13 @@
   @media (max-width: 560px) {
     .clock { font-size: 2.3rem; }
     .next-name { font-size: 1.3rem; }
-    .jadwal-table thead th { font-size: 0.55rem; padding: 7px 1px; letter-spacing: 0; }
-    .jadwal-table tbody td { font-size: 0.85rem; padding: 9px 1px; }
+    .jadwal-table thead th, .ac-table thead th { font-size: 0.55rem; padding: 8px 1px; letter-spacing: 0; }
+    .jadwal-table tbody td { font-size: 0.82rem; padding: 10px 1px; }
     .jadwal-table tbody tr.iqomah-row td { font-size: 0.6rem; padding: 5px 1px; }
-    .jadwal-table tbody tr.iqomah-row input { width: 32px; font-size: 0.65rem; }
+    .jadwal-table tbody tr.iqomah-row input { width: 32px; font-size: 0.6rem; }
+    .ac-table thead th:first-child, .ac-table tbody th { width: 32px; font-size: 0.6rem; padding: 6px 2px; }
+    .ac-table input[type="time"], .ac-table input[type="number"] { padding: 3px 1px; font-size: 0.72rem; width: 52px; }
     .btn-row { grid-template-columns: 1fr; }
-    .ac-table th, .ac-table td { padding: 8px 4px; font-size: 0.72rem; }
-    .ac-table input[type="time"], .ac-table input[type="number"] { width: 70px; font-size: 0.78rem; }
     .ac-item { grid-template-columns: 25px 1fr; }
     .ac-item .ac-id { grid-column: 2; margin-top: -4px; }
     .section-title .right { width: 100%; justify-content: flex-end; margin-top: 4px; }
@@ -469,8 +433,7 @@
   </div>
 
   <!-- ===== JADWAL SHOLAT ===== -->
-  <div class="section">
-    <div class="section-title">🕌 Jadwal Sholat Hari Ini</div>
+  <div class="section" style="padding:0;border:none;background:none;box-shadow:none;">
     <table class="jadwal-table">
       <thead>
         <tr>
@@ -504,36 +467,27 @@
   </div>
 
   <!-- ===== KONTROL AC ===== -->
-  <div class="section">
-    <div class="section-title">⏱️ Kontrol AC</div>
-    <table class="ac-table">
-      <thead>
-        <tr>
-          <th>AKSI</th>
-          <th>JUMAT</th>
-          <th>SELAIN JUMAT</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr class="row-on">
-          <th>ON</th>
-          <td><input type="time" id="jumatOn" value="11:00"></td>
-          <td>
-            <input type="number" id="offsetOnWeekday" value="-15" min="-60" max="60">
-            <span class="unit">mnt sebelum Adzan</span>
-          </td>
-        </tr>
-        <tr class="row-off">
-          <th>OFF</th>
-          <td><input type="time" id="jumatOff" value="13:00"></td>
-          <td>
-            <input type="number" id="offsetOffWeekday" value="40" min="-60" max="120">
-            <span class="unit">mnt setelah Adzan</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <table class="ac-table">
+    <thead>
+      <tr>
+        <th>AKSI</th>
+        <th>JUMAT</th>
+        <th>SELAIN JUMAT</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="row-on">
+        <th>ON</th>
+        <td><input type="time" id="jumatOn" value="11:00"></td>
+        <td><input type="number" id="offsetOnWeekday" value="-15" min="-60" max="60"></td>
+      </tr>
+      <tr class="row-off">
+        <th>OFF</th>
+        <td><input type="time" id="jumatOff" value="13:00"></td>
+        <td><input type="number" id="offsetOffWeekday" value="40" min="-60" max="120"></td>
+      </tr>
+    </tbody>
+  </table>
 
   <!-- ===== DAFTAR AC ===== -->
   <div class="section">
@@ -545,9 +499,7 @@
         detik
       </span>
     </div>
-    <div class="ac-list" id="acList">
-      <!-- diisi oleh JS -->
-    </div>
+    <div class="ac-list" id="acList"></div>
   </div>
 
   <!-- ===== SINKRONISASI ===== -->
@@ -659,7 +611,6 @@ for (const key in iqomahInput) {
 }
 loadIqomahSettings();
 
-// Offset + jeda
 ['offsetOnWeekday','offsetOffWeekday','jedaAC'].forEach(id => {
   const saved = localStorage.getItem(id);
   if (saved !== null) document.getElementById(id).value = saved;
@@ -668,7 +619,6 @@ loadIqomahSettings();
   });
 });
 
-// Jumat
 ['jumatOn','jumatOff'].forEach(id => {
   const saved = localStorage.getItem(id);
   if (saved !== null) document.getElementById(id).value = saved;
@@ -677,13 +627,11 @@ loadIqomahSettings();
   });
 });
 
-// GAS URL
 document.getElementById('gasUrl').value = localStorage.getItem('gas_url') || '';
 document.getElementById('gasUrl').addEventListener('change', function() {
   localStorage.setItem('gas_url', this.value.trim());
 });
 
-// City
 const savedCity = localStorage.getItem('city');
 if (savedCity) {
   currentCity = savedCity;
@@ -693,7 +641,6 @@ if (savedCity) {
   }
 }
 
-// Render daftar AC
 renderAcList();
 
 // ============================================================
@@ -733,10 +680,10 @@ function beepIqomah() {
   beep(440, 1500, 0.75);
 }
 
-document.getElementById('btnTestBeep').addEventListener('click', () => {
+function testBeep() {
   getAudioCtx();
   beepAdzan();
-});
+}
 document.addEventListener('click', () => getAudioCtx(), { once: true });
 
 // ============================================================
