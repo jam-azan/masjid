@@ -163,7 +163,7 @@
   }
   .field input:focus { border-color: #00ffcc; background: rgba(0,0,0,0.5); }
 
-  /* ===== Tabel Jadwal Sholat (persis versi lama) ===== */
+  /* ===== Tabel Jadwal Sholat & AC (persis versi lama) ===== */
   .jadwal-table, .ac-table {
     width: 100%;
     border-collapse: separate;
@@ -176,7 +176,7 @@
     table-layout: fixed;
     margin-bottom: 20px;
   }
-  .ac-table { margin-bottom: 0; }
+  .ac-table { margin-bottom: 25px; }
 
   .jadwal-table th, .jadwal-table td,
   .ac-table th, .ac-table td {
@@ -198,7 +198,7 @@
     padding: 10px 2px;
   }
 
-  .jadwal-table tbody td, .ac-table tbody td {
+  .jadwal-table tbody td {
     font-size: 1rem;
     font-weight: 600;
     border-top: 1px solid rgba(255,255,255,0.08);
@@ -243,9 +243,19 @@
   }
 
   /* ===== Tabel Kontrol AC ===== */
+  .ac-title {
+    font-size: 0.85rem;
+    color: #00ffcc;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 0 0 12px;
+    font-weight: 600;
+    text-align: center;
+  }
+
   .ac-table thead th:first-child,
   .ac-table tbody th {
-    width: 42px;
+    width: 70px;
     padding: 8px 4px;
     font-size: 0.7rem;
     background: rgba(255,255,255,0.05);
@@ -260,9 +270,17 @@
   .ac-table tbody tr.row-on th { color: #69f0ae; }
   .ac-table tbody tr.row-off th { color: #ff8a80; }
 
+  .ac-table tbody td {
+    padding: 6px 4px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    transition: background 0.3s;
+  }
+
   .ac-table input[type="time"],
   .ac-table input[type="number"] {
-    width: 65px;
+    width: 70px;
     background: rgba(0,0,0,0.3);
     color: #00ffcc;
     border: 1px solid rgba(0,255,204,0.3);
@@ -385,8 +403,9 @@
     .jadwal-table tbody td { font-size: 0.82rem; padding: 10px 1px; }
     .jadwal-table tbody tr.iqomah-row td { font-size: 0.6rem; padding: 5px 1px; }
     .jadwal-table tbody tr.iqomah-row input { width: 32px; font-size: 0.6rem; }
-    .ac-table thead th:first-child, .ac-table tbody th { width: 32px; font-size: 0.6rem; padding: 6px 2px; }
-    .ac-table input[type="time"], .ac-table input[type="number"] { padding: 3px 1px; font-size: 0.72rem; width: 52px; }
+    .ac-table thead th:first-child, .ac-table tbody th { width: 50px; font-size: 0.6rem; padding: 6px 2px; }
+    .ac-table tbody td { padding: 5px 2px; }
+    .ac-table input[type="time"], .ac-table input[type="number"] { padding: 4px 2px; font-size: 0.72rem; width: 60px; }
     .btn-row { grid-template-columns: 1fr; }
     .ac-item { grid-template-columns: 25px 1fr; }
     .ac-item .ac-id { grid-column: 2; margin-top: -4px; }
@@ -433,40 +452,39 @@
   </div>
 
   <!-- ===== JADWAL SHOLAT ===== -->
-  <div class="section" style="padding:0;border:none;background:none;box-shadow:none;">
-    <table class="jadwal-table">
-      <thead>
-        <tr>
-          <th data-key="Fajr">Subuh</th>
-          <th data-key="Sunrise">Terbit</th>
-          <th data-key="Dhuhr">Dzuhur</th>
-          <th data-key="Asr">Ashar</th>
-          <th data-key="Maghrib">Maghrib</th>
-          <th data-key="Isha">Isya</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td data-key="Fajr">-</td>
-          <td data-key="Sunrise" class="syuruq">-</td>
-          <td data-key="Dhuhr">-</td>
-          <td data-key="Asr">-</td>
-          <td data-key="Maghrib">-</td>
-          <td data-key="Isha">-</td>
-        </tr>
-        <tr class="iqomah-row">
-          <td><input type="number" id="iqomahFajr" value="10" min="0" max="60"></td>
-          <td>&lt; IQOMAH &gt;</td>
-          <td><input type="number" id="iqomahDhuhr" value="8" min="0" max="60"></td>
-          <td><input type="number" id="iqomahAsr" value="8" min="0" max="60"></td>
-          <td><input type="number" id="iqomahMaghrib" value="10" min="0" max="60"></td>
-          <td><input type="number" id="iqomahIsha" value="10" min="0" max="60"></td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
+  <table class="jadwal-table">
+    <thead>
+      <tr>
+        <th data-key="Fajr">Subuh</th>
+        <th data-key="Sunrise">Terbit</th>
+        <th data-key="Dhuhr">Dzuhur</th>
+        <th data-key="Asr">Ashar</th>
+        <th data-key="Maghrib">Maghrib</th>
+        <th data-key="Isha">Isya</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td data-key="Fajr">-</td>
+        <td data-key="Sunrise" class="syuruq">-</td>
+        <td data-key="Dhuhr">-</td>
+        <td data-key="Asr">-</td>
+        <td data-key="Maghrib">-</td>
+        <td data-key="Isha">-</td>
+      </tr>
+      <tr class="iqomah-row">
+        <td><input type="number" id="iqomahFajr" value="10" min="0" max="60"></td>
+        <td>&lt; IQOMAH &gt;</td>
+        <td><input type="number" id="iqomahDhuhr" value="8" min="0" max="60"></td>
+        <td><input type="number" id="iqomahAsr" value="8" min="0" max="60"></td>
+        <td><input type="number" id="iqomahMaghrib" value="10" min="0" max="60"></td>
+        <td><input type="number" id="iqomahIsha" value="10" min="0" max="60"></td>
+      </tr>
+    </tbody>
+  </table>
 
   <!-- ===== KONTROL AC ===== -->
+  <div class="ac-title">⏱ Kontrol AC (menit dari adzan)</div>
   <table class="ac-table">
     <thead>
       <tr>
@@ -534,9 +552,6 @@ const COUNTRY = 'Indonesia';
 const METHOD = 20;
 let currentCity = 'Klaten';
 
-// ============================================================
-// STATE
-// ============================================================
 let jadwal = {};
 let lastFetchDate = '';
 let triggeredAdzan = {};
@@ -722,9 +737,6 @@ function renderJadwal() {
   });
 }
 
-// ============================================================
-// HITUNG WAKTU IQOMAH
-// ============================================================
 function getIqomahTime(prayerKey) {
   const timeStr = jadwal[prayerKey];
   if (!timeStr) return null;
@@ -736,9 +748,6 @@ function getIqomahTime(prayerKey) {
   return iqomah;
 }
 
-// ============================================================
-// CARI EVENT BERIKUTNYA
-// ============================================================
 function getNextEvent(now) {
   let next = null, minDiff = Infinity;
 
@@ -778,9 +787,6 @@ function getNextEvent(now) {
   return next;
 }
 
-// ============================================================
-// TRIGGER BEEP
-// ============================================================
 function checkTriggers(now) {
   const todayKey = `${pad(now.getDate())}-${pad(now.getMonth()+1)}-${now.getFullYear()}`;
 
@@ -827,9 +833,6 @@ function startBlackout() {
   }, 5 * 60 * 1000);
 }
 
-// ============================================================
-// UPDATE TAMPILAN
-// ============================================================
 function updateClock() {
   const now = new Date();
 
@@ -880,7 +883,7 @@ function updateClock() {
 }
 
 // ============================================================
-// SYNC KE BACKEND
+// SYNC
 // ============================================================
 function setStatus(type, msg) {
   const el = document.getElementById('statusBox');
@@ -920,7 +923,6 @@ async function syncKeBackend() {
     setStatus('error', '❌ Isi URL GAS dulu di atas');
     return;
   }
-
   const payload = kumpulkanSetting();
   const btn = document.getElementById('btnSync');
   btn.disabled = true;
@@ -951,7 +953,6 @@ async function syncKeBackend() {
 async function cekStatusSync() {
   const gasUrl = document.getElementById('gasUrl').value.trim();
   if (!gasUrl) { setStatus('error', '❌ Isi URL GAS dulu'); return; }
-
   setStatus('loading', '⏳ Mengambil status...');
   try {
     const res = await fetch(gasUrl + '?action=getStatus&city=' + encodeURIComponent(currentCity));
@@ -962,9 +963,7 @@ async function cekStatusSync() {
       msg += 'Kota: ' + (info.city || '-') + '\n';
       msg += 'Terakhir sync: ' + (info.lastSync || 'Belum pernah') + '\n';
       msg += 'Cron harian: ' + (info.cronStatus || 'Belum aktif') + '\n';
-      if (info.activeTriggers !== undefined) {
-        msg += 'Trigger aktif: ' + info.activeTriggers + ' / 20';
-      }
+      if (info.activeTriggers !== undefined) msg += 'Trigger aktif: ' + info.activeTriggers + ' / 20';
       setStatus('info', msg);
     } else {
       setStatus('error', '❌ ' + (data.error || 'Gagal ambil status'));
@@ -977,7 +976,6 @@ async function cekStatusSync() {
 async function lihatTrigger() {
   const gasUrl = document.getElementById('gasUrl').value.trim();
   if (!gasUrl) { setStatus('error', '❌ Isi URL GAS dulu'); return; }
-
   setStatus('loading', '⏳ Mengambil daftar trigger...');
   try {
     const res = await fetch(gasUrl + '?action=listTriggers');
@@ -985,43 +983,29 @@ async function lihatTrigger() {
     if (data.success) {
       const list = data.data || [];
       let msg = '📋 Trigger Aktif: ' + list.length + ' / 20\n';
-      if (list.length === 0) {
-        msg += '(Tidak ada trigger)';
-      } else {
+      if (list.length === 0) msg += '(Tidak ada trigger)';
+      else {
         list.slice(0, 15).forEach(t => { msg += '• ' + t.fungsi + '\n'; });
         if (list.length > 15) msg += '... dan ' + (list.length - 15) + ' lainnya';
       }
       setStatus('info', msg);
-    } else {
-      setStatus('error', '❌ ' + (data.error || 'Gagal'));
-    }
-  } catch (e) {
-    setStatus('error', '❌ ' + e.message);
-  }
+    } else setStatus('error', '❌ ' + (data.error || 'Gagal'));
+  } catch (e) { setStatus('error', '❌ ' + e.message); }
 }
 
 async function hapusTrigger() {
   if (!confirm('Yakin hapus semua trigger AC? Sistem tidak akan jalan sampai di-sync ulang.')) return;
   const gasUrl = document.getElementById('gasUrl').value.trim();
   if (!gasUrl) { setStatus('error', '❌ Isi URL GAS dulu'); return; }
-
   setStatus('loading', '⏳ Menghapus trigger...');
   try {
     const res = await fetch(gasUrl + '?action=clearTriggers');
     const data = await res.json();
-    if (data.success) {
-      setStatus('success', '✅ ' + (data.message || 'Trigger dihapus'));
-    } else {
-      setStatus('error', '❌ ' + (data.error || 'Gagal'));
-    }
-  } catch (e) {
-    setStatus('error', '❌ ' + e.message);
-  }
+    if (data.success) setStatus('success', '✅ ' + (data.message || 'Trigger dihapus'));
+    else setStatus('error', '❌ ' + (data.error || 'Gagal'));
+  } catch (e) { setStatus('error', '❌ ' + e.message); }
 }
 
-// ============================================================
-// GANTI KOTA
-// ============================================================
 document.getElementById('citySelect').addEventListener('change', function() {
   currentCity = this.value;
   localStorage.setItem('city', currentCity);
@@ -1037,9 +1021,6 @@ document.getElementById('citySelect').addEventListener('change', function() {
   fetchPrayerTimes();
 });
 
-// ============================================================
-// INISIALISASI
-// ============================================================
 fetchPrayerTimes();
 setInterval(updateClock, 1000);
 updateClock();
