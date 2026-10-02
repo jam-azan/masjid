@@ -108,7 +108,9 @@
     font-weight: 600;
     display: flex;
     align-items: center;
+    justify-content: space-between;
     gap: 8px;
+    flex-wrap: wrap;
   }
   .section-title .sub {
     font-size: 0.65rem;
@@ -117,6 +119,30 @@
     letter-spacing: 0.5px;
     text-transform: none;
   }
+  .section-title .right {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.7rem;
+    text-transform: none;
+    letter-spacing: 0.3px;
+    font-weight: normal;
+    color: #fff;
+    opacity: 0.85;
+  }
+  .section-title .right input {
+    width: 55px;
+    background: rgba(0,0,0,0.3);
+    color: #00ffcc;
+    border: 1px solid rgba(0,255,204,0.3);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 0.75rem;
+    font-family: inherit;
+    outline: none;
+    text-align: center;
+  }
+  .section-title .right input:focus { border-color: #00ffcc; }
 
   .field {
     margin-bottom: 10px;
@@ -217,6 +243,74 @@
   .jadwal-table thead th.active { background: rgba(0, 255, 204, 0.35); }
   .jadwal-table .syuruq { color: #ffd54f; }
   .jadwal-table thead th[data-key="Sunrise"] { background: rgba(255, 213, 79, 0.15); color: #ffd54f; }
+
+  /* ===== Tabel Kontrol AC ===== */
+  .ac-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: rgba(255,255,255,0.04);
+    border-radius: 12px;
+    overflow: hidden;
+    table-layout: fixed;
+  }
+  .ac-table th, .ac-table td {
+    padding: 10px 8px;
+    text-align: center;
+    border-left: 1px solid rgba(255,255,255,0.08);
+    vertical-align: middle;
+  }
+  .ac-table th:first-child, .ac-table td:first-child { border-left: none; }
+  .ac-table thead th {
+    background: rgba(0, 255, 204, 0.15);
+    color: #00ffcc;
+    font-size: 0.72rem;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  .ac-table tbody th {
+    background: rgba(255,255,255,0.04);
+    font-size: 0.8rem;
+    font-weight: 700;
+    width: 70px;
+  }
+  .ac-table tbody tr.row-on th { color: #69f0ae; }
+  .ac-table tbody tr.row-off th { color: #ff8a80; }
+  .ac-table tbody tr + tr th, .ac-table tbody tr + tr td {
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .ac-table input[type="time"] {
+    width: 90px;
+    background: rgba(0,0,0,0.3);
+    color: #00ffcc;
+    border: 1px solid rgba(0,255,204,0.3);
+    border-radius: 8px;
+    padding: 6px 8px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    outline: none;
+    text-align: center;
+  }
+  .ac-table input[type="number"] {
+    width: 60px;
+    background: rgba(0,0,0,0.3);
+    color: #00ffcc;
+    border: 1px solid rgba(0,255,204,0.3);
+    border-radius: 8px;
+    padding: 6px 8px;
+    font-size: 0.85rem;
+    font-family: inherit;
+    outline: none;
+    text-align: center;
+  }
+  .ac-table input:focus { border-color: #00ffcc; background: rgba(0,0,0,0.5); }
+  .ac-table .unit {
+    font-size: 0.72rem;
+    opacity: 0.7;
+    margin-left: 4px;
+    font-weight: normal;
+  }
 
   /* ===== Daftar AC ===== */
   .ac-list { display: grid; grid-template-columns: 1fr; gap: 8px; }
@@ -320,21 +414,6 @@
     min-height: 18px;
   }
 
-  .checkbox-field {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.85rem;
-    margin-bottom: 12px;
-  }
-  .checkbox-field input[type="checkbox"] {
-    width: 18px;
-    height: 18px;
-    accent-color: #00ffcc;
-    cursor: pointer;
-  }
-  .checkbox-field label { cursor: pointer; }
-
   @media (max-width: 560px) {
     .clock { font-size: 2.3rem; }
     .next-name { font-size: 1.3rem; }
@@ -343,11 +422,11 @@
     .jadwal-table tbody tr.iqomah-row td { font-size: 0.6rem; padding: 5px 1px; }
     .jadwal-table tbody tr.iqomah-row input { width: 32px; font-size: 0.65rem; }
     .btn-row { grid-template-columns: 1fr; }
-    .field { flex-direction: column; align-items: stretch; }
-    .field label { min-width: auto; }
-    .field input[type="number"], .field input[type="time"] { width: 100%; }
+    .ac-table th, .ac-table td { padding: 8px 4px; font-size: 0.72rem; }
+    .ac-table input[type="time"], .ac-table input[type="number"] { width: 70px; font-size: 0.78rem; }
     .ac-item { grid-template-columns: 25px 1fr; }
     .ac-item .ac-id { grid-column: 2; margin-top: -4px; }
+    .section-title .right { width: 100%; justify-content: flex-end; margin-top: 4px; }
   }
 </style>
 </head>
@@ -413,57 +492,59 @@
           <td data-key="Isha">-</td>
         </tr>
         <tr class="iqomah-row">
-          <td><input type="number" id="iqomahFajr" value="10" min="0" max="60"> mnt</td>
+          <td><input type="number" id="iqomahFajr" value="10" min="0" max="60"></td>
           <td>&lt; IQOMAH &gt;</td>
-          <td><input type="number" id="iqomahDhuhr" value="8" min="0" max="60"> mnt</td>
-          <td><input type="number" id="iqomahAsr" value="8" min="0" max="60"> mnt</td>
-          <td><input type="number" id="iqomahMaghrib" value="10" min="0" max="60"> mnt</td>
-          <td><input type="number" id="iqomahIsha" value="10" min="0" max="60"> mnt</td>
+          <td><input type="number" id="iqomahDhuhr" value="8" min="0" max="60"></td>
+          <td><input type="number" id="iqomahAsr" value="8" min="0" max="60"></td>
+          <td><input type="number" id="iqomahMaghrib" value="10" min="0" max="60"></td>
+          <td><input type="number" id="iqomahIsha" value="10" min="0" max="60"></td>
         </tr>
       </tbody>
     </table>
   </div>
 
-  <!-- ===== OFFSET HARI BIASA ===== -->
+  <!-- ===== KONTROL AC ===== -->
   <div class="section">
-    <div class="section-title">⏱️ Offset AC — Hari Biasa <span class="sub">(Senin-Kamis, Sabtu, Ahad)</span></div>
-    <div class="field">
-      <label>ON (menit dari adzan)</label>
-      <input type="number" id="offsetOnWeekday" value="-15" min="-60" max="60">
-      <span class="hint">-15 = 15 menit sebelum adzan</span>
-    </div>
-    <div class="field">
-      <label>OFF (menit dari adzan)</label>
-      <input type="number" id="offsetOffWeekday" value="40" min="-60" max="120">
-      <span class="hint">+40 = 40 menit setelah adzan</span>
-    </div>
-    <div class="field">
-      <label>Jeda antar AC (detik)</label>
-      <input type="number" id="jedaAC" value="15" min="5" max="120">
-      <span class="hint">Jeda saat 8 AC nyala berurutan</span>
-    </div>
-  </div>
-
-  <!-- ===== JUMAT ===== -->
-  <div class="section">
-    <div class="section-title">⏱️ Hari Jumat <span class="sub">(Jam manual)</span></div>
-    <div class="checkbox-field">
-      <input type="checkbox" id="jumatEnabled" checked>
-      <label for="jumatEnabled">Aktifkan setting khusus Jumat</label>
-    </div>
-    <div class="field">
-      <label>Jam ON</label>
-      <input type="time" id="jumatOn" value="11:00">
-    </div>
-    <div class="field">
-      <label>Jam OFF</label>
-      <input type="time" id="jumatOff" value="13:00">
-    </div>
+    <div class="section-title">⏱️ Kontrol AC</div>
+    <table class="ac-table">
+      <thead>
+        <tr>
+          <th>AKSI</th>
+          <th>JUMAT</th>
+          <th>SELAIN JUMAT</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="row-on">
+          <th>ON</th>
+          <td><input type="time" id="jumatOn" value="11:00"></td>
+          <td>
+            <input type="number" id="offsetOnWeekday" value="-15" min="-60" max="60">
+            <span class="unit">mnt sebelum Adzan</span>
+          </td>
+        </tr>
+        <tr class="row-off">
+          <th>OFF</th>
+          <td><input type="time" id="jumatOff" value="13:00"></td>
+          <td>
+            <input type="number" id="offsetOffWeekday" value="40" min="-60" max="120">
+            <span class="unit">mnt setelah Adzan</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
   </div>
 
   <!-- ===== DAFTAR AC ===== -->
   <div class="section">
-    <div class="section-title">📋 Daftar 8 AC <span class="sub">(nama & remote ID)</span></div>
+    <div class="section-title">
+      <span>📋 Daftar 8 AC</span>
+      <span class="right">
+        Jeda antar AC:
+        <input type="number" id="jedaAC" value="15" min="5" max="120">
+        detik
+      </span>
+    </div>
     <div class="ac-list" id="acList">
       <!-- diisi oleh JS -->
     </div>
@@ -528,7 +609,7 @@ const iqomahInput = {
 function pad(n){ return n.toString().padStart(2,'0'); }
 
 // ============================================================
-// DAFTAR 8 AC — generate otomatis
+// DAFTAR 8 AC
 // ============================================================
 const AC_NAMES_DEFAULT = ['AC Imam','AC Makmum 1','AC Makmum 2','AC Makmum 3',
                           'AC Serambi','AC TPQ','AC Kantor','AC Aula'];
@@ -578,7 +659,7 @@ for (const key in iqomahInput) {
 }
 loadIqomahSettings();
 
-// Offset hari biasa + jeda
+// Offset + jeda
 ['offsetOnWeekday','offsetOffWeekday','jedaAC'].forEach(id => {
   const saved = localStorage.getItem(id);
   if (saved !== null) document.getElementById(id).value = saved;
@@ -594,13 +675,6 @@ loadIqomahSettings();
   document.getElementById(id).addEventListener('change', e => {
     localStorage.setItem(id, e.target.value);
   });
-});
-const savedJumatEnabled = localStorage.getItem('jumatEnabled');
-if (savedJumatEnabled !== null) {
-  document.getElementById('jumatEnabled').checked = savedJumatEnabled === 'true';
-}
-document.getElementById('jumatEnabled').addEventListener('change', e => {
-  localStorage.setItem('jumatEnabled', e.target.checked);
 });
 
 // GAS URL
@@ -647,17 +721,14 @@ function beep(freq, duration, volume) {
   osc.stop(now + duration / 1000);
 }
 
-// Adzan: 3× agak panjang
 function beepAdzan() {
   beep(880, 400, 0.5);
   setTimeout(() => beep(880, 400, 0.5), 500);
   setTimeout(() => beep(880, 400, 0.5), 1000);
 }
-// Stop sunat (iqomah - 1 menit): 1× agak panjang
 function beepStopSunat() {
   beep(660, 500, 0.5);
 }
-// Iqomah: 1× PANJANG, lebih keras
 function beepIqomah() {
   beep(440, 1500, 0.75);
 }
@@ -888,7 +959,6 @@ function kumpulkanSetting() {
     offsetOnWeekday:  parseInt(document.getElementById('offsetOnWeekday').value) || -15,
     offsetOffWeekday: parseInt(document.getElementById('offsetOffWeekday').value) || 40,
     jedaAC:           parseInt(document.getElementById('jedaAC').value) || 15,
-    jumatEnabled:     document.getElementById('jumatEnabled').checked,
     jumatOn:          document.getElementById('jumatOn').value || '11:00',
     jumatOff:         document.getElementById('jumatOff').value || '13:00',
     iqomah: iqomah,
@@ -911,7 +981,7 @@ async function syncKeBackend() {
   setStatus('loading', '⏳ Mengirim setting ke server...');
 
   try {
-    const res = await fetch(gasUrl, {
+    await fetch(gasUrl, {
       method: 'POST',
       mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
