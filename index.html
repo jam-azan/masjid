@@ -709,8 +709,15 @@ async function fetchPrayerTimes() {
     const url = `https://api.aladhan.com/v1/timingsByCity/${dateStr}?city=${encodeURIComponent(currentCity)}&country=${COUNTRY}&method=${METHOD}`;
     const res = await fetch(url);
     const data = await res.json();
-    if (data.code === 200 && data.data && data.data.timings) {
+        if (data.code === 200 && data.data && data.data.timings) {
       jadwal = data.data.timings;
+      // Koreksi Subuh ke standar Muhammadiyah (+8 menit)
+      if (jadwal.Fajr) {
+        const [h, m] = jadwal.Fajr.slice(0, 5).split(':').map(Number);
+        const d = new Date();
+        d.setHours(h, m + OFFSET_SUBUH, 0, 0);
+        jadwal.Fajr = pad(d.getHours()) + ':' + pad(d.getMinutes());
+      }
       lastFetchDate = dateStr;
       triggeredAdzan = {};
       triggeredIqomahWarn = {};
