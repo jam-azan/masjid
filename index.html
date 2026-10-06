@@ -567,6 +567,7 @@
 <script>
 const COUNTRY = 'Indonesia';
 const METHOD = 20;
+const OFFSET_SUBUH = 8; // Koreksi Muhammadiyah: Subuh +8 menit
 let currentCity = 'Klaten';
 
 let jadwal = {};
@@ -870,8 +871,9 @@ function kumpulkanSetting() {
     acRemotes.push(localStorage.getItem('ac_remote_' + i) || '');
   }
   return {
-    city: currentCity, method: METHOD, country: COUNTRY,
-    offsetOnWeekday:  parseInt(document.getElementById('offsetOnWeekday').value) || -15,
+  city: currentCity, method: METHOD, country: COUNTRY,
+  offsetSubuh: OFFSET_SUBUH,   // <-- tambahkan
+  offsetOnWeekday:  parseInt(document.getElementById('offsetOnWeekday').value) || -15,
     offsetOffWeekday: parseInt(document.getElementById('offsetOffWeekday').value) || 40,
     jedaAC:           parseInt(document.getElementById('jedaAC').value) || 15,
     jumatOn:          document.getElementById('jumatOn').value || '11:00',
