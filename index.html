@@ -468,6 +468,79 @@
     .ac-item .ac-id { grid-column: 2; margin-top: -4px; }
     .section-title .right { width: 100%; justify-content: flex-end; margin-top: 4px; }
   }
+
+  /* ===== Tabel Breaker ===== */
+.breaker-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  background: rgba(255,255,255,0.06);
+  border-radius: 12px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+  table-layout: fixed;
+  margin-bottom: 12px;
+}
+
+.breaker-table th,
+.breaker-table td {
+  padding: 6px 3px;
+  text-align: center;
+  font-variant-numeric: tabular-nums;
+  border-left: 1px solid rgba(255,255,255,0.08);
+  font-size: 0.68rem;
+  word-break: break-word;
+  line-height: 1.2;
+}
+.breaker-table th:first-child,
+.breaker-table td:first-child { border-left: none; }
+
+.breaker-table thead th {
+  background: rgba(0, 255, 204, 0.15);
+  color: #00ffcc;
+  font-size: 0.55rem;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 6px 2px;
+}
+
+.breaker-table tbody td {
+  font-weight: 600;
+  border-top: 1px solid rgba(255,255,255,0.08);
+  color: #fff;
+}
+
+/* Kolom: Sholat, ON, OFF */
+.breaker-table tbody td:nth-child(1) { font-size: 0.7rem; color: #fff; }
+.breaker-table tbody td:nth-child(3) { color: #00ffcc; }
+.breaker-table tbody td:nth-child(5) { color: #ffd54f; }
+
+/* Tanda panah */
+.breaker-table .mark {
+  display: inline-block;
+  font-size: 0.65rem;
+  margin-left: 1px;
+}
+
+/* Mobile: perkecil lagi */
+@media (max-width: 560px) {
+  .breaker-table th,
+  .breaker-table td {
+    padding: 5px 1px;
+    font-size: 0.6rem;
+  }
+  .breaker-table thead th {
+    font-size: 0.48rem;
+    padding: 5px 1px;
+    letter-spacing: 0;
+  }
+  .breaker-table tbody td:nth-child(1) { font-size: 0.6rem; }
+  .breaker-table .mark { font-size: 0.55rem; }
+}
+
+ 
 </style>
 </head>
 <body>
@@ -634,13 +707,13 @@
     <b>Breaker OFF</b> = Adzan Terakhir + 45 menit
   </div>
 
-  <table class="ac-table" id="breakerTable">
+  <table class="breaker-table" id="breakerTable">
     <thead>
       <tr>
         <th>SHOLAT</th>
-        <th>ADZAN TERAWAL</th>
+        <th>ADZAN<br>TERAWAL</th>
         <th>BREAKER ON</th>
-        <th>ADZAN TERAKHIR</th>
+        <th>ADZAN<br>TERAKHIR</th>
         <th>BREAKER OFF</th>
       </tr>
     </thead>
@@ -848,15 +921,14 @@ async function loadBreaker() {
     const final = data.data.final || {};
 
     body.innerHTML = rows.map(r => `
-      <tr>
-        <td style="font-weight:600;">${r.sholat}</td>
-        <td>${r.adzanTerawal}</td>
-        <td style="color:#00ffcc; font-weight:700;">${r.breakerOn}${r.isOnEarliest ? ' ⬅️' : ''}</td>
-        <td>${r.adzanTerakhir}</td>
-        <td style="color:#ffd54f; font-weight:700;">${r.breakerOff}${r.isOffLatest ? ' ⬅️' : ''}</td>
-      </tr>
-    `).join('');
-
+  <tr>
+    <td>${r.sholat}</td>
+    <td>${r.adzanTerawal}</td>
+    <td>${r.breakerOn}${r.isOnEarliest ? '<span class="mark">⬅️</span>' : ''}</td>
+    <td>${r.adzanTerakhir}</td>
+    <td>${r.breakerOff}${r.isOffLatest ? '<span class="mark">⬅️</span>' : ''}</td>
+  </tr>
+`).join('');
     finalBox.innerHTML = `
       <div style="font-size:0.78rem; color:#00ffcc; font-weight:700; margin-bottom:6px;">🎯 Setting Final (${data.data.year})</div>
       <div style="display:inline-block; background:rgba(0,255,204,0.08); border:1px solid rgba(0,255,204,0.35);
