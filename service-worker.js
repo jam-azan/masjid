@@ -1,7 +1,7 @@
 // ============================================================
 // Service Worker — Jam Adzan Masjid Al Himmah
 // ============================================================
-const CACHE_NAME = 'jam-adzan-v2';
+const CACHE_NAME = 'jam-adzan-v6';
 const ASSETS = [
   './',
   './index.html',
