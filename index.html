@@ -833,7 +833,7 @@ const METHOD = 20;
 const OFFSET_SUBUH = 8; // Koreksi Muhammadiyah: Subuh +8 menit
 
 // ⭐ URL Google Apps Script — hardcoded, tidak ditampilkan di UI
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbzhIAICAbddi8qozXwCEerfzs5rY3qf8-OG2D2jKFM7nJozDQ1yJe9e5YJ4NHbfSpMW/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwCpu1QrnvGB1mctnUdEHrg9YcN6WfdEM0HIZlmA_Xw7B6UswMwNO9xMdbZ1_qH2OU/exec';
 
 let currentCity = 'Klaten';
 
@@ -920,6 +920,53 @@ function renderAcGroups() {
 
 renderAcGroups();
 
+// ============================================================
+// AUTO-LOAD irGroups dari server (GAS) → isi localStorage
+// ============================================================
+async function loadIrGroupsFromServer() {
+  try {
+    const data = await jsonp(GAS_URL + '?action=getIrGroups');
+
+    if (!data || !data.success || !data.data || !data.data.irGroups) {
+      console.log('[Auto-load] Tidak ada data irGroups dari server');
+      return;
+    }
+
+    const remote = data.data.irGroups;
+    let updated = 0;
+    const groupKeys = ['bardi1', 'bardi2', 'eztech'];
+
+    groupKeys.forEach(groupKey => {
+      const grup = remote[groupKey];
+      if (!grup) return;
+
+      // Simpan IR ID
+      if (grup.irId) {
+        localStorage.setItem('ir_id_' + groupKey, grup.irId);
+        updated++;
+      }
+
+      // Simpan nama & remote ID tiap AC
+      (grup.acs || []).forEach((ac, i) => {
+        const storageKey = groupKey + '_' + i;
+        if (ac.name)   localStorage.setItem('ac_name_'   + storageKey, ac.name);
+        if (ac.remote) localStorage.setItem('ac_remote_' + storageKey, ac.remote);
+        updated++;
+      });
+    });
+
+    if (updated > 0) {
+      console.log('[Auto-load] Berhasil memuat ' + updated + ' data dari server');
+      renderAcGroups();   // render ulang tampilan
+    } else {
+      console.log('[Auto-load] Server tidak punya data (sheet mungkin kosong)');
+    }
+
+  } catch (e) {
+    console.warn('[Auto-load] Gagal:', e.message);
+  }
+}
+ 
 function loadIqomahSettings() {
   for (const key in iqomahInput) {
     const saved = localStorage.getItem('iqomah_' + key);
@@ -1196,6 +1243,7 @@ function setStatus(type, msg) {
   el.className = 'status-box show ' + type;
   el.innerHTML = msg;
 }
+ 
 function kumpulkanSetting() {
   const iqomah = {};
   for (const key in iqomahInput) {
@@ -1206,14 +1254,20 @@ function kumpulkanSetting() {
   const irGroups = {};
   for (const groupKey in IR_GROUPS) {
     const group = IR_GROUPS[groupKey];
+
+    const irIdLocal = localStorage.getItem('ir_id_' + groupKey);
+
     irGroups[groupKey] = {
       label: group.label,
-      irId: localStorage.getItem('ir_id_' + groupKey) || '',
-      acs: group.acs.map((_, idx) => {
+      irId: (irIdLocal !== null && irIdLocal !== '') ? irIdLocal : '',
+      acs: group.acs.map((defaultName, idx) => {
         const storageKey = `${groupKey}_${idx}`;
+        const nameLocal   = localStorage.getItem('ac_name_' + storageKey);
+        const remoteLocal = localStorage.getItem('ac_remote_' + storageKey);
+
         return {
-          name:   localStorage.getItem('ac_name_' + storageKey)   || group.acs[idx],
-          remote: localStorage.getItem('ac_remote_' + storageKey) || ''
+          name:   (nameLocal   !== null && nameLocal   !== '') ? nameLocal   : defaultName,
+          remote: (remoteLocal !== null && remoteLocal !== '') ? remoteLocal : ''
         };
       })
     };
@@ -1228,23 +1282,55 @@ function kumpulkanSetting() {
     jumatOn:          document.getElementById('jumatOn').value || '11:00',
     jumatOff:         document.getElementById('jumatOff').value || '13:00',
     iqomah: iqomah,
-    irGroups: irGroups   // ⬅️ struktur baru
-    // acNames & acRemotes dihapus (digantikan irGroups)
+    irGroups: irGroups
   };
 }
+ 
 async function syncKeBackend() {
   const payload = kumpulkanSetting();
+
+  // ===== VALIDASI: cek IR ID & Remote ID yang kosong =====
+  const irGroups = payload.irGroups || {};
+  const kosong = [];
+
+  for (const gk in irGroups) {
+    if (!irGroups[gk].irId) {
+      kosong.push('IR ID ' + irGroups[gk].label);
+    }
+    (irGroups[gk].acs || []).forEach((ac) => {
+      if (!ac.remote) {
+        kosong.push('Remote ID ' + ac.name + ' (' + irGroups[gk].label + ')');
+      }
+    });
+  }
+
+  // Kalau ada yang kosong → konfirmasi
+  if (kosong.length > 0) {
+    const pesan = '⚠️ Ada ' + kosong.length + ' kolom ID kosong:\n\n' +
+                  kosong.slice(0, 10).join('\n') +
+                  (kosong.length > 10 ? '\n... dan ' + (kosong.length - 10) + ' lainnya' : '') +
+                  '\n\nKalau Sync, data di sheet akan DITIMPA dengan yang kosong.\n\n' +
+                  'Yakin lanjut?';
+    if (!confirm(pesan)) {
+      setStatus('error', '❌ Sync dibatalkan. Lengkapi ID dulu atau tunggu auto-load selesai.');
+      return;
+    }
+  }
+
   const btn = document.getElementById('btnSync');
   btn.disabled = true;
   btn.textContent = '⏳ Mengirim...';
   setStatus('loading', '⏳ Mengirim setting ke server...');
+
   try {
     await fetch(GAS_URL, {
       method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ action: 'syncTimer', ...payload })
     });
-    setStatus('success', '✅ Setting terkirim!\n📅 Server akan sync dalam beberapa detik.\nKlik "Cek Status" untuk verifikasi.');
+    setStatus('success',
+      '✅ Setting terkirim!\n📅 Server akan sync dalam beberapa detik.\n' +
+      'Klik "Cek Status" untuk verifikasi.');
     setTimeout(() => cekStatusSync(), 4000);
   } catch (e) {
     setStatus('error', '❌ Gagal kirim: ' + e.message);
@@ -1319,6 +1405,57 @@ async function hapusTrigger() {
     else setStatus('error', '❌ ' + (data.error || 'Gagal'));
   } catch (e) { setStatus('error', '❌ ' + e.message); }
 }
+
+// ============================================================
+// AUTO-LOAD irGroups dari server (GAS) → isi localStorage
+// ============================================================
+async function loadIrGroupsFromServer() {
+  try {
+    const data = await jsonp(GAS_URL + '?action=getIrGroups');
+
+    if (!data || !data.success || !data.data || !data.data.irGroups) {
+      console.log('[Auto-load] Tidak ada data irGroups dari server');
+      return;
+    }
+
+    const remote = data.data.irGroups;
+    let updated = 0;
+    const groupKeys = ['bardi1', 'bardi2', 'eztech'];
+
+    groupKeys.forEach(groupKey => {
+      const grup = remote[groupKey];
+      if (!grup) return;
+
+      // Simpan IR ID
+      if (grup.irId) {
+        localStorage.setItem('ir_id_' + groupKey, grup.irId);
+        updated++;
+      }
+
+      // Simpan nama & remote ID tiap AC
+      (grup.acs || []).forEach((ac, i) => {
+        const storageKey = groupKey + '_' + i;
+        if (ac.name)   localStorage.setItem('ac_name_'   + storageKey, ac.name);
+        if (ac.remote) localStorage.setItem('ac_remote_' + storageKey, ac.remote);
+        updated++;
+      });
+    });
+
+    if (updated > 0) {
+      console.log('[Auto-load] Berhasil memuat ' + updated + ' data dari server');
+      renderAcGroups();   // render ulang tampilan dengan data baru
+    } else {
+      console.log('[Auto-load] Server tidak punya data (sheet mungkin kosong)');
+    }
+
+  } catch (e) {
+    console.warn('[Auto-load] Gagal:', e.message);
+  }
+}
+
+// ============================================================
+// EVENT LISTENER — Ganti Kota
+// ============================================================
 document.getElementById('citySelect').addEventListener('change', function() {
   currentCity = this.value;
   localStorage.setItem('city', currentCity);
@@ -1333,9 +1470,18 @@ document.getElementById('citySelect').addEventListener('change', function() {
   });
   fetchPrayerTimes();
 });
+
+// ============================================================
+// INISIALISASI
+// ============================================================
 fetchPrayerTimes();
 setInterval(updateClock, 1000);
 updateClock();
+
+// Auto-load irGroups dari server (multi-device)
+window.addEventListener('load', () => {
+  setTimeout(loadIrGroupsFromServer, 800);
+});
 
  // ============================================================
 // PWA — Registrasi Service Worker + Banner Install
