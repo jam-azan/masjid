@@ -807,28 +807,13 @@
 
     <div class="listrik-input">
       <div class="field">
-        <label>Golongan Tarif</label>
-        <select id="golTarif">
-          <option value="S-2/TR 450-900">S-2/TR 450-900 VA (Sosial)</option>
-          <option value="S-3/TR 6600" selected>S-3/TR 6600 VA ke atas (Sosial)</option>
-          <option value="R-1/TR 900">R-1/TR 900 VA</option>
-          <option value="R-1/TR 1300">R-1/TR 1300 VA</option>
-          <option value="R-1/TR 2200">R-1/TR 2200 VA</option>
-          <option value="R-2/TR 3500-5500">R-2/TR 3500-5500 VA</option>
-          <option value="R-3/TR 6600">R-3/TR 6600 VA ke atas</option>
-          <option value="B-2/TR 6600">B-2/TR 6600 VA ke atas</option>
-          <option value="custom">Custom</option>
-        </select>
-      </div>
-
-      <div class="field">
         <label>Daya per AC (Watt) — Panasonic 1 PK</label>
         <input type="number" id="dayaAC" value="750" min="100" max="3000" step="10">
       </div>
 
       <div class="field">
         <label>Tarif Listrik (Rp/kWh)</label>
-        <input type="number" id="tarifListrik" value="1699.53" min="0" step="0.01">
+        <input type="number" id="tarifListrik" value="900" min="0" step="0.01">
       </div>
 
       <div class="field">
@@ -1202,7 +1187,7 @@ function hitungTotalDurasiOnPerHari() {
 function hitungBiayaListrik() {
   const dayaPerAC    = parseFloat(document.getElementById('dayaAC').value) || 750;
   const jumlahAC     = parseInt(document.getElementById('jumlahAC').value) || 8;
-  const tarifPerKwh  = parseFloat(document.getElementById('tarifListrik').value) || 1699.53;
+  const tarifPerKwh  = parseFloat(document.getElementById('tarifListrik').value) || 900;
 
   const dur = hitungTotalDurasiOnPerHari();
 
@@ -1224,24 +1209,6 @@ function hitungBiayaListrik() {
   document.getElementById('lrBiaya').textContent =
     'Rp ' + Math.round(biayaPerBulan).toLocaleString('id-ID');
 }
-
-const TARIF_DEFAULT = {
-  'S-2/TR 450-900':       1699.53,
-  'S-3/TR 6600':          1699.53,
-  'R-1/TR 900':           1352,
-  'R-1/TR 1300':          1444.70,
-  'R-1/TR 2200':          1444.70,
-  'R-2/TR 3500-5500':     1699.53,
-  'R-3/TR 6600':          1699.53,
-  'B-2/TR 6600':          1444.70
-};
-
-document.getElementById('golTarif').addEventListener('change', function() {
-  if (this.value !== 'custom' && TARIF_DEFAULT[this.value]) {
-    document.getElementById('tarifListrik').value = TARIF_DEFAULT[this.value];
-  }
-  hitungBiayaListrik();
-});
 
 ['dayaAC', 'tarifListrik', 'jumlahAC'].forEach(id => {
   document.getElementById(id).addEventListener('input', hitungBiayaListrik);
