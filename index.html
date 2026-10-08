@@ -816,7 +816,7 @@
     </tbody>
   </table>
 
-  <div id="breakerFinal" style="margin-top:14px; text-align:center;"></div>
+  
 </div>
 
    
@@ -999,9 +999,7 @@ document.addEventListener('click', () => getAudioCtx(), { once: true });
  // ===== BREAKER RECOMMENDATION =====
 async function loadBreaker() {
   const body = document.getElementById('breakerBody');
-  const finalBox = document.getElementById('breakerFinal');
-  body.innerHTML = '<tr><td colspan="5" style="opacity:0.5; font-size:0.75rem;">⏳ Menghitung dari GAS...</td></tr>';
-  finalBox.innerHTML = '';
+body.innerHTML = '<tr><td colspan="5" style="opacity:0.5; font-size:0.75rem;">⏳ Menghitung dari GAS...</td></tr>';
 
   try {
     const data = await jsonp(GAS_URL + '?action=getBreaker&city=' + encodeURIComponent(currentCity));
@@ -1012,28 +1010,18 @@ async function loadBreaker() {
     }
 
     const rows = data.data.rows || [];
-    const final = data.data.final || {};
 
     body.innerHTML = rows.map(r => `
   <tr>
     <td>${r.sholat}</td>
     <td>${r.adzanTerawal}</td>
-    <td>${r.breakerOn}${r.isOnEarliest ? '<span class="mark">⬅️</span>' : ''}</td>
+    <td>${r.breakerOn}</td>
     <td>${r.adzanTerakhir}</td>
-    <td>${r.breakerOff}${r.isOffLatest ? '<span class="mark">⬅️</span>' : ''}</td>
+    <td>${r.breakerOff}</td>
   </tr>
 `).join('');
-    finalBox.innerHTML = `
-      <div style="font-size:0.78rem; color:#00ffcc; font-weight:700; margin-bottom:6px;">🎯 Setting Final (${data.data.year})</div>
-      <div style="display:inline-block; background:rgba(0,255,204,0.08); border:1px solid rgba(0,255,204,0.35);
-                  border-radius:10px; padding:12px 24px; font-family:'Courier New', monospace;
-                  font-size:1rem; color:#00ffcc; line-height:1.8; text-align:left;">
-        <div style="opacity:0.7; font-size:0.7rem; letter-spacing:1px;">BREAKER TIMER</div>
-        <div>ON&nbsp;&nbsp;: <b>${final.on}</b></div>
-        <div>OFF : <b>${final.off}</b></div>
-      </div>
-      <div style="font-size:0.65rem; opacity:0.6; margin-top:6px;">${final.note || ''}</div>
-    `;
+    
+    
 
   } catch (e) {
     body.innerHTML = '<tr><td colspan="5" style="color:#ff8a80; font-size:0.75rem;">❌ ' + e.message + '</td></tr>';
