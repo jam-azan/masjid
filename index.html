@@ -345,6 +345,43 @@
   }
   .ac-name:focus, .ac-id:focus { border-color: #00ffcc; background: rgba(0,0,0,0.5); }
 
+ /* ===== Grup IR ===== */
+.ir-group {
+  background: rgba(0,0,0,0.2);
+  border: 1px solid rgba(0,255,204,0.15);
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 14px;
+}
+.ir-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+.ir-name {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #00ffcc;
+  letter-spacing: 0.5px;
+}
+.ir-id {
+  flex: 1;
+  min-width: 180px;
+  max-width: 320px;
+  background: rgba(0,0,0,0.35);
+  color: #ffd54f;
+  border: 1px solid rgba(255,213,79,0.35);
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-size: 0.75rem;
+  font-family: 'Courier New', monospace;
+  outline: none;
+}
+.ir-id:focus { border-color: #ffd54f; background: rgba(0,0,0,0.55); }
+
   /* ===== Buttons ===== */
   .btn-row {
     display: grid;
@@ -528,17 +565,44 @@
   </table>
 
   <!-- ===== DAFTAR AC ===== -->
-  <div class="section">
-    <div class="section-title">
-      <span>📋 Daftar 8 AC</span>
-      <span class="right">
-        Jeda antar AC:
-        <input type="number" id="jedaAC" value="15" min="5" max="120">
-        detik
-      </span>
-    </div>
-    <div class="ac-list" id="acList"></div>
+  <!-- ===== DAFTAR AC (3 KELOMPOK IR) ===== -->
+<div class="section">
+  <div class="section-title">
+    <span>📋 Daftar AC per Kelompok IR</span>
+    <span class="right">
+      Jeda antar AC:
+      <input type="number" id="jedaAC" value="15" min="5" max="120">
+      detik
+    </span>
   </div>
+
+  <!-- IR Bardi 1 -->
+  <div class="ir-group">
+    <div class="ir-header">
+      <span class="ir-name">🔌 IR Bardi 1</span>
+      <input type="text" class="ir-id" data-ir="bardi1" placeholder="IR ID (Bardi 1)">
+    </div>
+    <div class="ac-list" id="acListBardi1"></div>
+  </div>
+
+  <!-- IR Bardi 2 -->
+  <div class="ir-group">
+    <div class="ir-header">
+      <span class="ir-name">🔌 IR Bardi 2</span>
+      <input type="text" class="ir-id" data-ir="bardi2" placeholder="IR ID (Bardi 2)">
+    </div>
+    <div class="ac-list" id="acListBardi2"></div>
+  </div>
+
+  <!-- IR Eztech -->
+  <div class="ir-group">
+    <div class="ir-header">
+      <span class="ir-name">🔌 IR Eztech</span>
+      <input type="text" class="ir-id" data-ir="eztech" placeholder="IR ID (Eztech)">
+    </div>
+    <div class="ac-list" id="acListEztech"></div>
+  </div>
+</div>
 
   <!-- ===== SINKRONISASI ===== -->
   <div class="section">
@@ -566,7 +630,7 @@ const METHOD = 20;
 const OFFSET_SUBUH = 8; // Koreksi Muhammadiyah: Subuh +8 menit
 
 // ⭐ URL Google Apps Script — hardcoded, tidak ditampilkan di UI
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbwYdykytA0ZCjOm2BEDfcEZIEO4P256kjwCXOGo6fmQeQBtqLArus69te6OGRY92OkP/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxY0csBohoF4Ps1Pbh8-gOsJH9GgdxZLoyvJJAx0b2mXgUBZnmduDl5poy9BwmWWh4V/exec';
 
 let currentCity = 'Klaten';
 
@@ -595,32 +659,63 @@ function pad(n){ return n.toString().padStart(2,'0'); }
 
 const AC_NAMES_DEFAULT = ['AC Imam', 'AC Depan Atas','AC Depan Kanan','AC Depan Kiri','AC Belakang Kanan',
                           'AC Belakang Kiri','AC Putri Kanan','AC Putri Kiri'];
-function renderAcList() {
-  const list = document.getElementById('acList');
-  list.innerHTML = '';
-  for (let i = 0; i < 8; i++) {
-    const nama = localStorage.getItem('ac_name_' + i) || AC_NAMES_DEFAULT[i];
-    const rid  = localStorage.getItem('ac_remote_' + i) || '';
-    const div = document.createElement('div');
-    div.className = 'ac-item';
-    div.innerHTML = `
-      <div class="ac-num">${i + 1}.</div>
-      <input type="text" class="ac-name" data-idx="${i}" value="${nama}" placeholder="Nama AC">
-      <input type="text" class="ac-id" data-idx="${i}" value="${rid}" placeholder="Remote ID (dari Tuya)">
-    `;
-    list.appendChild(div);
+// ===== Struktur 3 Kelompok IR =====
+const IR_GROUPS = {
+  bardi1: { label: 'IR Bardi 1', acs: ['AC Imam', 'AC Depan Kiri', 'AC Belakang Kiri'] },
+  bardi2: { label: 'IR Bardi 2', acs: ['AC Depan Atas', 'AC Depan Kanan', 'AC Belakang Kanan'] },
+  eztech: { label: 'IR Eztech',  acs: ['AC Putri Kanan', 'AC Putri Kiri'] }
+};
+
+function renderAcGroups() {
+  for (const groupKey in IR_GROUPS) {
+    const group = IR_GROUPS[groupKey];
+    const containerId = 'acList' + groupKey.charAt(0).toUpperCase() + groupKey.slice(1);
+    const list = document.getElementById(containerId);
+    if (!list) continue;
+    list.innerHTML = '';
+
+    group.acs.forEach((defaultName, idx) => {
+      const storageKey = `${groupKey}_${idx}`;
+      const nama = localStorage.getItem('ac_name_' + storageKey) || defaultName;
+      const rid  = localStorage.getItem('ac_remote_' + storageKey) || '';
+
+      const div = document.createElement('div');
+      div.className = 'ac-item';
+      div.innerHTML = `
+        <div class="ac-num">${idx + 1}.</div>
+        <input type="text" class="ac-name" data-key="${storageKey}" value="${nama}" placeholder="Nama AC">
+        <input type="text" class="ac-id" data-key="${storageKey}" value="${rid}" placeholder="Remote ID">
+      `;
+      list.appendChild(div);
+    });
   }
-  list.querySelectorAll('.ac-name').forEach(inp => {
+
+  // Simpan nama AC
+  document.querySelectorAll('.ac-name').forEach(inp => {
     inp.addEventListener('change', e => {
-      localStorage.setItem('ac_name_' + e.target.dataset.idx, e.target.value);
+      localStorage.setItem('ac_name_' + e.target.dataset.key, e.target.value);
     });
   });
-  list.querySelectorAll('.ac-id').forEach(inp => {
+
+  // Simpan remote ID AC
+  document.querySelectorAll('.ac-id').forEach(inp => {
     inp.addEventListener('change', e => {
-      localStorage.setItem('ac_remote_' + e.target.dataset.idx, e.target.value.trim());
+      localStorage.setItem('ac_remote_' + e.target.dataset.key, e.target.value.trim());
+    });
+  });
+
+  // Simpan IR ID per kelompok
+  document.querySelectorAll('.ir-id').forEach(inp => {
+    const gk = inp.dataset.ir;
+    const saved = localStorage.getItem('ir_id_' + gk);
+    if (saved !== null) inp.value = saved;
+    inp.addEventListener('change', e => {
+      localStorage.setItem('ir_id_' + gk, e.target.value.trim());
     });
   });
 }
+
+renderAcGroups();
 
 function loadIqomahSettings() {
   for (const key in iqomahInput) {
@@ -868,21 +963,35 @@ function kumpulkanSetting() {
   for (const key in iqomahInput) {
     iqomah[key] = parseInt(document.getElementById(iqomahInput[key]).value) || 0;
   }
-  const acNames = [];
-  const acRemotes = [];
-  for (let i = 0; i < 8; i++) {
-    acNames.push(localStorage.getItem('ac_name_' + i) || AC_NAMES_DEFAULT[i]);
-    acRemotes.push(localStorage.getItem('ac_remote_' + i) || '');
+
+  // Kumpulkan data per kelompok IR
+  const irGroups = {};
+  for (const groupKey in IR_GROUPS) {
+    const group = IR_GROUPS[groupKey];
+    irGroups[groupKey] = {
+      label: group.label,
+      irId: localStorage.getItem('ir_id_' + groupKey) || '',
+      acs: group.acs.map((_, idx) => {
+        const storageKey = `${groupKey}_${idx}`;
+        return {
+          name:   localStorage.getItem('ac_name_' + storageKey)   || group.acs[idx],
+          remote: localStorage.getItem('ac_remote_' + storageKey) || ''
+        };
+      })
+    };
   }
+
   return {
-  city: currentCity, method: METHOD, country: COUNTRY,
-  offsetSubuh: OFFSET_SUBUH,   // <-- tambahkan
-  offsetOnWeekday:  parseInt(document.getElementById('offsetOnWeekday').value) || -15,
+    city: currentCity, method: METHOD, country: COUNTRY,
+    offsetSubuh: OFFSET_SUBUH,
+    offsetOnWeekday:  parseInt(document.getElementById('offsetOnWeekday').value) || -15,
     offsetOffWeekday: parseInt(document.getElementById('offsetOffWeekday').value) || 40,
     jedaAC:           parseInt(document.getElementById('jedaAC').value) || 15,
     jumatOn:          document.getElementById('jumatOn').value || '11:00',
     jumatOff:         document.getElementById('jumatOff').value || '13:00',
-    iqomah: iqomah, acNames: acNames, acRemotes: acRemotes
+    iqomah: iqomah,
+    irGroups: irGroups   // ⬅️ struktur baru
+    // acNames & acRemotes dihapus (digantikan irGroups)
   };
 }
 async function syncKeBackend() {
