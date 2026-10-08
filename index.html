@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jam Adzan - Masjid Al Himmah</title>
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🕌</text></svg>">
+
 
 <style>
   * { box-sizing: border-box; }
@@ -540,10 +540,104 @@
   .breaker-table .mark { font-size: 0.55rem; }
 }
 
- 
+ /* ===== PWA Banner Install ===== */
+.pwa-banner {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  z-index: 9999;
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: linear-gradient(135deg, rgba(0,200,83,0.95), rgba(0,137,123,0.95));
+  border-radius: 14px;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  animation: pwaSlideUp 0.35s ease-out;
+}
+.pwa-banner.show { display: flex; }
+
+@keyframes pwaSlideUp {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.pwa-banner-icon {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+}
+.pwa-banner-text {
+  flex: 1;
+  min-width: 0;
+  text-align: left;
+}
+.pwa-banner-title {
+  font-size: 0.85rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.pwa-banner-sub {
+  font-size: 0.68rem;
+  opacity: 0.9;
+}
+.pwa-banner-btn {
+  background: #fff;
+  color: #00897b;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 14px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.15s;
+}
+.pwa-banner-btn:active { transform: scale(0.95); }
+
+.pwa-banner-close {
+  background: transparent;
+  border: none;
+  color: #fff;
+  font-size: 1rem;
+  cursor: pointer;
+  opacity: 0.7;
+  padding: 4px 6px;
+  flex-shrink: 0;
+}
+.pwa-banner-close:hover { opacity: 1; }
 </style>
+
+<!-- ===== PWA ===== -->
+<link rel="manifest" href="./manifest.json">
+<link rel="icon" type="image/png" href="./azanctrl.png">
+<link rel="apple-touch-icon" href="./azanctrl.png">
+<meta name="theme-color" content="#0f2027">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Jam Adzan">
+ 
 </head>
 <body>
+
+ <!-- ===== BANNER INSTALL PWA ===== -->
+<div id="pwaBanner" class="pwa-banner">
+  <div class="pwa-banner-icon">
+    <img src="./azanctrl.png" alt="Jam Adzan" style="width:40px;height:40px;border-radius:8px;display:block;">
+  </div>
+  <div class="pwa-banner-text">
+    <div class="pwa-banner-title">Install Jam Adzan</div>
+    <div class="pwa-banner-sub">Buka langsung dari homescreen</div>
+  </div>
+  <button class="pwa-banner-btn" id="pwaInstallBtn">Install</button>
+  <button class="pwa-banner-close" id="pwaCloseBtn" aria-label="Tutup">✕</button>
+</div>
+ 
 <div class="container">
   <h1>MASJID AL HIMMAH</h1>
 
@@ -1253,6 +1347,63 @@ document.getElementById('citySelect').addEventListener('change', function() {
 fetchPrayerTimes();
 setInterval(updateClock, 1000);
 updateClock();
+
+ // ============================================================
+// PWA — Registrasi Service Worker + Banner Install
+// ============================================================
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./service-worker.js')
+      .then(reg => console.log('✅ Service Worker terdaftar:', reg.scope))
+      .catch(err => console.warn('❌ SW gagal:', err));
+  });
+}
+
+let deferredPrompt   = null;
+const pwaBanner      = document.getElementById('pwaBanner');
+const pwaInstallBtn  = document.getElementById('pwaInstallBtn');
+const pwaCloseBtn    = document.getElementById('pwaCloseBtn');
+
+// Kalau user dismiss banner, jangan muncul 7 hari
+const bannerDismissedAt = localStorage.getItem('pwaBannerDismissedAt');
+const oneWeekMs = 7 * 24 * 60 * 60 * 1000;
+const bannerBlocked = bannerDismissedAt && (Date.now() - parseInt(bannerDismissedAt) < oneWeekMs);
+
+window.addEventListener('beforeinstallprompt', e => {
+  e.preventDefault();
+  deferredPrompt = e;
+  if (!bannerBlocked && pwaBanner) {
+    setTimeout(() => pwaBanner.classList.add('show'), 2000);
+  }
+});
+
+pwaInstallBtn?.addEventListener('click', async () => {
+  if (!deferredPrompt) return;
+  deferredPrompt.prompt();
+  const { outcome } = await deferredPrompt.userChoice;
+  console.log('Pilihan install:', outcome);
+  deferredPrompt = null;
+  pwaBanner.classList.remove('show');
+});
+
+pwaCloseBtn?.addEventListener('click', () => {
+  pwaBanner.classList.remove('show');
+  localStorage.setItem('pwaBannerDismissedAt', Date.now().toString());
+});
+
+window.addEventListener('appinstalled', () => {
+  console.log('✅ PWA terinstall');
+  pwaBanner?.classList.remove('show');
+  deferredPrompt = null;
+});
+
+// Kalau sudah standalone (sudah terinstall), hapus banner
+const isStandalone = window.matchMedia('(display-mode: standalone)').matches
+                     || window.navigator.standalone === true;
+if (isStandalone) {
+  pwaBanner?.remove();
+}
+ 
 </script>
 </body>
 </html>
