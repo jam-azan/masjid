@@ -618,6 +618,41 @@
     <div class="btn-row" style="grid-template-columns:1fr;">
       <button class="btn btn-secondary" id="btnTestBeep" onclick="testBeep()">🔊 Test Beep (Adzan 3×)</button>
     </div>
+
+
+    <!-- ===== REKOMENDASI BREAKER ===== -->
+<div class="section" style="margin-top:16px;">
+  <div class="section-title">
+    <span>🔌 Rekomendasi Setting Breaker Listrik AC</span>
+    <span class="right">
+      <button class="btn btn-secondary" style="padding:4px 10px; font-size:0.7rem;" onclick="loadBreaker()">🔄 Hitung Ulang</button>
+    </span>
+  </div>
+
+  <div style="font-size:0.72rem; opacity:0.8; margin-bottom:10px; text-align:center;">
+    Rumus: <b>Breaker ON</b> = Adzan Terawal − 20 menit |
+    <b>Breaker OFF</b> = Adzan Terakhir + 45 menit
+  </div>
+
+  <table class="ac-table" id="breakerTable">
+    <thead>
+      <tr>
+        <th>SHOLAT</th>
+        <th>ADZAN TERAWAL</th>
+        <th>BREAKER ON</th>
+        <th>ADZAN TERAKHIR</th>
+        <th>BREAKER OFF</th>
+      </tr>
+    </thead>
+    <tbody id="breakerBody">
+      <tr><td colspan="5" style="opacity:0.5; font-size:0.75rem;">Memuat data...</td></tr>
+    </tbody>
+  </table>
+
+  <div id="breakerFinal" style="margin-top:14px; text-align:center;"></div>
+</div>
+
+   
     <div class="status-box" id="statusBox"></div>
   </div>
 
@@ -630,7 +665,7 @@ const METHOD = 20;
 const OFFSET_SUBUH = 8; // Koreksi Muhammadiyah: Subuh +8 menit
 
 // ⭐ URL Google Apps Script — hardcoded, tidak ditampilkan di UI
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbztxZ_C4PKgWt1A7g0v5Qpl5ASiK2WXIAXF1ltBtAz4lF2pjHmcfo3dpglvlUkq9Msk/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbzhIAICAbddi8qozXwCEerfzs5rY3qf8-OG2D2jKFM7nJozDQ1yJe9e5YJ4NHbfSpMW/exec';
 
 let currentCity = 'Klaten';
 
@@ -793,6 +828,54 @@ function beepStopSunat() { beep(660, 500, 0.5); }
 function beepIqomah() { beep(440, 1500, 0.75); }
 function testBeep() { getAudioCtx(); beepAdzan(); }
 document.addEventListener('click', () => getAudioCtx(), { once: true });
+
+ // ===== BREAKER RECOMMENDATION =====
+async function loadBreaker() {
+  const body = document.getElementById('breakerBody');
+  const finalBox = document.getElementById('breakerFinal');
+  body.innerHTML = '<tr><td colspan="5" style="opacity:0.5; font-size:0.75rem;">⏳ Menghitung dari GAS...</td></tr>';
+  finalBox.innerHTML = '';
+
+  try {
+    const data = await jsonp(GAS_URL + '?action=getBreaker&city=' + encodeURIComponent(currentCity));
+
+    if (!data.success) {
+      body.innerHTML = '<tr><td colspan="5" style="color:#ff8a80; font-size:0.75rem;">❌ ' + (data.error || 'Gagal') + '</td></tr>';
+      return;
+    }
+
+    const rows = data.data.rows || [];
+    const final = data.data.final || {};
+
+    body.innerHTML = rows.map(r => `
+      <tr>
+        <td style="font-weight:600;">${r.sholat}</td>
+        <td>${r.adzanTerawal}</td>
+        <td style="color:#00ffcc; font-weight:700;">${r.breakerOn}${r.isOnEarliest ? ' ⬅️' : ''}</td>
+        <td>${r.adzanTerakhir}</td>
+        <td style="color:#ffd54f; font-weight:700;">${r.breakerOff}${r.isOffLatest ? ' ⬅️' : ''}</td>
+      </tr>
+    `).join('');
+
+    finalBox.innerHTML = `
+      <div style="font-size:0.78rem; color:#00ffcc; font-weight:700; margin-bottom:6px;">🎯 Setting Final (${data.data.year})</div>
+      <div style="display:inline-block; background:rgba(0,255,204,0.08); border:1px solid rgba(0,255,204,0.35);
+                  border-radius:10px; padding:12px 24px; font-family:'Courier New', monospace;
+                  font-size:1rem; color:#00ffcc; line-height:1.8; text-align:left;">
+        <div style="opacity:0.7; font-size:0.7rem; letter-spacing:1px;">BREAKER TIMER</div>
+        <div>ON&nbsp;&nbsp;: <b>${final.on}</b></div>
+        <div>OFF : <b>${final.off}</b></div>
+      </div>
+      <div style="font-size:0.65rem; opacity:0.6; margin-top:6px;">${final.note || ''}</div>
+    `;
+
+  } catch (e) {
+    body.innerHTML = '<tr><td colspan="5" style="color:#ff8a80; font-size:0.75rem;">❌ ' + e.message + '</td></tr>';
+  }
+}
+
+// Muat otomatis saat halaman dibuka
+window.addEventListener('load', () => setTimeout(loadBreaker, 1500));
 
 async function fetchPrayerTimes() {
   const now = new Date();
