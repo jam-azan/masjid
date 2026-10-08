@@ -5,7 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Jam Adzan - Masjid Al Himmah</title>
 
-
 <style>
   * { box-sizing: border-box; }
   body {
@@ -162,7 +161,6 @@
   }
   .field input:focus { border-color: #00ffcc; background: rgba(0,0,0,0.5); }
 
-  /* ===== Tabel Jadwal Sholat & AC ===== */
   .jadwal-table, .ac-table {
     width: 100%;
     border-collapse: separate;
@@ -241,7 +239,6 @@
     color: #ffd54f;
   }
 
-  /* ===== Tabel Kontrol AC ===== */
   .ac-title {
     font-size: 0.85rem;
     color: #00ffcc;
@@ -294,7 +291,6 @@
   .ac-table input[type="number"] { width: 75px; }
   .ac-table input:focus { border-color: #00ffcc; background: rgba(0,0,0,0.5); }
 
-  /* Icon jam lebih terang */
   .ac-table input[type="time"]::-webkit-calendar-picker-indicator {
     filter: invert(1) opacity(0.7);
     cursor: pointer;
@@ -303,7 +299,6 @@
     filter: invert(1) opacity(1);
   }
 
-  /* Warna font input OFF (Jumat & Selain Jumat) */
   .ac-table tr.row-off input {
     color: #ff8a80;
     border-color: rgba(255,138,128,0.4);
@@ -313,7 +308,6 @@
     background: rgba(255,138,128,0.1);
   }
 
-  /* ===== Daftar AC ===== */
   .ac-list { display: grid; grid-template-columns: 1fr; gap: 8px; }
   .ac-item {
     display: grid;
@@ -345,44 +339,42 @@
   }
   .ac-name:focus, .ac-id:focus { border-color: #00ffcc; background: rgba(0,0,0,0.5); }
 
- /* ===== Grup IR ===== */
-.ir-group {
-  background: rgba(0,0,0,0.2);
-  border: 1px solid rgba(0,255,204,0.15);
-  border-radius: 12px;
-  padding: 12px;
-  margin-bottom: 14px;
-}
-.ir-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 10px;
-  margin-bottom: 10px;
-  flex-wrap: wrap;
-}
-.ir-name {
-  font-size: 0.82rem;
-  font-weight: 700;
-  color: #00ffcc;
-  letter-spacing: 0.5px;
-}
-.ir-id {
-  flex: 1;
-  min-width: 180px;
-  max-width: 320px;
-  background: rgba(0,0,0,0.35);
-  color: #ffd54f;
-  border: 1px solid rgba(255,213,79,0.35);
-  border-radius: 8px;
-  padding: 7px 10px;
-  font-size: 0.75rem;
-  font-family: 'Courier New', monospace;
-  outline: none;
-}
-.ir-id:focus { border-color: #ffd54f; background: rgba(0,0,0,0.55); }
+  .ir-group {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(0,255,204,0.15);
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 14px;
+  }
+  .ir-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 10px;
+    flex-wrap: wrap;
+  }
+  .ir-name {
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #00ffcc;
+    letter-spacing: 0.5px;
+  }
+  .ir-id {
+    flex: 1;
+    min-width: 180px;
+    max-width: 320px;
+    background: rgba(0,0,0,0.35);
+    color: #ffd54f;
+    border: 1px solid rgba(255,213,79,0.35);
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 0.75rem;
+    font-family: 'Courier New', monospace;
+    outline: none;
+  }
+  .ir-id:focus { border-color: #ffd54f; background: rgba(0,0,0,0.55); }
 
-  /* ===== Buttons ===== */
   .btn-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -452,6 +444,218 @@
     min-height: 18px;
   }
 
+  .breaker-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: rgba(255,255,255,0.06);
+    border-radius: 12px;
+    overflow: hidden;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+    table-layout: fixed;
+    margin-bottom: 12px;
+  }
+  .breaker-table th,
+  .breaker-table td {
+    padding: 6px 3px;
+    text-align: center;
+    font-variant-numeric: tabular-nums;
+    border-left: 1px solid rgba(255,255,255,0.08);
+    font-size: 0.68rem;
+    word-break: break-word;
+    line-height: 1.2;
+  }
+  .breaker-table th:first-child,
+  .breaker-table td:first-child { border-left: none; }
+
+  .breaker-table thead th {
+    background: rgba(0, 255, 204, 0.15);
+    color: #00ffcc;
+    font-size: 0.55rem;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    padding: 6px 2px;
+  }
+
+  .breaker-table tbody td {
+    font-weight: 600;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    color: #fff;
+  }
+  .breaker-table tbody td:nth-child(1) { font-size: 0.7rem; color: #fff; }
+  .breaker-table tbody td:nth-child(3) { color: #00ffcc; }
+  .breaker-table tbody td:nth-child(5) { color: #ffd54f; }
+
+  /* ===== Kalkulasi Biaya Listrik ===== */
+  .listrik-input {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px 12px;
+    margin-bottom: 14px;
+  }
+  .listrik-input .field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin: 0;
+  }
+  .listrik-input .field label {
+    font-size: 0.7rem;
+    opacity: 0.75;
+    text-align: left;
+    min-width: auto;
+  }
+  .listrik-input .field input,
+  .listrik-input .field select {
+    background: rgba(0,0,0,0.3);
+    color: #00ffcc;
+    border: 1px solid rgba(0,255,204,0.3);
+    border-radius: 8px;
+    padding: 7px 10px;
+    font-size: 0.78rem;
+    font-family: inherit;
+    outline: none;
+    width: 100%;
+  }
+  .listrik-input .field input:focus,
+  .listrik-input .field select:focus {
+    border-color: #00ffcc;
+    background: rgba(0,0,0,0.5);
+  }
+  .listrik-input .field select option { background: #203a43; color: #fff; }
+
+  .listrik-result {
+    background: rgba(0,0,0,0.25);
+    border-radius: 10px;
+    padding: 10px 14px;
+    border: 1px solid rgba(0,255,204,0.15);
+  }
+  .lr-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.75rem;
+    padding: 5px 0;
+    border-bottom: 1px dashed rgba(255,255,255,0.08);
+  }
+  .lr-row:last-child { border-bottom: none; }
+  .lr-row span { opacity: 0.8; }
+  .lr-row b { color: #00ffcc; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .lr-row.lr-total {
+    padding-top: 10px;
+    margin-top: 6px;
+    border-top: 1px solid rgba(0,255,204,0.3);
+    border-bottom: none;
+  }
+  .lr-row.lr-total span { color: #ffd54f; font-weight: 600; font-size: 0.78rem; }
+  .lr-row.lr-total b { color: #ffd54f; font-size: 1rem; }
+
+  .pk-ref {
+    background: rgba(0,0,0,0.2);
+    border: 1px solid rgba(255,213,79,0.2);
+    border-radius: 10px;
+    padding: 10px 14px;
+    margin-top: 12px;
+  }
+  .pk-ref-title {
+    font-size: 0.7rem;
+    color: #ffd54f;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .pk-ref-grid {
+    display: grid;
+    grid-template-columns: auto 1fr auto 1fr;
+    gap: 4px 8px;
+    font-size: 0.7rem;
+    align-items: center;
+  }
+  .pk-ref-grid span {
+    color: #fff;
+    opacity: 0.75;
+    text-align: right;
+  }
+  .pk-ref-grid b {
+    color: #00ffcc;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* ===== PWA Banner Install ===== */
+  .pwa-banner {
+    position: fixed;
+    left: 12px;
+    right: 12px;
+    bottom: 12px;
+    z-index: 9999;
+    display: none;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 12px;
+    background: linear-gradient(135deg, rgba(0,200,83,0.95), rgba(0,137,123,0.95));
+    border-radius: 14px;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
+    color: #fff;
+    animation: pwaSlideUp 0.35s ease-out;
+  }
+  .pwa-banner.show { display: flex; }
+
+  @keyframes pwaSlideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .pwa-banner-icon {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+  }
+  .pwa-banner-text {
+    flex: 1;
+    min-width: 0;
+    text-align: left;
+  }
+  .pwa-banner-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    margin-bottom: 2px;
+  }
+  .pwa-banner-sub {
+    font-size: 0.68rem;
+    opacity: 0.9;
+  }
+  .pwa-banner-btn {
+    background: #fff;
+    color: #00897b;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 14px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    font-family: inherit;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: transform 0.15s;
+  }
+  .pwa-banner-btn:active { transform: scale(0.95); }
+
+  .pwa-banner-close {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    opacity: 0.7;
+    padding: 4px 6px;
+    flex-shrink: 0;
+  }
+  .pwa-banner-close:hover { opacity: 1; }
+
   @media (max-width: 560px) {
     .clock { font-size: 2.3rem; }
     .next-name { font-size: 1.3rem; }
@@ -467,149 +671,14 @@
     .ac-item { grid-template-columns: 25px 1fr; }
     .ac-item .ac-id { grid-column: 2; margin-top: -4px; }
     .section-title .right { width: 100%; justify-content: flex-end; margin-top: 4px; }
+    .breaker-table th, .breaker-table td { padding: 5px 1px; font-size: 0.6rem; }
+    .breaker-table thead th { font-size: 0.48rem; padding: 5px 1px; letter-spacing: 0; }
+    .breaker-table tbody td:nth-child(1) { font-size: 0.6rem; }
+    .listrik-input { grid-template-columns: 1fr; }
+    .lr-row { font-size: 0.7rem; }
+    .lr-row.lr-total b { font-size: 0.9rem; }
+    .pk-ref-grid { grid-template-columns: auto 1fr; gap: 3px 6px; font-size: 0.68rem; }
   }
-
-  /* ===== Tabel Breaker ===== */
-.breaker-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  background: rgba(255,255,255,0.06);
-  border-radius: 12px;
-  overflow: hidden;
-  backdrop-filter: blur(10px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.25);
-  table-layout: fixed;
-  margin-bottom: 12px;
-}
-
-.breaker-table th,
-.breaker-table td {
-  padding: 6px 3px;
-  text-align: center;
-  font-variant-numeric: tabular-nums;
-  border-left: 1px solid rgba(255,255,255,0.08);
-  font-size: 0.68rem;
-  word-break: break-word;
-  line-height: 1.2;
-}
-.breaker-table th:first-child,
-.breaker-table td:first-child { border-left: none; }
-
-.breaker-table thead th {
-  background: rgba(0, 255, 204, 0.15);
-  color: #00ffcc;
-  font-size: 0.55rem;
-  letter-spacing: 0.3px;
-  text-transform: uppercase;
-  font-weight: 600;
-  padding: 6px 2px;
-}
-
-.breaker-table tbody td {
-  font-weight: 600;
-  border-top: 1px solid rgba(255,255,255,0.08);
-  color: #fff;
-}
-
-/* Kolom: Sholat, ON, OFF */
-.breaker-table tbody td:nth-child(1) { font-size: 0.7rem; color: #fff; }
-.breaker-table tbody td:nth-child(3) { color: #00ffcc; }
-.breaker-table tbody td:nth-child(5) { color: #ffd54f; }
-
-/* Tanda panah */
-.breaker-table .mark {
-  display: inline-block;
-  font-size: 0.65rem;
-  margin-left: 1px;
-}
-
-/* Mobile: perkecil lagi */
-@media (max-width: 560px) {
-  .breaker-table th,
-  .breaker-table td {
-    padding: 5px 1px;
-    font-size: 0.6rem;
-  }
-  .breaker-table thead th {
-    font-size: 0.48rem;
-    padding: 5px 1px;
-    letter-spacing: 0;
-  }
-  .breaker-table tbody td:nth-child(1) { font-size: 0.6rem; }
-  .breaker-table .mark { font-size: 0.55rem; }
-}
-
- /* ===== PWA Banner Install ===== */
-.pwa-banner {
-  position: fixed;
-  left: 12px;
-  right: 12px;
-  bottom: 12px;
-  z-index: 9999;
-  display: none;
-  align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
-  background: linear-gradient(135deg, rgba(0,200,83,0.95), rgba(0,137,123,0.95));
-  border-radius: 14px;
-  box-shadow: 0 8px 24px rgba(0,0,0,0.4);
-  backdrop-filter: blur(10px);
-  color: #fff;
-  animation: pwaSlideUp 0.35s ease-out;
-}
-.pwa-banner.show { display: flex; }
-
-@keyframes pwaSlideUp {
-  from { opacity: 0; transform: translateY(30px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-.pwa-banner-icon {
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
-}
-.pwa-banner-text {
-  flex: 1;
-  min-width: 0;
-  text-align: left;
-}
-.pwa-banner-title {
-  font-size: 0.85rem;
-  font-weight: 700;
-  margin-bottom: 2px;
-}
-.pwa-banner-sub {
-  font-size: 0.68rem;
-  opacity: 0.9;
-}
-.pwa-banner-btn {
-  background: #fff;
-  color: #00897b;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 14px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  font-family: inherit;
-  cursor: pointer;
-  flex-shrink: 0;
-  transition: transform 0.15s;
-}
-.pwa-banner-btn:active { transform: scale(0.95); }
-
-.pwa-banner-close {
-  background: transparent;
-  border: none;
-  color: #fff;
-  font-size: 1rem;
-  cursor: pointer;
-  opacity: 0.7;
-  padding: 4px 6px;
-  flex-shrink: 0;
-}
-.pwa-banner-close:hover { opacity: 1; }
 </style>
 
 <!-- ===== PWA ===== -->
@@ -621,11 +690,10 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Jam Adzan">
- 
 </head>
 <body>
 
- <!-- ===== BANNER INSTALL PWA ===== -->
+<!-- ===== BANNER INSTALL PWA ===== -->
 <div id="pwaBanner" class="pwa-banner">
   <div class="pwa-banner-icon">
     <img src="./azanctrl.png" alt="Jam Adzan" style="width:40px;height:40px;border-radius:8px;display:block;">
@@ -637,7 +705,7 @@
   <button class="pwa-banner-btn" id="pwaInstallBtn">Install</button>
   <button class="pwa-banner-close" id="pwaCloseBtn" aria-label="Tutup">✕</button>
 </div>
- 
+
 <div class="container">
   <h1>MASJID AL HIMMAH</h1>
 
@@ -731,45 +799,115 @@
     </tbody>
   </table>
 
-  <!-- ===== DAFTAR AC ===== -->
+  <!-- ===== KALKULASI BIAYA LISTRIK ===== -->
+  <div class="section">
+    <div class="section-title">
+      <span>💰 Kalkulasi Biaya Listrik AC per Bulan</span>
+    </div>
+
+    <div class="listrik-input">
+      <div class="field">
+        <label>Golongan Tarif</label>
+        <select id="golTarif">
+          <option value="S-2/TR 450-900">S-2/TR 450-900 VA (Sosial)</option>
+          <option value="S-3/TR 6600" selected>S-3/TR 6600 VA ke atas (Sosial)</option>
+          <option value="R-1/TR 900">R-1/TR 900 VA</option>
+          <option value="R-1/TR 1300">R-1/TR 1300 VA</option>
+          <option value="R-1/TR 2200">R-1/TR 2200 VA</option>
+          <option value="R-2/TR 3500-5500">R-2/TR 3500-5500 VA</option>
+          <option value="R-3/TR 6600">R-3/TR 6600 VA ke atas</option>
+          <option value="B-2/TR 6600">B-2/TR 6600 VA ke atas</option>
+          <option value="custom">Custom</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Daya per AC (Watt) — Panasonic 1 PK</label>
+        <input type="number" id="dayaAC" value="750" min="100" max="3000" step="10">
+      </div>
+
+      <div class="field">
+        <label>Tarif Listrik (Rp/kWh)</label>
+        <input type="number" id="tarifListrik" value="1699.53" min="0" step="0.01">
+      </div>
+
+      <div class="field">
+        <label>Jumlah AC</label>
+        <input type="number" id="jumlahAC" value="8" min="1" max="20">
+      </div>
+    </div>
+
+    <div class="listrik-result">
+      <div class="lr-row">
+        <span>Total durasi ON per hari</span>
+        <b id="lrDurasiHari">–</b>
+      </div>
+      <div class="lr-row">
+        <span>Total konsumsi per hari</span>
+        <b id="lrKwhHari">–</b>
+      </div>
+      <div class="lr-row">
+        <span>Total konsumsi per bulan (30 hari)</span>
+        <b id="lrKwhBulan">–</b>
+      </div>
+      <div class="lr-row lr-total">
+        <span>💰 Estimasi Biaya Listrik / Bulan</span>
+        <b id="lrBiaya">–</b>
+      </div>
+    </div>
+
+    <div class="pk-ref">
+      <div class="pk-ref-title">📋 Referensi Daya AC (Panasonic)</div>
+      <div class="pk-ref-grid">
+        <span>½ PK</span><b>380 W</b>
+        <span>¾ PK</span><b>560 W</b>
+        <span>1 PK</span><b>750 W</b>
+        <span>1½ PK</span><b>1050 W</b>
+        <span>2 PK</span><b>1500 W</b>
+      </div>
+    </div>
+
+    <div style="font-size:0.65rem; opacity:0.6; margin-top:8px; text-align:center; line-height:1.4;">
+      * Perhitungan berdasarkan konfigurasi Kontrol AC saat ini (ON & OFF per waktu sholat).
+      Ubah nilai ON/OFF di atas → hasil otomatis menyesuaikan.
+    </div>
+  </div>
+
   <!-- ===== DAFTAR AC (3 KELOMPOK IR) ===== -->
-<div class="section">
-  <div class="section-title">
-    <span>📋 Daftar AC per Kelompok IR</span>
-    <span class="right">
-      Jeda antar AC:
-      <input type="number" id="jedaAC" value="15" min="5" max="120">
-      detik
-    </span>
-  </div>
-
-  <!-- IR Bardi 1 -->
-  <div class="ir-group">
-    <div class="ir-header">
-      <span class="ir-name">🔌 IR Bardi 1</span>
-      <input type="text" class="ir-id" data-ir="bardi1" placeholder="IR ID (Bardi 1)">
+  <div class="section">
+    <div class="section-title">
+      <span>📋 Daftar AC per Kelompok IR</span>
+      <span class="right">
+        Jeda antar AC:
+        <input type="number" id="jedaAC" value="15" min="5" max="120">
+        detik
+      </span>
     </div>
-    <div class="ac-list" id="acListBardi1"></div>
-  </div>
 
-  <!-- IR Bardi 2 -->
-  <div class="ir-group">
-    <div class="ir-header">
-      <span class="ir-name">🔌 IR Bardi 2</span>
-      <input type="text" class="ir-id" data-ir="bardi2" placeholder="IR ID (Bardi 2)">
+    <div class="ir-group">
+      <div class="ir-header">
+        <span class="ir-name">🔌 IR Bardi 1</span>
+        <input type="text" class="ir-id" data-ir="bardi1" placeholder="IR ID (Bardi 1)">
+      </div>
+      <div class="ac-list" id="acListBardi1"></div>
     </div>
-    <div class="ac-list" id="acListBardi2"></div>
-  </div>
 
-  <!-- IR Eztech -->
-  <div class="ir-group">
-    <div class="ir-header">
-      <span class="ir-name">🔌 IR Eztech</span>
-      <input type="text" class="ir-id" data-ir="eztech" placeholder="IR ID (Eztech)">
+    <div class="ir-group">
+      <div class="ir-header">
+        <span class="ir-name">🔌 IR Bardi 2</span>
+        <input type="text" class="ir-id" data-ir="bardi2" placeholder="IR ID (Bardi 2)">
+      </div>
+      <div class="ac-list" id="acListBardi2"></div>
     </div>
-    <div class="ac-list" id="acListEztech"></div>
+
+    <div class="ir-group">
+      <div class="ir-header">
+        <span class="ir-name">🔌 IR Eztech</span>
+        <input type="text" class="ir-id" data-ir="eztech" placeholder="IR ID (Eztech)">
+      </div>
+      <div class="ac-list" id="acListEztech"></div>
+    </div>
   </div>
-</div>
 
   <!-- ===== SINKRONISASI ===== -->
   <div class="section">
@@ -786,41 +924,37 @@
       <button class="btn btn-secondary" id="btnTestBeep" onclick="testBeep()">🔊 Test Beep (Adzan 3×)</button>
     </div>
 
-
     <!-- ===== REKOMENDASI BREAKER ===== -->
-<div class="section" style="margin-top:16px;">
-  <div class="section-title">
-    <span> ⚡ Rekomendasi Setting Breaker AC</span>
-    <span class="right">
-      <button class="btn btn-secondary" style="padding:4px 10px; font-size:0.7rem;" onclick="loadBreaker()">🔄 Hitung Ulang</button>
-    </span>
-  </div>
+    <div class="section" style="margin-top:16px;">
+      <div class="section-title">
+        <span>⚡ Rekomendasi Setting Breaker AC</span>
+        <span class="right">
+          <button class="btn btn-secondary" style="padding:4px 10px; font-size:0.7rem;" onclick="loadBreaker()">🔄 Hitung Ulang</button>
+        </span>
+      </div>
 
-<div style="font-size:0.72rem; opacity:0.8; margin-bottom:10px; text-align:center;">
-  Rumus: <b>Breaker ON</b> = Adzan Terawal − 20 menit |
-  <b>Breaker OFF</b> = Adzan Terakhir + 45 menit
-  <span style="opacity:0.7;">(dalam setahun)</span>
-</div>
+      <div style="font-size:0.72rem; opacity:0.8; margin-bottom:10px; text-align:center;">
+        Rumus: <b>Breaker ON</b> = Adzan Terawal − 20 menit |
+        <b>Breaker OFF</b> = Adzan Terakhir + 45 menit
+        <span style="opacity:0.7;">(dalam setahun)</span>
+      </div>
 
-  <table class="breaker-table" id="breakerTable">
-    <thead>
-      <tr>
-        <th>SHOLAT</th>
-        <th>ADZAN<br>TERAWAL</th>
-        <th>BREAKER ON</th>
-        <th>ADZAN<br>TERAKHIR</th>
-        <th>BREAKER OFF</th>
-      </tr>
-    </thead>
-    <tbody id="breakerBody">
-      <tr><td colspan="5" style="opacity:0.5; font-size:0.75rem;">Memuat data...</td></tr>
-    </tbody>
-  </table>
+      <table class="breaker-table" id="breakerTable">
+        <thead>
+          <tr>
+            <th>SHOLAT</th>
+            <th>ADZAN<br>TERAWAL</th>
+            <th>BREAKER ON</th>
+            <th>ADZAN<br>TERAKHIR</th>
+            <th>BREAKER OFF</th>
+          </tr>
+        </thead>
+        <tbody id="breakerBody">
+          <tr><td colspan="5" style="opacity:0.5; font-size:0.75rem;">Memuat data...</td></tr>
+        </tbody>
+      </table>
+    </div>
 
-  
-</div>
-
-   
     <div class="status-box" id="statusBox"></div>
   </div>
 
@@ -830,13 +964,11 @@
 <script>
 const COUNTRY = 'Indonesia';
 const METHOD = 20;
-const OFFSET_SUBUH = 8; // Koreksi Muhammadiyah: Subuh +8 menit
+const OFFSET_SUBUH = 8;
 
-// ⭐ URL Google Apps Script — hardcoded, tidak ditampilkan di UI
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbwCpu1QrnvGB1mctnUdEHrg9YcN6WfdEM0HIZlmA_Xw7B6UswMwNO9xMdbZ1_qH2OU/exec';
 
 let currentCity = 'Klaten';
-
 let jadwal = {};
 let lastFetchDate = '';
 let triggeredAdzan = {};
@@ -860,15 +992,15 @@ const iqomahInput = {
 
 function pad(n){ return n.toString().padStart(2,'0'); }
 
-const AC_NAMES_DEFAULT = ['AC Imam', 'AC Depan Atas','AC Depan Kanan','AC Depan Kiri','AC Belakang Kanan',
-                          'AC Belakang Kiri','AC Putri Kanan','AC Putri Kiri'];
-// ===== Struktur 3 Kelompok IR =====
 const IR_GROUPS = {
   bardi1: { label: 'IR Bardi 1', acs: ['AC Imam', 'AC Depan Kiri', 'AC Belakang Kiri'] },
   bardi2: { label: 'IR Bardi 2', acs: ['AC Depan Atas', 'AC Depan Kanan', 'AC Belakang Kanan'] },
   eztech: { label: 'IR Eztech',  acs: ['AC Putri Kanan', 'AC Putri Kiri'] }
 };
 
+// ============================================================
+// RENDER DAFTAR AC
+// ============================================================
 function renderAcGroups() {
   for (const groupKey in IR_GROUPS) {
     const group = IR_GROUPS[groupKey];
@@ -893,21 +1025,18 @@ function renderAcGroups() {
     });
   }
 
-  // Simpan nama AC
   document.querySelectorAll('.ac-name').forEach(inp => {
     inp.addEventListener('change', e => {
       localStorage.setItem('ac_name_' + e.target.dataset.key, e.target.value);
     });
   });
 
-  // Simpan remote ID AC
   document.querySelectorAll('.ac-id').forEach(inp => {
     inp.addEventListener('change', e => {
       localStorage.setItem('ac_remote_' + e.target.dataset.key, e.target.value.trim());
     });
   });
 
-  // Simpan IR ID per kelompok
   document.querySelectorAll('.ir-id').forEach(inp => {
     const gk = inp.dataset.ir;
     const saved = localStorage.getItem('ir_id_' + gk);
@@ -921,7 +1050,7 @@ function renderAcGroups() {
 renderAcGroups();
 
 // ============================================================
-// AUTO-LOAD irGroups dari server (GAS) → isi localStorage
+// AUTO-LOAD irGroups dari server GAS
 // ============================================================
 async function loadIrGroupsFromServer() {
   try {
@@ -940,13 +1069,11 @@ async function loadIrGroupsFromServer() {
       const grup = remote[groupKey];
       if (!grup) return;
 
-      // Simpan IR ID
       if (grup.irId) {
         localStorage.setItem('ir_id_' + groupKey, grup.irId);
         updated++;
       }
 
-      // Simpan nama & remote ID tiap AC
       (grup.acs || []).forEach((ac, i) => {
         const storageKey = groupKey + '_' + i;
         if (ac.name)   localStorage.setItem('ac_name_'   + storageKey, ac.name);
@@ -957,16 +1084,18 @@ async function loadIrGroupsFromServer() {
 
     if (updated > 0) {
       console.log('[Auto-load] Berhasil memuat ' + updated + ' data dari server');
-      renderAcGroups();   // render ulang tampilan
+      renderAcGroups();
     } else {
-      console.log('[Auto-load] Server tidak punya data (sheet mungkin kosong)');
+      console.log('[Auto-load] Server tidak punya data');
     }
-
   } catch (e) {
     console.warn('[Auto-load] Gagal:', e.message);
   }
 }
- 
+
+// ============================================================
+// IQOMAH SETTINGS
+// ============================================================
 function loadIqomahSettings() {
   for (const key in iqomahInput) {
     const saved = localStorage.getItem('iqomah_' + key);
@@ -983,6 +1112,9 @@ for (const key in iqomahInput) {
 }
 loadIqomahSettings();
 
+// ============================================================
+// KONTROL AC SETTINGS
+// ============================================================
 ['offsetOnWeekday','offsetOffWeekday','jedaAC'].forEach(id => {
   const saved = localStorage.getItem(id);
   if (saved !== null) document.getElementById(id).value = saved;
@@ -999,8 +1131,9 @@ loadIqomahSettings();
   });
 });
 
-
-
+// ============================================================
+// CITY
+// ============================================================
 const savedCity = localStorage.getItem('city');
 if (savedCity) {
   currentCity = savedCity;
@@ -1010,9 +1143,9 @@ if (savedCity) {
   }
 }
 
-renderAcGroups();    // ✅
-
-// ===== BEEP =====
+// ============================================================
+// BEEP
+// ============================================================
 let audioCtx = null;
 function getAudioCtx() {
   if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -1044,10 +1177,91 @@ function beepIqomah() { beep(440, 1500, 0.75); }
 function testBeep() { getAudioCtx(); beepAdzan(); }
 document.addEventListener('click', () => getAudioCtx(), { once: true });
 
- // ===== BREAKER RECOMMENDATION =====
+// ============================================================
+// KALKULASI BIAYA LISTRIK
+// ============================================================
+function hitungTotalDurasiOnPerHari() {
+  const offsetOn  = parseInt(document.getElementById('offsetOnWeekday').value) || -15;
+  const offsetOff = parseInt(document.getElementById('offsetOffWeekday').value) || 40;
+
+  const durasiPerSholat = offsetOff - offsetOn;
+  const jumlahSholat = 5;
+
+  const jumatOnStr  = document.getElementById('jumatOn').value  || '11:00';
+  const jumatOffStr = document.getElementById('jumatOff').value || '13:00';
+  const [jOnH, jOnM]   = jumatOnStr.split(':').map(Number);
+  const [jOffH, jOffM] = jumatOffStr.split(':').map(Number);
+  const durasiJumat = (jOffH * 60 + jOffM) - (jOnH * 60 + jOnM);
+
+  const durasiMingguanMenit = (6 * jumlahSholat * durasiPerSholat) + Math.max(0, durasiJumat);
+  const durasiHarianMenit = durasiMingguanMenit / 7;
+
+  return { durasiPerSholat, durasiJumat, durasiHarianMenit };
+}
+
+function hitungBiayaListrik() {
+  const dayaPerAC    = parseFloat(document.getElementById('dayaAC').value) || 750;
+  const jumlahAC     = parseInt(document.getElementById('jumlahAC').value) || 8;
+  const tarifPerKwh  = parseFloat(document.getElementById('tarifListrik').value) || 1699.53;
+
+  const dur = hitungTotalDurasiOnPerHari();
+
+  const dayaTotalWatt = dayaPerAC * jumlahAC;
+  const jamPerHari = dur.durasiHarianMenit / 60;
+  const kwhPerHari = (dayaTotalWatt * jamPerHari) / 1000;
+  const kwhPerBulan = kwhPerHari * 30;
+  const biayaPerBulan = kwhPerBulan * tarifPerKwh;
+
+  const jamDurasi = Math.floor(dur.durasiHarianMenit / 60);
+  const menitDurasi = Math.round(dur.durasiHarianMenit % 60);
+
+  document.getElementById('lrDurasiHari').textContent =
+    jamDurasi + ' jam ' + menitDurasi + ' menit';
+  document.getElementById('lrKwhHari').textContent =
+    kwhPerHari.toFixed(2) + ' kWh';
+  document.getElementById('lrKwhBulan').textContent =
+    kwhPerBulan.toFixed(2) + ' kWh';
+  document.getElementById('lrBiaya').textContent =
+    'Rp ' + Math.round(biayaPerBulan).toLocaleString('id-ID');
+}
+
+const TARIF_DEFAULT = {
+  'S-2/TR 450-900':       1699.53,
+  'S-3/TR 6600':          1699.53,
+  'R-1/TR 900':           1352,
+  'R-1/TR 1300':          1444.70,
+  'R-1/TR 2200':          1444.70,
+  'R-2/TR 3500-5500':     1699.53,
+  'R-3/TR 6600':          1699.53,
+  'B-2/TR 6600':          1444.70
+};
+
+document.getElementById('golTarif').addEventListener('change', function() {
+  if (this.value !== 'custom' && TARIF_DEFAULT[this.value]) {
+    document.getElementById('tarifListrik').value = TARIF_DEFAULT[this.value];
+  }
+  hitungBiayaListrik();
+});
+
+['dayaAC', 'tarifListrik', 'jumlahAC'].forEach(id => {
+  document.getElementById(id).addEventListener('input', hitungBiayaListrik);
+});
+
+['offsetOnWeekday', 'offsetOffWeekday', 'jumatOn', 'jumatOff'].forEach(id => {
+  document.getElementById(id).addEventListener('input', hitungBiayaListrik);
+  document.getElementById(id).addEventListener('change', hitungBiayaListrik);
+});
+
+window.addEventListener('load', () => {
+  setTimeout(hitungBiayaListrik, 300);
+});
+
+// ============================================================
+// BREAKER RECOMMENDATION
+// ============================================================
 async function loadBreaker() {
   const body = document.getElementById('breakerBody');
-body.innerHTML = '<tr><td colspan="5" style="opacity:0.5; font-size:0.75rem;">⏳ Menghitung dari GAS...</td></tr>';
+  body.innerHTML = '<tr><td colspan="5" style="opacity:0.5; font-size:0.75rem;">⏳ Menghitung dari GAS...</td></tr>';
 
   try {
     const data = await jsonp(GAS_URL + '?action=getBreaker&city=' + encodeURIComponent(currentCity));
@@ -1060,25 +1274,25 @@ body.innerHTML = '<tr><td colspan="5" style="opacity:0.5; font-size:0.75rem;">�
     const rows = data.data.rows || [];
 
     body.innerHTML = rows.map(r => `
-  <tr>
-    <td>${r.sholat}</td>
-    <td>${r.adzanTerawal}</td>
-    <td>${r.breakerOn}</td>
-    <td>${r.adzanTerakhir}</td>
-    <td>${r.breakerOff}</td>
-  </tr>
-`).join('');
-    
-    
+      <tr>
+        <td>${r.sholat}</td>
+        <td>${r.adzanTerawal}</td>
+        <td>${r.breakerOn}</td>
+        <td>${r.adzanTerakhir}</td>
+        <td>${r.breakerOff}</td>
+      </tr>
+    `).join('');
 
   } catch (e) {
     body.innerHTML = '<tr><td colspan="5" style="color:#ff8a80; font-size:0.75rem;">❌ ' + e.message + '</td></tr>';
   }
 }
 
-// Muat otomatis saat halaman dibuka
 window.addEventListener('load', () => setTimeout(loadBreaker, 1500));
 
+// ============================================================
+// JADWAL SHOLAT — ALADHAN API
+// ============================================================
 async function fetchPrayerTimes() {
   const now = new Date();
   const dateStr = `${pad(now.getDate())}-${pad(now.getMonth() + 1)}-${now.getFullYear()}`;
@@ -1086,9 +1300,8 @@ async function fetchPrayerTimes() {
     const url = `https://api.aladhan.com/v1/timingsByCity/${dateStr}?city=${encodeURIComponent(currentCity)}&country=${COUNTRY}&method=${METHOD}`;
     const res = await fetch(url);
     const data = await res.json();
-        if (data.code === 200 && data.data && data.data.timings) {
+    if (data.code === 200 && data.data && data.data.timings) {
       jadwal = data.data.timings;
-      // Koreksi Subuh ke standar Muhammadiyah (+8 menit)
       if (jadwal.Fajr) {
         const [h, m] = jadwal.Fajr.slice(0, 5).split(':').map(Number);
         const d = new Date();
@@ -1243,18 +1456,19 @@ function setStatus(type, msg) {
   el.className = 'status-box show ' + type;
   el.innerHTML = msg;
 }
- 
+
+// ============================================================
+// KUMPULKAN SETTING
+// ============================================================
 function kumpulkanSetting() {
   const iqomah = {};
   for (const key in iqomahInput) {
     iqomah[key] = parseInt(document.getElementById(iqomahInput[key]).value) || 0;
   }
 
-  // Kumpulkan data per kelompok IR
   const irGroups = {};
   for (const groupKey in IR_GROUPS) {
     const group = IR_GROUPS[groupKey];
-
     const irIdLocal = localStorage.getItem('ir_id_' + groupKey);
 
     irGroups[groupKey] = {
@@ -1285,11 +1499,13 @@ function kumpulkanSetting() {
     irGroups: irGroups
   };
 }
- 
+
+// ============================================================
+// SYNC KE BACKEND
+// ============================================================
 async function syncKeBackend() {
   const payload = kumpulkanSetting();
 
-  // ===== VALIDASI: cek IR ID & Remote ID yang kosong =====
   const irGroups = payload.irGroups || {};
   const kosong = [];
 
@@ -1304,7 +1520,6 @@ async function syncKeBackend() {
     });
   }
 
-  // Kalau ada yang kosong → konfirmasi
   if (kosong.length > 0) {
     const pesan = '⚠️ Ada ' + kosong.length + ' kolom ID kosong:\n\n' +
                   kosong.slice(0, 10).join('\n') +
@@ -1339,7 +1554,10 @@ async function syncKeBackend() {
     btn.textContent = '🔄 Sync Sekarang';
   }
 }
-// ===== cekStatusSync =====
+
+// ============================================================
+// CEK STATUS
+// ============================================================
 async function cekStatusSync() {
   setStatus('loading', '⏳ Mengambil status...');
   try {
@@ -1356,7 +1574,9 @@ async function cekStatusSync() {
   } catch (e) { setStatus('error', '❌ ' + e.message); }
 }
 
-// ===== lihatTrigger =====
+// ============================================================
+// LIHAT TRIGGER
+// ============================================================
 async function lihatTrigger() {
   setStatus('loading', '⏳ Mengambil daftar trigger...');
   try {
@@ -1374,28 +1594,29 @@ async function lihatTrigger() {
   } catch (e) { setStatus('error', '❌ ' + e.message); }
 }
 
- 
-// ===== jsonp(url) =====
+// ============================================================
+// JSONP HELPER
+// ============================================================
 function jsonp(url) {
   return new Promise((resolve, reject) => {
     const cb = 'gasCB_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
-
-    const script = document.createElement('script');   // ⬅️ PINDAH KE ATAS
+    const script = document.createElement('script');
 
     window[cb] = data => {
       resolve(data);
       delete window[cb];
-      script.remove();                                  // ✅ sekarang aman
+      script.remove();
     };
 
     script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cb;
     script.onerror = () => reject(new Error('JSONP gagal'));
-
     document.body.appendChild(script);
   });
 }
 
-// ===== hapusTrigger =====
+// ============================================================
+// HAPUS TRIGGER
+// ============================================================
 async function hapusTrigger() {
   if (!confirm('Yakin hapus semua trigger AC? Sistem tidak akan jalan sampai di-sync ulang.')) return;
   setStatus('loading', '⏳ Menghapus trigger...');
@@ -1407,54 +1628,7 @@ async function hapusTrigger() {
 }
 
 // ============================================================
-// AUTO-LOAD irGroups dari server (GAS) → isi localStorage
-// ============================================================
-async function loadIrGroupsFromServer() {
-  try {
-    const data = await jsonp(GAS_URL + '?action=getIrGroups');
-
-    if (!data || !data.success || !data.data || !data.data.irGroups) {
-      console.log('[Auto-load] Tidak ada data irGroups dari server');
-      return;
-    }
-
-    const remote = data.data.irGroups;
-    let updated = 0;
-    const groupKeys = ['bardi1', 'bardi2', 'eztech'];
-
-    groupKeys.forEach(groupKey => {
-      const grup = remote[groupKey];
-      if (!grup) return;
-
-      // Simpan IR ID
-      if (grup.irId) {
-        localStorage.setItem('ir_id_' + groupKey, grup.irId);
-        updated++;
-      }
-
-      // Simpan nama & remote ID tiap AC
-      (grup.acs || []).forEach((ac, i) => {
-        const storageKey = groupKey + '_' + i;
-        if (ac.name)   localStorage.setItem('ac_name_'   + storageKey, ac.name);
-        if (ac.remote) localStorage.setItem('ac_remote_' + storageKey, ac.remote);
-        updated++;
-      });
-    });
-
-    if (updated > 0) {
-      console.log('[Auto-load] Berhasil memuat ' + updated + ' data dari server');
-      renderAcGroups();   // render ulang tampilan dengan data baru
-    } else {
-      console.log('[Auto-load] Server tidak punya data (sheet mungkin kosong)');
-    }
-
-  } catch (e) {
-    console.warn('[Auto-load] Gagal:', e.message);
-  }
-}
-
-// ============================================================
-// EVENT LISTENER — Ganti Kota
+// EVENT LISTENER — GANTI KOTA
 // ============================================================
 document.getElementById('citySelect').addEventListener('change', function() {
   currentCity = this.value;
@@ -1478,13 +1652,12 @@ fetchPrayerTimes();
 setInterval(updateClock, 1000);
 updateClock();
 
-// Auto-load irGroups dari server (multi-device)
 window.addEventListener('load', () => {
   setTimeout(loadIrGroupsFromServer, 800);
 });
 
- // ============================================================
-// PWA — Registrasi Service Worker + Banner Install
+// ============================================================
+// PWA — SERVICE WORKER + BANNER INSTALL
 // ============================================================
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
@@ -1499,7 +1672,6 @@ const pwaBanner      = document.getElementById('pwaBanner');
 const pwaInstallBtn  = document.getElementById('pwaInstallBtn');
 const pwaCloseBtn    = document.getElementById('pwaCloseBtn');
 
-// Kalau user dismiss banner, jangan muncul 7 hari
 const bannerDismissedAt = localStorage.getItem('pwaBannerDismissedAt');
 const oneWeekMs = 7 * 24 * 60 * 60 * 1000;
 const bannerBlocked = bannerDismissedAt && (Date.now() - parseInt(bannerDismissedAt) < oneWeekMs);
@@ -1532,13 +1704,11 @@ window.addEventListener('appinstalled', () => {
   deferredPrompt = null;
 });
 
-// Kalau sudah standalone (sudah terinstall), hapus banner
 const isStandalone = window.matchMedia('(display-mode: standalone)').matches
                      || window.navigator.standalone === true;
 if (isStandalone) {
   pwaBanner?.remove();
 }
- 
 </script>
 </body>
 </html>
