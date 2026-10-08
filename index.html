@@ -543,10 +543,6 @@
   <!-- ===== SINKRONISASI ===== -->
   <div class="section">
     <div class="section-title">⚙️ Sinkronisasi ke Backend GAS</div>
-    <div class="field">
-      <label>URL Google Apps Script</label>
-      <input type="text" id="gasUrl" placeholder="https://script.google.com/macros/s/AKfyc.../exec">
-    </div>
     <div class="btn-row">
       <button class="btn btn-primary" id="btnSync" onclick="syncKeBackend()">🔄 Sync Sekarang</button>
       <button class="btn btn-secondary" id="btnStatus" onclick="cekStatusSync()">📅 Cek Status</button>
@@ -568,6 +564,10 @@
 const COUNTRY = 'Indonesia';
 const METHOD = 20;
 const OFFSET_SUBUH = 8; // Koreksi Muhammadiyah: Subuh +8 menit
+
+// ⭐ URL Google Apps Script — hardcoded, tidak ditampilkan di UI
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbwYdykytA0ZCjOm2BEDfcEZIEO4P256kjwCXOGo6fmQeQBtqLArus69te6OGRY92OkP/exec';
+
 let currentCity = 'Klaten';
 
 let jadwal = {};
@@ -654,10 +654,7 @@ loadIqomahSettings();
   });
 });
 
-document.getElementById('gasUrl').value = localStorage.getItem('gas_url') || '';
-document.getElementById('gasUrl').addEventListener('change', function() {
-  localStorage.setItem('gas_url', this.value.trim());
-});
+
 
 const savedCity = localStorage.getItem('city');
 if (savedCity) {
@@ -889,17 +886,13 @@ function kumpulkanSetting() {
   };
 }
 async function syncKeBackend() {
-  const gasUrl = document.getElementById('gasUrl').value.trim();
-  if (!gasUrl || !gasUrl.startsWith('https://script.google.com/')) {
-    setStatus('error', '❌ Isi URL GAS dulu di atas'); return;
-  }
   const payload = kumpulkanSetting();
   const btn = document.getElementById('btnSync');
   btn.disabled = true;
   btn.textContent = '⏳ Mengirim...';
   setStatus('loading', '⏳ Mengirim setting ke server...');
   try {
-    await fetch(gasUrl, {
+    await fetch(GAS_URL, {
       method: 'POST', mode: 'no-cors',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify({ action: 'syncTimer', ...payload })
@@ -914,11 +907,9 @@ async function syncKeBackend() {
   }
 }
 async function cekStatusSync() {
-  const gasUrl = document.getElementById('gasUrl').value.trim();
-  if (!gasUrl) { setStatus('error', '❌ Isi URL GAS dulu'); return; }
   setStatus('loading', '⏳ Mengambil status...');
   try {
-    const res = await fetch(gasUrl + '?action=getStatus&city=' + encodeURIComponent(currentCity));
+    const res = await fetch(GAS_URL + '?action=getStatus&city=' + encodeURIComponent(currentCity));
     const data = await res.json();
     if (data.success) {
       const info = data.data || {};
@@ -932,11 +923,9 @@ async function cekStatusSync() {
   } catch (e) { setStatus('error', '❌ Gagal cek status: ' + e.message); }
 }
 async function lihatTrigger() {
-  const gasUrl = document.getElementById('gasUrl').value.trim();
-  if (!gasUrl) { setStatus('error', '❌ Isi URL GAS dulu'); return; }
   setStatus('loading', '⏳ Mengambil daftar trigger...');
   try {
-    const res = await fetch(gasUrl + '?action=listTriggers');
+    const res = await fetch(GAS_URL + '?action=listTriggers');
     const data = await res.json();
     if (data.success) {
       const list = data.data || [];
@@ -952,11 +941,10 @@ async function lihatTrigger() {
 }
 async function hapusTrigger() {
   if (!confirm('Yakin hapus semua trigger AC? Sistem tidak akan jalan sampai di-sync ulang.')) return;
-  const gasUrl = document.getElementById('gasUrl').value.trim();
-  if (!gasUrl) { setStatus('error', '❌ Isi URL GAS dulu'); return; }
   setStatus('loading', '⏳ Menghapus trigger...');
   try {
-    const res = await fetch(gasUrl + '?action=clearTriggers');
+    const res = await fetch(GAS_URL + '?action=clearTriggers');
+    ...
     const data = await res.json();
     if (data.success) setStatus('success', '✅ ' + (data.message || 'Trigger dihapus'));
     else setStatus('error', '❌ ' + (data.error || 'Gagal'));
