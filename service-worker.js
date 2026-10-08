@@ -6,8 +6,7 @@ const ASSETS = [
   './',
   './index.html',
   './manifest.json',
-  './icon-192.png',
-  './icon-512.png'
+  './azanctrl.png'
 ];
 
 // Install → cache aset statis
@@ -30,7 +29,7 @@ self.addEventListener('activate', event => {
   self.clients.claim();
 });
 
-// Fetch → strategi: network-first untuk API, cache-first untuk aset
+// Fetch → network-first untuk API, cache-first untuk aset
 self.addEventListener('fetch', event => {
   const url = event.request.url;
 
@@ -38,14 +37,12 @@ self.addEventListener('fetch', event => {
   if (url.includes('script.google.com') ||
       url.includes('api.aladhan.com') ||
       url.includes('callback=')) {
-    return; // biarkan lewat langsung ke network
+    return;
   }
 
-  // Untuk halaman & aset statis: cache-first, fallback ke network
   event.respondWith(
     caches.match(event.request).then(cached => {
       return cached || fetch(event.request).then(res => {
-        // Simpan salinan ke cache untuk kunjungan berikutnya
         if (event.request.method === 'GET' && res.ok && !url.startsWith('chrome-extension')) {
           const clone = res.clone();
           caches.open(CACHE_NAME).then(cache => cache.put(event.request, clone));
