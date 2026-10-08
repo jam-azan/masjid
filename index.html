@@ -951,7 +951,7 @@ const COUNTRY = 'Indonesia';
 const METHOD = 20;
 const OFFSET_SUBUH = 8;
 
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbwCpu1QrnvGB1mctnUdEHrg9YcN6WfdEM0HIZlmA_Xw7B6UswMwNO9xMdbZ1_qH2OU/exec';
+const GAS_URL = '{"success":true,"data":{"irGroups":{"bardi1":{"label":"IR Bardi 1","irId":"a3e19b21b260ddcd90bfhh","acs":[{"name":"AC Imam","remote":"a3408736efc6fac8507zua"},{"name":"AC Depan Kiri","remote":""},{"name":"AC Belakang Kiri","remote":""}]},"bardi2":{"label":"IR Bardi 2","irId":"","acs":[{"name":"AC Depan Atas","remote":""},{"name":"AC Depan Kanan","remote":""},{"name":"AC Belakang Kanan","remote":""}]},"eztech":{"label":"IR Eztech","irId":"","acs":[{"name":"AC Putri Kanan","remote":""},{"name":"AC Putri Kiri","remote":""}]}},"iqomah":{"Fajr":15,"Dhuhr":11,"Asr":11,"Maghrib":15,"Isha":15},"jedaAC":15,"offsetOnWeekday":-15,"offsetOffWeekday":30,"jumatOn":"11:00","jumatOff":"13:00","city":"Klaten","offsetSubuh":8}}';
 
 let currentCity = 'Klaten';
 let jadwal = {};
@@ -1050,6 +1050,7 @@ async function loadIrGroupsFromServer() {
     let updated = 0;
     const groupKeys = ['bardi1', 'bardi2', 'eztech'];
 
+    // ===== Load IR Groups =====
     groupKeys.forEach(groupKey => {
       const grup = remote[groupKey];
       if (!grup) return;
@@ -1067,14 +1068,45 @@ async function loadIrGroupsFromServer() {
       });
     });
 
-    if (updated > 0) {
-      console.log('[Auto-load] Berhasil memuat ' + updated + ' data dari server');
-      renderAcGroups();
+    // ===== Load Iqomah dari server =====
+    if (data.data.iqomah) {
+      for (const key in iqomahInput) {
+        if (data.data.iqomah[key] !== undefined) {
+          localStorage.setItem('iqomah_' + key, data.data.iqomah[key]);
+          document.getElementById(iqomahInput[key]).value = data.data.iqomah[key];
+          updated++;
+        }
+      }
+      console.log('[Auto-load] ✅ Iqomah dari server:', data.data.iqomah);
     } else {
-      console.log('[Auto-load] Server tidak punya data');
+      console.warn('[Auto-load] ⚠️ Server tidak kirim iqomah');
+    }
+
+    // ===== Load setting lain (jedaAC, offset, jumat) =====
+    const settingMap = {
+      'jedaAC': 'jedaAC',
+      'offsetOnWeekday': 'offsetOnWeekday',
+      'offsetOffWeekday': 'offsetOffWeekday',
+      'jumatOn': 'jumatOn',
+      'jumatOff': 'jumatOff'
+    };
+    for (const [sheetKey, inputId] of Object.entries(settingMap)) {
+      if (data.data[sheetKey] !== undefined && data.data[sheetKey] !== null) {
+        localStorage.setItem(inputId, data.data[sheetKey]);
+        const el = document.getElementById(inputId);
+        if (el) el.value = data.data[sheetKey];
+        updated++;
+      }
+    }
+
+    if (updated > 0) {
+      console.log('[Auto-load] ✅ Berhasil memuat ' + updated + ' data dari server');
+      renderAcGroups();
+      // Hitung ulang biaya listrik setelah setting berubah
+      if (typeof hitungBiayaListrik === 'function') hitungBiayaListrik();
     }
   } catch (e) {
-    console.warn('[Auto-load] Gagal:', e.message);
+    console.warn('[Auto-load] ❌ Gagal:', e.message);
   }
 }
 
