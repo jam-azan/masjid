@@ -630,7 +630,7 @@ const METHOD = 20;
 const OFFSET_SUBUH = 8; // Koreksi Muhammadiyah: Subuh +8 menit
 
 // ⭐ URL Google Apps Script — hardcoded, tidak ditampilkan di UI
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbxY0csBohoF4Ps1Pbh8-gOsJH9GgdxZLoyvJJAx0b2mXgUBZnmduDl5poy9BwmWWh4V/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbzMtRws_1BqF0zPz55yg6wHFhsTLI_vEo24Gvjv_HgBtx2byRHacVh4q2Bi5gETbJVq/exec';
 
 let currentCity = 'Klaten';
 
@@ -1015,11 +1015,11 @@ async function syncKeBackend() {
     btn.textContent = '🔄 Sync Sekarang';
   }
 }
+// ===== cekStatusSync =====
 async function cekStatusSync() {
   setStatus('loading', '⏳ Mengambil status...');
   try {
-    const res = await fetch(GAS_URL + '?action=getStatus&city=' + encodeURIComponent(currentCity));
-    const data = await res.json();
+    const data = await jsonp(GAS_URL + '?action=getStatus&city=' + encodeURIComponent(currentCity));
     if (data.success) {
       const info = data.data || {};
       let msg = '📅 Status Backend\n';
@@ -1029,13 +1029,14 @@ async function cekStatusSync() {
       if (info.activeTriggers !== undefined) msg += 'Trigger aktif: ' + info.activeTriggers + ' / 20';
       setStatus('info', msg);
     } else setStatus('error', '❌ ' + (data.error || 'Gagal ambil status'));
-  } catch (e) { setStatus('error', '❌ Gagal cek status: ' + e.message); }
+  } catch (e) { setStatus('error', '❌ ' + e.message); }
 }
+
+// ===== lihatTrigger =====
 async function lihatTrigger() {
   setStatus('loading', '⏳ Mengambil daftar trigger...');
   try {
-    const res = await fetch(GAS_URL + '?action=listTriggers');
-    const data = await res.json();
+    const data = await jsonp(GAS_URL + '?action=listTriggers');
     if (data.success) {
       const list = data.data || [];
       let msg = '📋 Trigger Aktif: ' + list.length + ' / 20\n';
@@ -1048,12 +1049,24 @@ async function lihatTrigger() {
     } else setStatus('error', '❌ ' + (data.error || 'Gagal'));
   } catch (e) { setStatus('error', '❌ ' + e.message); }
 }
+// ===== jsonp(url) =====
+ function jsonp(url) {
+  return new Promise((resolve, reject) => {
+    const cb = 'gasCB_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
+    window[cb] = data => { resolve(data); delete window[cb]; script.remove(); };
+    const script = document.createElement('script');
+    script.src = url + (url.includes('?') ? '&' : '?') + 'callback=' + cb;
+    script.onerror = () => reject(new Error('JSONP gagal'));
+    document.body.appendChild(script);
+  });
+}
+
+// ===== hapusTrigger =====
 async function hapusTrigger() {
   if (!confirm('Yakin hapus semua trigger AC? Sistem tidak akan jalan sampai di-sync ulang.')) return;
   setStatus('loading', '⏳ Menghapus trigger...');
   try {
-    const res = await fetch(GAS_URL + '?action=clearTriggers');
-    const data = await res.json();
+    const data = await jsonp(GAS_URL + '?action=clearTriggers');
     if (data.success) setStatus('success', '✅ ' + (data.message || 'Trigger dihapus'));
     else setStatus('error', '❌ ' + (data.error || 'Gagal'));
   } catch (e) { setStatus('error', '❌ ' + e.message); }
