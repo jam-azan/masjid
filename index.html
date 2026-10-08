@@ -944,7 +944,6 @@ async function hapusTrigger() {
   setStatus('loading', '⏳ Menghapus trigger...');
   try {
     const res = await fetch(GAS_URL + '?action=clearTriggers');
-    ...
     const data = await res.json();
     if (data.success) setStatus('success', '✅ ' + (data.message || 'Trigger dihapus'));
     else setStatus('error', '❌ ' + (data.error || 'Gagal'));
