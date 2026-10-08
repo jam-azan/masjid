@@ -951,7 +951,7 @@ const COUNTRY = 'Indonesia';
 const METHOD = 20;
 const OFFSET_SUBUH = 8;
 
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbwdPOFGLlyVmyh-m4ESqQdqnSYS8VzgVlB3oaG6SwWjXd83ryADxMb5OHv1mK1Ck8wa/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbyuiJIxv9W6Q48P9ldNewgjcEoHRQ6kMoP42-OyGzZIzgM1_tm40nOvSg69NQAjBy3H/exec';
 
 let currentCity = 'Klaten';
 let jadwal = {};
@@ -1201,19 +1201,28 @@ function hitungTotalDurasiOnPerHari() {
   const offsetOn  = parseInt(document.getElementById('offsetOnWeekday').value) || -15;
   const offsetOff = parseInt(document.getElementById('offsetOffWeekday').value) || 40;
 
+  // Durasi per sholat (menit)
   const durasiPerSholat = offsetOff - offsetOn;
-  const jumlahSholat = 5;
+
+  // ===== Hari biasa: 5 sholat =====
+  const durasiHariBiasa = 5 * durasiPerSholat;
+
+  // ===== Hari Jumat: 4 sholat selain Dhuhur + Jumatan (manual) =====
+  const jumlahSholatSelainDhuhur = 4;
 
   const jumatOnStr  = document.getElementById('jumatOn').value  || '11:00';
   const jumatOffStr = document.getElementById('jumatOff').value || '13:00';
   const [jOnH, jOnM]   = jumatOnStr.split(':').map(Number);
   const [jOffH, jOffM] = jumatOffStr.split(':').map(Number);
-  const durasiJumat = (jOffH * 60 + jOffM) - (jOnH * 60 + jOnM);
+  const durasiJumatan = Math.max(0, (jOffH * 60 + jOffM) - (jOnH * 60 + jOnM));
 
-  const durasiMingguanMenit = (6 * jumlahSholat * durasiPerSholat) + Math.max(0, durasiJumat);
-  const durasiHarianMenit = durasiMingguanMenit / 7;
+  const durasiHariJumat = (jumlahSholatSelainDhuhur * durasiPerSholat) + durasiJumatan;
 
-  return { durasiPerSholat, durasiJumat, durasiHarianMenit };
+  // ===== Rata-rata mingguan =====
+  const durasiMingguanMenit = (6 * durasiHariBiasa) + durasiHariJumat;
+  const durasiHarianMenit   = durasiMingguanMenit / 7;
+
+  return { durasiPerSholat, durasiJumatan, durasiHarianMenit };
 }
 
 function hitungBiayaListrik() {
