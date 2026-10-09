@@ -909,6 +909,13 @@
       <button class="btn btn-secondary" id="btnTestBeep" onclick="testBeep()">🔊 Test Beep (Adzan 3×)</button>
     </div>
 
+    <!-- ===== TEST ON/OFF SEMUA AC ===== -->
+    <div class="btn-row" style="margin-top:12px;">
+      <button class="btn btn-primary" id="btnTestAllOn" onclick="testSemuaACOn()">🔌 Test ON Semua AC</button>
+      <button class="btn btn-danger" id="btnTestAllOff" onclick="testSemuaACOff()">🔌 Test OFF Semua AC</button>
+    </div>
+    <div class="status-box" id="testACStatus"></div>
+   
     <!-- ===== REKOMENDASI BREAKER ===== -->
     <div class="section" style="margin-top:16px;">
       <div class="section-title">
@@ -951,7 +958,7 @@ const COUNTRY = 'Indonesia';
 const METHOD = 20;
 const OFFSET_SUBUH = 8;
 
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbzcLCY2RjsIjkC8SKUKydoAWgfHx8yRiwaDOvffP1pqkbJE370xky1h7sHvtQX-bJ1h/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbybJc2cqlTqtHy47azpYgsWhIB4sX9Zve-AGEwSqgofBn0q8TTbOHWmkZLqybPS6emE/exec';
 
 let currentCity = 'Klaten';
 let jadwal = {};
@@ -1633,6 +1640,90 @@ async function hapusTrigger() {
     if (data.success) setStatus('success', '✅ ' + (data.message || 'Trigger dihapus'));
     else setStatus('error', '❌ ' + (data.error || 'Gagal'));
   } catch (e) { setStatus('error', '❌ ' + e.message); }
+}
+
+
+ // ============================================================
+// TEST ON/OFF SEMUA AC (via GAS → Tuya)
+// ============================================================
+async function testSemuaACOn() {
+  await jalankanTestAC('on');
+}
+
+async function testSemuaACOff() {
+  await jalankanTestAC('off');
+}
+
+async function jalankanTestAC(mode) {
+  const btnOn  = document.getElementById('btnTestAllOn');
+  const btnOff = document.getElementById('btnTestAllOff');
+  const status = document.getElementById('testACStatus');
+
+  // Disable tombol supaya tidak dobel klik
+  btnOn.disabled  = true;
+  btnOff.disabled = true;
+
+  const labelAsliOn  = btnOn.innerHTML;
+  const labelAsliOff = btnOff.innerHTML;
+
+  if (mode === 'on') {
+    btnOn.innerHTML = '⏳ Mengirim ON...';
+  } else {
+    btnOff.innerHTML = '⏳ Mengirim OFF...';
+  }
+
+  // Tampilkan status loading
+  status.className = 'status-box show loading';
+  status.innerHTML = '⏳ Mengirim perintah ke semua AC via GAS...\n' +
+                     '⏱️ Estimasi: ' +
+                     (mode === 'on' ? '30-60 detik (dengan jeda antar AC)' : '5-15 detik');
+
+  try {
+    const action = mode === 'on' ? 'testAllOn' : 'testAllOff';
+    const data = await jsonp(GAS_URL + '?action=' + action);
+
+    if (!data || !data.success) {
+      status.className = 'status-box show error';
+      status.innerHTML = '❌ Gagal: ' + ((data && data.error) || 'Unknown error');
+      return;
+    }
+
+    // Format hasil
+    const r = data.data || {};
+    let msg = '✅ ' + (mode === 'on' ? 'TEST ON' : 'TEST OFF') + ' selesai\n\n';
+    msg += '📊 Statistik:\n';
+    msg += '• Total AC   : ' + (r.total   || 0) + '\n';
+    msg += '• ✅ Sukses  : ' + (r.sukses  || 0) + '\n';
+    msg += '• ❌ Gagal   : ' + (r.gagal   || 0) + '\n';
+    msg += '• ⏭️ Skip    : ' + (r.skip    || 0) + ' (ID kosong)\n\n';
+
+    // Detail per grup
+    if (r.detail && r.detail.length > 0) {
+      msg += '📋 Detail:\n';
+      r.detail.forEach(d => {
+        msg += '• [' + d.grup + '] ' + d.ac + ' → ' + d.status + '\n';
+      });
+    }
+
+    status.className = 'status-box show success';
+    status.innerHTML = msg;
+
+    // Auto-hide setelah 20 detik
+    setTimeout(() => {
+      if (status.classList.contains('success')) {
+        status.classList.remove('show');
+      }
+    }, 20000);
+
+  } catch (e) {
+    status.className = 'status-box show error';
+    status.innerHTML = '❌ Error: ' + e.message;
+  } finally {
+    btnOn.disabled  = false;
+    btnOff.disabled = false;
+    btnOn.innerHTML  = labelAsliOn;
+    btnOff.innerHTML = labelAsliOff;
+  }
 }
 
 // ============================================================
