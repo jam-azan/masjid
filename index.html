@@ -679,6 +679,43 @@
     .lr-row.lr-total b { font-size: 0.9rem; }
     .pk-ref-grid { grid-template-columns: auto 1fr; gap: 3px 6px; font-size: 0.68rem; }
   }
+
+  /* ===== Simulasi Tabel ===== */
+  #tabelSimulasi {
+    margin-bottom: 0;
+    table-layout: auto;
+  }
+  #tabelSimulasi tbody td {
+    font-size: 0.85rem;
+    padding: 10px 4px;
+    font-weight: 600;
+  }
+  #tabelSimulasi tbody td:first-child {
+    font-size: 0.75rem;
+    text-align: left;
+    padding-left: 12px;
+    color: #fff;
+  }
+  #tabelSimulasi tbody td:nth-child(2) {
+    color: #ffd54f;
+  }
+  #tabelSimulasi tbody td:nth-child(3) {
+    color: #69f0ae;
+  }
+  #tabelSimulasi tbody td:nth-child(4) {
+    color: #ff8a80;
+  }
+  #tabelSimulasi tbody td:nth-child(5) {
+    color: #00ffcc;
+    font-size: 0.75rem;
+  }
+  #tabelSimulasi tr.jumat-row td:first-child {
+    color: #ffd54f;
+  }
+  #tabelSimulasi tr.active-row {
+    background: linear-gradient(90deg, rgba(0,255,204,0.15), transparent);
+  }
+ 
 </style>
 
 <!-- ===== PWA ===== -->
@@ -798,6 +835,33 @@
       </tr>
     </tbody>
   </table>
+   <!-- ===== SIMULASI JAM ON/OFF ===== -->
+  <div class="section" style="margin-top:0;">
+    <div class="section-title">
+      <span>📅 Simulasi Jadwal ON/OFF AC Hari Ini</span>
+      <span class="right" id="simulasiTanggal">-</span>
+    </div>
+
+    <table class="jadwal-table" id="tabelSimulasi">
+      <thead>
+        <tr>
+          <th>SHOLAT</th>
+          <th>ADZAN</th>
+          <th>AC ON</th>
+          <th>AC OFF</th>
+          <th>DURASI</th>
+        </tr>
+      </thead>
+      <tbody id="simulasiBody">
+        <tr><td colspan="5" style="opacity:0.5; font-size:0.75rem;">Memuat...</td></tr>
+      </tbody>
+    </table>
+
+    <div style="font-size:0.65rem; opacity:0.6; margin-top:8px; text-align:center; line-height:1.4;">
+      * Simulasi berdasarkan jadwal Aladhan hari ini & setting Kontrol AC di atas.
+      Hari Jumat: Dzuhur diganti waktu Jumatan (manual).
+    </div>
+  </div>
 
   <!-- ===== KALKULASI BIAYA LISTRIK ===== -->
   <div class="section">
@@ -1271,6 +1335,123 @@ window.addEventListener('load', () => {
   setTimeout(hitungBiayaListrik, 300);
 });
 
+ // ============================================================
+// SIMULASI JAM ON/OFF AC PER SHOLAT (HARI INI)
+// ============================================================
+function renderSimulasiAC() {
+  const body = document.getElementById('simulasiBody');
+  const tglEl = document.getElementById('simulasiTanggal');
+  if (!body) return;
+
+  // Cek jadwal sudah ke-load
+  if (!jadwal || !jadwal.Fajr) {
+    body.innerHTML = '<tr><td colspan="5" style="opacity:0.5; font-size:0.75rem;">Menunggu jadwal sholat...</td></tr>';
+    return;
+  }
+
+  const now = new Date();
+  const isJumat = now.getDay() === 5;
+
+  // Info tanggal
+  if (tglEl) {
+    tglEl.textContent = namaHari[now.getDay()] + ', ' +
+                        now.getDate() + ' ' +
+                        namaBulan[now.getMonth()] + ' ' +
+                        now.getFullYear() +
+                        (isJumat ? ' (JUMAT)' : '');
+  }
+
+  // Ambil setting
+  const offsetOn   = parseInt(document.getElementById('offsetOnWeekday').value) || -15;
+  const offsetOff  = parseInt(document.getElementById('offsetOffWeekday').value) || 40;
+  const jumatOn    = document.getElementById('jumatOn').value  || '11:00';
+  const jumatOff   = document.getElementById('jumatOff').value || '13:00';
+
+  // Helper: geser waktu
+  function geserWaktu(timeStr, offsetMenit) {
+    if (!timeStr) return '-';
+    const [h, m] = timeStr.slice(0, 5).split(':').map(Number);
+    const d = new Date();
+    d.setHours(h, m, 0, 0);
+    d.setMinutes(d.getMinutes() + offsetMenit);
+    return pad(d.getHours()) + ':' + pad(d.getMinutes());
+  }
+
+  // Helper: durasi dalam menit → "X jam Y menit"
+  function formatDurasi(menit) {
+    if (menit < 0) return '-';
+    const h = Math.floor(menit / 60);
+    const m = menit % 60;
+    if (h === 0) return m + ' mnt';
+    if (m === 0) return h + ' jam';
+    return h + ' jam ' + m + ' mnt';
+  }
+
+  // Helper: hitung selisih menit antara 2 string jam
+  function selisihMenit(jamAwal, jamAkhir) {
+    if (jamAwal === '-' || jamAkhir === '-') return -1;
+    const [h1, m1] = jamAwal.split(':').map(Number);
+    const [h2, m2] = jamAkhir.split(':').map(Number);
+    let diff = (h2 * 60 + m2) - (h1 * 60 + m1);
+    if (diff < 0) diff += 24 * 60; // kalau lewat tengah malam
+    return diff;
+  }
+
+  // Urutan sholat yang ditampilkan
+  const urutan = ['Fajr', 'Dhuhr', 'Asr', 'Maghrib', 'Isha'];
+
+  // Simpan untuk highlight
+  const next = getNextEvent(now);
+
+  const rows = urutan.map(key => {
+    const adzan = jadwal[key] ? jadwal[key].slice(0, 5) : '-';
+    let onTime, offTime, labelSholat, isJumatRow = false;
+
+    // Khusus Jumat: Dzuhur diganti Jumatan
+    if (isJumat && key === 'Dhuhr') {
+      onTime = jumatOn.slice(0, 5);
+      offTime = jumatOff.slice(0, 5);
+      labelSholat = '🕌 Jumatan';
+      isJumatRow = true;
+    } else {
+      onTime = geserWaktu(adzan, offsetOn);
+      offTime = geserWaktu(adzan, offsetOff);
+      labelSholat = namaIndo[key] || key;
+    }
+
+    const durasi = selisihMenit(onTime, offTime);
+    const durasiStr = formatDurasi(durasi);
+
+    const isActive = next && next.key === key;
+
+    return `
+      <tr class="${isJumatRow ? 'jumat-row' : ''} ${isActive ? 'active-row' : ''}">
+        <td>${labelSholat}</td>
+        <td>${adzan}</td>
+        <td>${onTime}</td>
+        <td>${offTime}</td>
+        <td>${durasiStr}</td>
+      </tr>
+    `;
+  }).join('');
+
+  body.innerHTML = rows;
+}
+
+// Auto-update simulasi saat jadwal berubah atau setting berubah
+window.addEventListener('load', () => {
+  setTimeout(renderSimulasiAC, 1000);
+});
+
+// Update simulasi saat input berubah
+['offsetOnWeekday', 'offsetOffWeekday', 'jumatOn', 'jumatOff'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) {
+    el.addEventListener('input', renderSimulasiAC);
+    el.addEventListener('change', renderSimulasiAC);
+  }
+});
+
 // ============================================================
 // BREAKER RECOMMENDATION
 // ============================================================
@@ -1342,6 +1523,8 @@ function renderJadwal() {
     const val = jadwal[key];
     td.textContent = val ? val.slice(0, 5) : '-';
   });
+ // ⬇️ TAMBAHKAN INI
+  if (typeof renderSimulasiAC === 'function') renderSimulasiAC();
 }
 function getIqomahTime(prayerKey) {
   const timeStr = jadwal[prayerKey];
