@@ -3,7 +3,7 @@
 // v7 — network-first untuk HTML, cache-first untuk asset
 // ============================================================
 
-const CACHE_VERSION = 'v7';  // ⬅️ NAIKKAN ANGKA INI SETIAP UPDATE HTML
+const CACHE_VERSION = 'v8';  // ⬅️ NAIKKAN ANGKA INI SETIAP UPDATE HTML
 const CACHE_NAME = 'jam-adzan-' + CACHE_VERSION;
 
 const ASSETS = [
