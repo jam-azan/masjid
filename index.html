@@ -656,6 +656,112 @@
   }
   .pwa-banner-close:hover { opacity: 1; }
 
+  /* ===== Ringkasan Remote ===== */
+.ringkasan-remote {
+  background: rgba(0,0,0,0.25);
+  border-radius: 10px;
+  padding: 12px;
+  border: 1px solid rgba(0,255,204,0.15);
+}
+.ringkasan-stat {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px dashed rgba(255,255,255,0.1);
+}
+.ringkasan-stat-item {
+  text-align: center;
+}
+.ringkasan-stat-value {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: #00ffcc;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+.ringkasan-stat-label {
+  font-size: 0.65rem;
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 3px;
+}
+.ringkasan-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.ringkasan-item {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  gap: 10px;
+  align-items: center;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.04);
+  border-radius: 8px;
+  border-left: 3px solid rgba(0,255,204,0.4);
+}
+.ringkasan-item-num {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: #00ffcc;
+  text-align: right;
+}
+.ringkasan-item-body {
+  min-width: 0;
+}
+.ringkasan-item-remote {
+  font-size: 0.75rem;
+  font-family: 'Courier New', monospace;
+  color: #ffd54f;
+  font-weight: 600;
+  word-break: break-all;
+  margin-bottom: 2px;
+}
+.ringkasan-item-ac {
+  font-size: 0.78rem;
+  color: #fff;
+  margin-bottom: 1px;
+}
+.ringkasan-item-grup {
+  font-size: 0.65rem;
+  color: #00ffcc;
+  opacity: 0.7;
+}
+.ringkasan-item-badge {
+  flex-shrink: 0;
+}
+.ringkasan-badge {
+  display: inline-block;
+  padding: 3px 8px;
+  border-radius: 20px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.badge-merge {
+  background: rgba(255,213,79,0.2);
+  color: #ffd54f;
+  border: 1px solid rgba(255,213,79,0.4);
+}
+.badge-single {
+  background: rgba(0,255,204,0.12);
+  color: #00ffcc;
+  border: 1px solid rgba(0,255,204,0.3);
+}
+
+@media (max-width: 560px) {
+  .ringkasan-stat-value { font-size: 1.1rem; }
+  .ringkasan-stat-label { font-size: 0.58rem; }
+  .ringkasan-item { padding: 6px 8px; gap: 8px; }
+  .ringkasan-item-remote { font-size: 0.7rem; }
+  .ringkasan-item-ac { font-size: 0.72rem; }
+  .ringkasan-badge { font-size: 0.55rem; padding: 2px 6px; }
+}
+ 
+
   @media (max-width: 560px) {
     .clock { font-size: 2.3rem; }
     .next-name { font-size: 1.3rem; }
@@ -933,28 +1039,38 @@
       </span>
     </div>
 
-    <div class="ir-group">
+        <div class="ir-group">
       <div class="ir-header">
-        <span class="ir-name">🔌 IR Bardi 1</span>
-        <input type="text" class="ir-id" data-ir="bardi1" placeholder="IR ID (Bardi 1)">
+        <span class="ir-name">🔌 IR Eztech 1</span>
+        <input type="text" class="ir-id" data-ir="eztech1" placeholder="IR ID (Eztech 1)">
       </div>
-      <div class="ac-list" id="acListBardi1"></div>
+      <div class="ac-list" id="acListEztech1"></div>
     </div>
 
     <div class="ir-group">
       <div class="ir-header">
-        <span class="ir-name">🔌 IR Bardi 2</span>
-        <input type="text" class="ir-id" data-ir="bardi2" placeholder="IR ID (Bardi 2)">
+        <span class="ir-name">🔌 IR Bardi</span>
+        <input type="text" class="ir-id" data-ir="bardi" placeholder="IR ID (Bardi)">
       </div>
-      <div class="ac-list" id="acListBardi2"></div>
+      <div class="ac-list" id="acListBardi"></div>
     </div>
 
     <div class="ir-group">
       <div class="ir-header">
-        <span class="ir-name">🔌 IR Eztech</span>
-        <input type="text" class="ir-id" data-ir="eztech" placeholder="IR ID (Eztech)">
+        <span class="ir-name">🔌 IR Eztech 2</span>
+        <input type="text" class="ir-id" data-ir="eztech2" placeholder="IR ID (Eztech 2)">
       </div>
-      <div class="ac-list" id="acListEztech"></div>
+      <div class="ac-list" id="acListEztech2"></div>
+    </div>
+  </div>
+
+  <!-- ===== RINGKASAN REMOTE ===== -->
+  <div class="section">
+    <div class="section-title">
+      <span>📊 Ringkasan Remote</span>
+    </div>
+    <div id="ringkasanRemote" class="ringkasan-remote">
+      <div style="opacity:0.5; font-size:0.75rem; text-align:center;">Memuat...</div>
     </div>
   </div>
 
@@ -1022,7 +1138,7 @@ const COUNTRY = 'Indonesia';
 const METHOD = 20;
 const OFFSET_SUBUH = 8;
 
-const GAS_URL = 'https://script.google.com/macros/s/AKfycbxEDKiPsEd2KFs3qkJcIht1SKNczueWKrp25QILmWHhbQO4tqwJ5Gt0NR3GtSkdt8Tv/exec';
+const GAS_URL = 'https://script.google.com/macros/s/AKfycbxNzCqjwukMNR788cAr9Afz9vkWljzu5dKqycSSLs6BsHC6_eI_uz9Ue56h__GFenUq/exec';
 
 let currentCity = 'Klaten';
 let jadwal = {};
@@ -1049,18 +1165,24 @@ const iqomahInput = {
 function pad(n){ return n.toString().padStart(2,'0'); }
 
 const IR_GROUPS = {
-  bardi1: { label: 'IR Bardi 1', acs: ['AC Imam', 'AC Depan Kiri', 'AC Belakang Kiri'] },
-  bardi2: { label: 'IR Bardi 2', acs: ['AC Depan Atas', 'AC Depan Kanan', 'AC Belakang Kanan'] },
-  eztech: { label: 'IR Eztech',  acs: ['AC Putri Kanan', 'AC Putri Kiri'] }
+  eztech1: { label: 'IR Eztech 1', acs: ['AC Imam', 'AC Belakang Kiri', 'AC Depan Kiri'] },
+  bardi:   { label: 'IR Bardi',    acs: ['AC Depan Atas', 'AC Depan Kanan', 'AC Belakang Kanan'] },
+  eztech2: { label: 'IR Eztech 2', acs: ['AC Putri Kanan', 'AC Putri Kiri'] }
 };
 
 // ============================================================
 // RENDER DAFTAR AC
 // ============================================================
 function renderAcGroups() {
+  const containerMap = {
+    eztech1: 'acListEztech1',
+    bardi:   'acListBardi',
+    eztech2: 'acListEztech2'
+  };
+
   for (const groupKey in IR_GROUPS) {
     const group = IR_GROUPS[groupKey];
-    const containerId = 'acList' + groupKey.charAt(0).toUpperCase() + groupKey.slice(1);
+    const containerId = containerMap[groupKey];
     const list = document.getElementById(containerId);
     if (!list) continue;
     list.innerHTML = '';
@@ -1090,6 +1212,7 @@ function renderAcGroups() {
   document.querySelectorAll('.ac-id').forEach(inp => {
     inp.addEventListener('change', e => {
       localStorage.setItem('ac_remote_' + e.target.dataset.key, e.target.value.trim());
+      renderRingkasanRemote();
     });
   });
 
@@ -1101,9 +1224,96 @@ function renderAcGroups() {
       localStorage.setItem('ir_id_' + gk, e.target.value.trim());
     });
   });
+
+  renderRingkasanRemote();
 }
 
-renderAcGroups();
+// ============================================================
+// RENDER RINGKASAN REMOTE
+// ============================================================
+
+function renderRingkasanRemote() {
+  const box = document.getElementById('ringkasanRemote');
+  if (!box) return;
+
+  // Kumpulkan semua remote yang terisi
+  const remoteMap = {}; // remote -> [ {grup, no, nama} ]
+  let totalAC = 0;
+  let totalTerisi = 0;
+
+  for (const groupKey in IR_GROUPS) {
+    const group = IR_GROUPS[groupKey];
+    group.acs.forEach((defaultName, idx) => {
+      totalAC++;
+      const storageKey = `${groupKey}_${idx}`;
+      const nama = localStorage.getItem('ac_name_' + storageKey) || defaultName;
+      const rid  = (localStorage.getItem('ac_remote_' + storageKey) || '').trim();
+      if (!rid) return;
+      totalTerisi++;
+      if (!remoteMap[rid]) remoteMap[rid] = [];
+      remoteMap[rid].push({ grup: group.label, no: idx + 1, nama });
+    });
+  }
+
+  const totalRemoteUnik = Object.keys(remoteMap).length;
+
+  if (totalTerisi === 0) {
+    box.innerHTML = `<div style="opacity:0.5; font-size:0.75rem; text-align:center;">
+      Belum ada Remote ID yang diisi.
+    </div>`;
+    return;
+  }
+
+  // Urutkan remote berdasarkan jumlah AC (desc)
+  const entries = Object.entries(remoteMap).sort((a, b) => b[1].length - a[1].length);
+
+  let html = `
+    <div class="ringkasan-stat">
+      <div class="ringkasan-stat-item">
+        <div class="ringkasan-stat-value">${totalAC}</div>
+        <div class="ringkasan-stat-label">Total AC</div>
+      </div>
+      <div class="ringkasan-stat-item">
+        <div class="ringkasan-stat-value">${totalTerisi}</div>
+        <div class="ringkasan-stat-label">Remote Terisi</div>
+      </div>
+      <div class="ringkasan-stat-item">
+        <div class="ringkasan-stat-value" style="color:#ffd54f;">${totalRemoteUnik}</div>
+        <div class="ringkasan-stat-label">Remote Unik</div>
+      </div>
+    </div>
+    <div class="ringkasan-list">
+  `;
+
+  entries.forEach(([rid, acs], i) => {
+    const namaAC = acs.map(a => a.nama).join(' + ');
+    const grupList = [...new Set(acs.map(a => a.grup))].join(', ');
+    const badge = acs.length > 1
+      ? `<span class="ringkasan-badge badge-merge">${acs.length} AC jadi satu</span>`
+      : `<span class="ringkasan-badge badge-single">1 AC</span>`;
+    html += `
+      <div class="ringkasan-item">
+        <div class="ringkasan-item-num">${i + 1}.</div>
+        <div class="ringkasan-item-body">
+          <div class="ringkasan-item-remote">🔑 ${rid}</div>
+          <div class="ringkasan-item-ac">${namaAC}</div>
+          <div class="ringkasan-item-grup">${grupList}</div>
+        </div>
+        <div class="ringkasan-item-badge">${badge}</div>
+      </div>
+    `;
+  });
+
+  html += `</div>
+    <div style="font-size:0.65rem; opacity:0.6; margin-top:10px; text-align:center; line-height:1.4;">
+      Saat ON/OFF, sistem kirim <b>${totalRemoteUnik} perintah</b> (bukan ${totalTerisi}).<br>
+      AC dengan Remote ID sama akan nyala/mati bersamaan.
+    </div>
+  `;
+
+  box.innerHTML = html;
+}
+ 
 
 // ============================================================
 // AUTO-LOAD irGroups dari server GAS
@@ -1119,7 +1329,7 @@ async function loadIrGroupsFromServer() {
 
     const remote = data.data.irGroups;
     let updated = 0;
-    const groupKeys = ['bardi1', 'bardi2', 'eztech'];
+        const groupKeys = ['eztech1', 'bardi', 'eztech2'];
 
     // ===== Load IR Groups =====
     groupKeys.forEach(groupKey => {
@@ -1173,6 +1383,7 @@ async function loadIrGroupsFromServer() {
     if (updated > 0) {
       console.log('[Auto-load] ✅ Berhasil memuat ' + updated + ' data dari server');
       renderAcGroups();
+      renderRingkasanRemote();
       // Hitung ulang biaya listrik setelah setting berubah
       if (typeof hitungBiayaListrik === 'function') hitungBiayaListrik();
     }
